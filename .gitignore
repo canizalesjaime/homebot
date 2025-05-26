@@ -10,3 +10,4 @@
 *.toc
 
 hidden/
+*__pycache__
