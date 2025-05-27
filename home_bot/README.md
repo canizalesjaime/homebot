@@ -4,7 +4,7 @@
 * Add some ml with pytorch course(make an unsupervised grasping model?)
 * segmentation
 * stereo_camera
-* build arm
+* build arm with 3d print
 * ultrasound slam
 * ros open source
 * raspberry pi screen
