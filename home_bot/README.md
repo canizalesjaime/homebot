@@ -4,12 +4,11 @@
 * Add some ml with pytorch course(make an unsupervised grasping model?)
 * segmentation
 * stereo_camera
-* build arm with 3d print
+* build arm with 3d print-connect infared sensor to follow motion
 * ultrasound slam
 * ros open source
-* raspberry pi screen
+* raspberry pi touch screen
 * do something with other raspberry pi
 * flutter app
-* connect infared sensor to follow motion
 * arduino opta
-* learn a load balancing algo
+* add orientation to arm and bot

@@ -3,7 +3,8 @@ import gpiod
 import time
 import threading
 import sys
-import keyboard
+import pigpio
+import curses
 
 # Set pins
 TRIG = 5
@@ -22,8 +23,9 @@ motor1_enableB = chip.get_line(26)
 # Request output lines
 for line in [in1_line, in2_line, motor1_enableA, in3_line, in4_line, motor1_enableB]:
     line.request(consumer='motor_control', type=gpiod.LINE_REQ_DIR_OUT)
-motor1_enableA.set_value(1)
-motor1_enableB.set_value(1)
+# motor1_enableA.set_value(1)
+# motor1_enableB.set_value(1)
+
 
 # Motor control functions
 def motor_right_backward(): in1_line.set_value(1); in2_line.set_value(0)
@@ -38,6 +40,34 @@ def motor_stop():
 h = GPIO.gpiochip_open(0)
 GPIO.gpio_claim_output(h, TRIG)
 GPIO.gpio_claim_input(h, ECHO)
+
+
+## THIS PART DONT WORK SO FAR##################################################
+# pigpio setup
+pi = pigpio.pi()  # connects to the pigpiod daemon
+
+MOTOR_ENABLE_A_PIN = 4
+MOTOR_ENABLE_B_PIN = 26
+
+# ensure these are outputs
+pi.set_mode(MOTOR_ENABLE_A_PIN, pigpio.OUTPUT)
+pi.set_mode(MOTOR_ENABLE_B_PIN, pigpio.OUTPUT)
+
+
+def set_speed(percent):
+    """Set PWM duty cycle as 0–255 (0%–100%)."""
+    if percent < 0: percent = 0
+    if percent > 100: percent = 100
+    duty = int(255 * (percent / 100))
+    pi.set_PWM_dutycycle(MOTOR_ENABLE_A_PIN, duty)
+    pi.set_PWM_dutycycle(MOTOR_ENABLE_B_PIN, duty)
+
+def stop_pwm():
+    pi.set_PWM_dutycycle(MOTOR_ENABLE_A_PIN, 0)
+    pi.set_PWM_dutycycle(MOTOR_ENABLE_B_PIN, 0)
+    pi.stop()
+## THIS PART DONT WORK SO FAR##################################################
+
 
 def get_distance():
     GPIO.gpio_write(h, TRIG, 0)
@@ -58,13 +88,14 @@ def get_distance():
 
 # Shared state
 current_action = None
+dist=0
 action_lock = threading.Lock()
 
 def distance_monitor():
-    global current_action
+    global current_action,dist
     while True:
         dist = get_distance()
-        print(f"Distance: {dist:.2f} in")
+        #print(f"Distance: {dist:.2f} in")
         with action_lock:
             if current_action == 'forward' and dist <= 8.0:
                 print("Obstacle detected! Stopping.")
@@ -77,21 +108,8 @@ monitor_thread = threading.Thread(target=distance_monitor, daemon=True)
 monitor_thread.start()
 
 
-def keep_moving():
-    print("Moving")
-    while True:
-        dist = get_distance()
-        if dist <= 8.0:
-            print(f"Obstacle detected! Stopping. {dist:.2f} in")
-            motor_stop()
-        else:
-            motor_right_forward()
-            motor_left_forward()
-
-        time.sleep(0.2)
-
-
 def input_control():
+    global current_action
     print("Controls: 'a' = forward, 'z' = backward, 'x' = stop, Ctrl+C to exit.")
     while True:
         char = input("Command: ").lower()
@@ -112,42 +130,56 @@ def input_control():
         time.sleep(0.1)
 
 
-def input_control_hold():
-    print("Hold 'a' to move forward, 'z' to move backward. Press 'x' to stop. Ctrl+C to exit.")
+def curses_input_control():
     global current_action
 
-    while True:
-        with action_lock:
-            if keyboard.is_pressed('a'):
-                if current_action != 'forward':
-                    print("Moving forward")
-                    motor_right_forward()
-                    motor_left_forward()
-                    current_action = 'forward'
-            elif keyboard.is_pressed('z'):
-                if current_action != 'backward':
-                    print("Moving backward")
-                    motor_right_backward()
-                    motor_left_backward()
-                    current_action = 'backward'
-            elif keyboard.is_pressed('x'):
-                if current_action is not None:
-                    print("Stopping")
-                    motor_stop()
-                    current_action = None
-            else:
-                # If no key is being pressed and motor is moving, stop it
-                if current_action is not None:
-                    print("Key released. Stopping.")
-                    motor_stop()
-                    current_action = None
+    def control_loop(stdscr):
+        global current_action
+        stdscr.nodelay(True)  # Don't block for input
+        stdscr.clear()
+        stdscr.addstr(0, 0, "Hold 'a' to move forward, 'z' to move backward, 'x' to stop. Ctrl+C to exit.")
+        stdscr.refresh()
 
-        time.sleep(0.05)  # check keys every 50ms
+        while True:
+            try:
+                key = stdscr.getch()
 
+                with action_lock:
+                    if key == ord('a'):
+                        if current_action != 'forward' and dist>8:
+                            stdscr.addstr(1, 0, "Moving forward        ")
+                            motor_right_forward()
+                            motor_left_forward()
+                            current_action = 'forward'
+                    elif key == ord('z'):
+                        if current_action != 'backward':
+                            stdscr.addstr(1, 0, "Moving backward       ")
+                            motor_right_backward()
+                            motor_left_backward()
+                            current_action = 'backward'
+                    elif key == ord('x'):
+                        stdscr.addstr(1, 0, "Stopped               ")
+                        motor_stop()
+                        current_action = None
+                    elif key == -1:
+                        # No key pressed, stop if previously moving
+                        if current_action is not None:
+                            stdscr.addstr(1, 0, "Key released. Stopping.")
+                            motor_stop()
+                            current_action = None
 
+                stdscr.refresh()
+                time.sleep(0.05)
+
+            except KeyboardInterrupt:
+                break
+
+    curses.wrapper(control_loop)
 
 try:
-    input_control_hold()
+    #input_control()
+    set_speed(20)
+    curses_input_control()
 
 except KeyboardInterrupt:
     print("\nExiting...")
@@ -163,3 +195,4 @@ finally:
     in3_line.release()
     in4_line.release()
     motor1_enableB.release()
+    stop_pwm()
