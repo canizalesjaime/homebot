@@ -12,3 +12,4 @@
 * flutter app
 * arduino opta
 * add orientation to arm and bot
+* keep messing around with the frequency and duty_us for dirver motors

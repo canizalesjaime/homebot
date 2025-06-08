@@ -3,7 +3,6 @@ import gpiod
 import time
 import threading
 import sys
-import pigpio
 import curses
 
 # Set pins
@@ -23,8 +22,8 @@ motor1_enableB = chip.get_line(26)
 # Request output lines
 for line in [in1_line, in2_line, motor1_enableA, in3_line, in4_line, motor1_enableB]:
     line.request(consumer='motor_control', type=gpiod.LINE_REQ_DIR_OUT)
-# motor1_enableA.set_value(1)
-# motor1_enableB.set_value(1)
+motor1_enableA.set_value(1)
+motor1_enableB.set_value(1)
 
 
 # Motor control functions
@@ -40,33 +39,6 @@ def motor_stop():
 h = GPIO.gpiochip_open(0)
 GPIO.gpio_claim_output(h, TRIG)
 GPIO.gpio_claim_input(h, ECHO)
-
-
-## THIS PART DONT WORK SO FAR##################################################
-# pigpio setup
-pi = pigpio.pi()  # connects to the pigpiod daemon
-
-MOTOR_ENABLE_A_PIN = 4
-MOTOR_ENABLE_B_PIN = 26
-
-# ensure these are outputs
-pi.set_mode(MOTOR_ENABLE_A_PIN, pigpio.OUTPUT)
-pi.set_mode(MOTOR_ENABLE_B_PIN, pigpio.OUTPUT)
-
-
-def set_speed(percent):
-    """Set PWM duty cycle as 0–255 (0%–100%)."""
-    if percent < 0: percent = 0
-    if percent > 100: percent = 100
-    duty = int(255 * (percent / 100))
-    pi.set_PWM_dutycycle(MOTOR_ENABLE_A_PIN, duty)
-    pi.set_PWM_dutycycle(MOTOR_ENABLE_B_PIN, duty)
-
-def stop_pwm():
-    pi.set_PWM_dutycycle(MOTOR_ENABLE_A_PIN, 0)
-    pi.set_PWM_dutycycle(MOTOR_ENABLE_B_PIN, 0)
-    pi.stop()
-## THIS PART DONT WORK SO FAR##################################################
 
 
 def get_distance():
@@ -178,7 +150,6 @@ def curses_input_control():
 
 try:
     #input_control()
-    set_speed(20)
     curses_input_control()
 
 except KeyboardInterrupt:
@@ -195,4 +166,3 @@ finally:
     in3_line.release()
     in4_line.release()
     motor1_enableB.release()
-    stop_pwm()
