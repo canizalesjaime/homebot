@@ -57,8 +57,8 @@ def set_speed(percent):
     duty_us = int((percent / 100.0) * PWM_PERIOD_US)
     print(f"Setting PWM: freq={PWM_FREQUENCY} Hz, duty={duty_us} µs")
     
-    GPIO.tx_pwm(h, 4, PWM_FREQUENCY, 60)
-    GPIO.tx_pwm(h, 26, PWM_FREQUENCY, 60)
+    GPIO.tx_pwm(h, 4, PWM_FREQUENCY, 100)
+    GPIO.tx_pwm(h, 26, PWM_FREQUENCY, 100)
 
 def stop_pwm():
     GPIO.tx_pwm(h, 4, PWM_FREQUENCY, 0)
