@@ -1,15 +1,21 @@
 {
-    "name": "Ros-Setup",
+    "name": "Ros2-Setup",
     "build" : {
-        "dockerfile": "./dockerfile_foxy_ros2"
+        "dockerfile": "./humble_pi.Dockerfile"
     },
-    // "containerEnv": {
-    //     "DISPLAY": "host.docker.internal:0.0",
-    //     "LIBGL_ALWAYS_INDIRECT": "0"
-    //   },
-      
-      "runArgs":["--net=host"]//,
-
-    // "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
-    // "workspaceFolder" : "/workspace"
+    
+    "runArgs": [
+    "--privileged",
+    "--device=/dev/gpiomem",
+    "--device=/dev/mem",
+    "--device=/dev/ttyAMA0",
+    "--cap-add=SYS_RAWIO",
+    "--net=host"
+  ],
+  
+  "mounts": [
+    "source=/sys/class/gpio,target=/sys/class/gpio,type=bind,consistency=cached"
+  ],
+  "remoteUser": "root",
+  "features": {}
 }
