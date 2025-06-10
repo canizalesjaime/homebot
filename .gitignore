@@ -9,5 +9,9 @@
 *.snm
 *.toc
 
-hidden/
+
 *__pycache__
+
+*build
+*install
+*log

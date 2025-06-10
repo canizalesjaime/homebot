@@ -5,6 +5,7 @@
     },
     
     "runArgs": [
+    "--init",
     "--privileged",
     "--device=/dev/gpiomem",
     "--device=/dev/mem",

@@ -1,5 +1,5 @@
 # home_bot
-* Set everything up with ROS2 and lgpio in docker, should you make urdf file for it ? lgpio not supported by ubuntu :/ try a pi based docker container, or make container control hardware without lgpio
+* fix ros2 issue of holding key, by check out launch file with event handler. Add urdf file ?
 * Make website(react): Add bio and teaching, stream video, control bot, gui for orientation(start with ros2 rviz) add flutter app?
 * Add some ml with pytorch course(make an unsupervised grasping model?)
 * segmentation

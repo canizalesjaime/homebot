@@ -19,6 +19,7 @@ class UltrasoundNode(Node):
 
     def timer_callback(self):
         dist = self.get_distance()
+        print(dist)
         msg = Float32()
         msg.data = dist
         self.publisher_.publish(msg)
