@@ -15,7 +15,7 @@ def capture_image():
     # picam2.start_preview(Preview.NULL)
     picam2.start()
     sleep(2)
-    picam2.capture_file("test1.jpg")
+    picam2.capture_file("test_image.jpg")
 
 
 
