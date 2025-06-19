@@ -3,6 +3,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String, Float32
 import curses
+import time
 
 class TeleopNode(Node):
     def __init__(self):
@@ -11,34 +12,58 @@ class TeleopNode(Node):
         self.distance = 100.0
         self.create_subscription(Float32, 'distance', self.distance_callback, 10)
 
+        self.current_command = None
+        self.last_keypress_time = 0
+
     def distance_callback(self, msg):
         self.distance = msg.data
 
     def control_loop(self, stdscr):
         stdscr.nodelay(True)
         stdscr.addstr(0, 0, "Hold 'a' to move forward, 'z' backward, 'x' to stop. Ctrl+C to exit.")
-        current_action = None
 
-        while True:
+        rate_hz = 10
+        delay = 1.0 / rate_hz
+        key_hold_timeout = 0.5  # seconds
+
+        while rclpy.ok():
             try:
                 key = stdscr.getch()
+                now = time.time()
+
                 if key == ord('a') and self.distance > 8.0:
-                    self.cmd_pub.publish(String(data='forward'))
-                    current_action = 'forward'
+                    self.current_command = 'forward'
+                    self.last_keypress_time = now
                 elif key == ord('z'):
-                    self.cmd_pub.publish(String(data='backward'))
-                    current_action = 'backward'
-                elif key == ord('x') or key == -1:
-                    if current_action:
-                        self.cmd_pub.publish(String(data='stop'))
-                        current_action = None
-                stdscr.refresh()
+                    self.current_command = 'backward'
+                    self.last_keypress_time = now
+                elif key == ord('x'):
+                    self.current_command = 'stop'
+                    self.last_keypress_time = now
+                elif key != -1:
+                    # Unknown key — treat it as stop for safety
+                    self.current_command = 'stop'
+                    self.last_keypress_time = now
+
+                # If no key pressed for too long, stop
+                if now - self.last_keypress_time > key_hold_timeout:
+                    if self.current_command != 'stop':
+                        self.current_command = 'stop'
+
+                # Publish command
+                if self.current_command:
+                    self.cmd_pub.publish(String(data=self.current_command))
+
+                time.sleep(delay)
+
             except KeyboardInterrupt:
                 break
 
 def main():
     rclpy.init()
     node = TeleopNode()
-    curses.wrapper(node.control_loop)
-    node.destroy_node()
-    rclpy.shutdown()
+    try:
+        curses.wrapper(node.control_loop)
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
