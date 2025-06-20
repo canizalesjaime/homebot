@@ -9,10 +9,13 @@
 * add orientation to arm and bot
 * tmux and neovim for better performance outside vscode
 * solve power bank issue for pi, maybe switch 4 to 5 ?
+* build better base for robot
 
 
 ## steps to start
 1. cd /workspaces/robotics/ros2_ws
 2. colcon build
 3. source install/setup.bash
-4. ros2 run robot_control \<executable_name\>  
+4. ros2 run robot_control \<executable_name\>
+5. ros2 launch robot_control \<executable_name\>
+  

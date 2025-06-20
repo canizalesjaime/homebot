@@ -13,4 +13,4 @@ RUN apt install -y gpiod libgpiod-dev python3-libgpiod
 # echo "source ~/ros2_ws/install/setup.bash" >> ~/.bashrc
 
 RUN echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
-RUN echo "source /workspaces/robotics/home_bot/ros2_ws/install/setup.bash" >> ~/.bashrc
+RUN echo "source /workspaces/robotics/homebot_ros2_ws/install/setup.bash" >> ~/.bashrc
