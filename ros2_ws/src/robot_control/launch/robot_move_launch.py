@@ -7,13 +7,14 @@ def generate_launch_description():
         Node(
             package='robot_control',
             executable='ultrasound',
-            name='u'
+            name='u',
+            output='screen',
         ),
-        Node(
-            package='robot_control',
-            executable='teleop',
-            name='t'
-        ),
+        # Node(
+        #     package='robot_control',
+        #     executable='teleop',
+        #     name='t'
+        # ),
         Node(
             package='robot_control',
             executable='motor',

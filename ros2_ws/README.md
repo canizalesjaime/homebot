@@ -1,6 +1,5 @@
 # home_bot
-* fix ros2 issue of holding key, by fixing launch file with event handler. Add urdf file ? add the new motor motion stop to the ros packages
-* keep messing around with the frequency and duty_us for turning, find best values for l298n
+* keep messing around with the frequency and duty_us for turning, find best values for l298n, then update motor control node
 * Make website(react): Add bio and teaching, stream video, control bot, gui for orientation(start with ros2 rviz) add flutter app?
 * Add some ml with pytorch course(make an unsupervised grasping model?) and simple vision like yolo
 * segmentation, stereo camera or ultrasound slam for 3d stuff
@@ -9,4 +8,11 @@
 * raspberry pi touch screen for quick access 
 * add orientation to arm and bot
 * tmux and neovim for better performance outside vscode
-* solve power bank issue for pi, maybe swithc 4 to 5 ?
+* solve power bank issue for pi, maybe switch 4 to 5 ?
+
+
+## steps to start
+1. cd /workspaces/robotics/ros2_ws
+2. colcon build
+3. source install/setup.bash
+4. ros2 run robot_control \<executable_name\>  

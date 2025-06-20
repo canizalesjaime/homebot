@@ -14,9 +14,3 @@ RUN apt install -y gpiod libgpiod-dev python3-libgpiod
 
 RUN echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
 RUN echo "source /workspaces/robotics/home_bot/ros2_ws/install/setup.bash" >> ~/.bashrc
-
-## steps to start
-# 1. cd /workspaces/robotics/home_bot/ros2_ws
-# 2. colcon build
-# 3. source install/setup.bash
-# 4. ros2 run robot_control <executable_name> #in setup.py for executable name 

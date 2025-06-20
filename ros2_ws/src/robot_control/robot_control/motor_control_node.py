@@ -25,19 +25,12 @@ class MotorControlNode(Node):
         GPIO.gpio_claim_output(self.h, 4)
         GPIO.gpio_claim_output(self.h, 26)
         self.frequency =1000
-        self.set_speed(100)
+        self.set_speed(75)
 
     def cmd_callback(self, msg):
         cmd = msg.data
         print(cmd)
-        # key=input("Enter a for forward, z for backwards, and any other key to stop")
-        # if key == 'a' and cmd > 8:
-        #     self.set_motor(0, 1, 0, 1)
-        # elif key == 'z':
-        #     self.set_motor(1, 0, 1, 0)
-        # else:
-        #     self.set_motor(0, 0, 0, 0)
-        
+
         if cmd == 'forward':
             self.set_motor(0, 1, 0, 1)
         elif cmd == 'backward':
