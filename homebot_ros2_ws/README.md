@@ -6,7 +6,7 @@
 * build arm with 3d print-connect infared sensor to follow motion, use other pi
 * ros open source
 * raspberry pi touch screen for quick access 
-* add orientation and camera in ros2 to docker for arm and bot
+* add camera in ros2 to docker bot(still debugging)
 * tmux and neovim for better performance outside vscode
 * solve power bank issue for pi, maybe switch 4 to 5 ?
 * build better base for robot
