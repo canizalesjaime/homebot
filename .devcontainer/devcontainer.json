@@ -1,22 +1,24 @@
 {
-    "name": "Ros2-Setup",
-    "build" : {
-        "dockerfile": "./humble_pi.Dockerfile"
-    },
-    
-    "runArgs": [
+  "name": "Ros2-Setup",
+  "build": {
+    "dockerfile": "./humble_pi.Dockerfile"
+  },
+  "runArgs": [
     "--init",
     "--privileged",
+    "--net=host",
     "--device=/dev/gpiomem",
     "--device=/dev/mem",
     "--device=/dev/ttyAMA0",
-    "--cap-add=SYS_RAWIO",
-    "--net=host"
+    "--cap-add=SYS_RAWIO"
   ],
-  
   "mounts": [
-    "source=/sys/class/gpio,target=/sys/class/gpio,type=bind,consistency=cached"
+    "source=/sys/class/gpio,target=/sys/class/gpio,type=bind,consistency=cached",
+    "source=/dev,target=/dev,type=bind",
+    "source=/run,target=/run,type=bind"
   ],
   "remoteUser": "root",
-  "features": {}
+  "containerEnv": {
+    "LIBCAMERA_LOG_LEVELS": "3"
+  }
 }

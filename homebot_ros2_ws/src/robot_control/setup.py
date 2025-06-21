@@ -25,7 +25,9 @@ setup(
         'console_scripts': [
             'teleop = robot_control.teleop_node:main',
             'motor = robot_control.motor_control_node:main',
-            'ultrasound = robot_control.ultra_sound_node:main',
+            'ultrasonic = robot_control.ultrasonic_node:main',
+            'mpu6050 = robot_control.mpu6050_node:main',
+            'picam = robot_control.picam_node:main',
         ],
     },
 )

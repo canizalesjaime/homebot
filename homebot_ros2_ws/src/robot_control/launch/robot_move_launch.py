@@ -6,7 +6,7 @@ def generate_launch_description():
     return LaunchDescription([
         Node(
             package='robot_control',
-            executable='ultrasound',
+            executable='ultrasonic',
             name='u',
             output='screen',
         ),

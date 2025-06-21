@@ -19,4 +19,5 @@
 3. source install/setup.bash
 4. ros2 run robot_control \<executable_name\>
 5. ros2 launch robot_control \<executable_name\>
+6. ros2 service call /capture_image std_srvs/srv/Trigger
   

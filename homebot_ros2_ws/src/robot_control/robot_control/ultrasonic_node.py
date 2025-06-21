@@ -1,4 +1,3 @@
-# robot_control/ultrasound_node.py
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float32
@@ -8,9 +7,9 @@ import time
 TRIG = 5
 ECHO = 6
 
-class UltrasoundNode(Node):
+class UltrasonicNode(Node):
     def __init__(self):
-        super().__init__('ultrasound_node')
+        super().__init__('ultrasonic_node')
         self.publisher_ = self.create_publisher(Float32, 'distance', 10)
         self.timer = self.create_timer(0.2, self.timer_callback)
         self.h = GPIO.gpiochip_open(0)
@@ -43,7 +42,7 @@ class UltrasoundNode(Node):
 
 def main():
     rclpy.init()
-    node = UltrasoundNode()
+    node = UltrasonicNode()
     rclpy.spin(node)
     GPIO.gpiochip_close(node.h)
     node.destroy_node()
