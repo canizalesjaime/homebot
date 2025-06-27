@@ -9,8 +9,10 @@
 * add camera in ros2 to docker bot(still debugging) check the c++ camera packages
 * tmux and neovim for better performance outside vscode
 * solve power bank issue for pi, maybe switch 4 to 5 ?
-* build better base for robot
+* build better base for robot with 3d printer
 * make urdf file
+* make a drone
+* touch keyboard app for kubuntu
 
 
 ## steps to start
