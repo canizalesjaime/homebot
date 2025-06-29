@@ -13,6 +13,8 @@
 * make urdf file
 * make a drone
 * touch keyboard app for kubuntu
+* run the servo motor with usb-c adapter
+* add arm image and give credit to stl, same with big bot
 
 
 ## steps to start
