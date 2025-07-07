@@ -11,10 +11,9 @@
 * solve power bank issue for pi, maybe switch 4 to 5 ?
 * build better base for robot with 3d printer
 * make urdf file
-* make a drone
+* make a 3d printed drone
 * touch keyboard app for kubuntu
-* run the servo motor with usb-c adapter
-* add arm image and give credit to stl, same with big bot
+* design your own arm 
 
 
 ## steps to start
