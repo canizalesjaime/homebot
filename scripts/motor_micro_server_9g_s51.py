@@ -39,6 +39,11 @@ try:
         sleep(1)
 
 except KeyboardInterrupt:
+    pi.set_servo_pulsewidth(14, 0)
+    pi.set_servo_pulsewidth(18, 0)
+    pi.set_servo_pulsewidth(25, 0)
+    pi.set_servo_pulsewidth(12, 0)
+
     print("Stopped")
 ###############################################################################
 
