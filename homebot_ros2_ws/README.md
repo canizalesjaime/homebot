@@ -8,13 +8,13 @@
 * raspberry pi touch screen for quick access 
 * add camera in ros2 to docker bot(still debugging) check the c++ camera packages
 * tmux and neovim for better performance outside vscode
-* solve power bank issue for pi, maybe switch 4 to 5 ?
+* solve power bank issue for pi 5
 * build better base for robot with 3d printer
 * make urdf file
 * make a 3d printed drone
 * touch keyboard app for kubuntu
 * design your own arm 
-
+* fix tennis navigation
 
 ## steps to start
 1. cd /workspaces/robotics/ros2_ws
