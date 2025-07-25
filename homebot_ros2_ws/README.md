@@ -16,6 +16,7 @@
 * design your own arm 
 * fix tennis navigation
 * try networking between computer, arm, and mini bot use ros_ip. Look into networking and firewalls
+* ultrasonic spinner
 
 
 ## steps to start
