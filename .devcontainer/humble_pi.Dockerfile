@@ -1,5 +1,12 @@
 FROM ros:jazzy
 
+RUN apt-get update && apt-get install -y \
+    ros-jazzy-rviz2 \
+    ros-jazzy-joint-state-publisher-gui \
+    ros-jazzy-xacro \
+    x11-apps \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN apt update && apt upgrade -y
 RUN apt install -y \
  python3-lgpio \

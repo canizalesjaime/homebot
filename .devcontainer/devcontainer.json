@@ -10,7 +10,10 @@
     "--device=/dev/gpiomem",
     "--device=/dev/mem",
     "--device=/dev/ttyAMA0",
-    "--cap-add=SYS_RAWIO"
+    "--cap-add=SYS_RAWIO",
+    "--env=DISPLAY",
+    "--env=QT_X11_NO_MITSHM=1",
+    "--volume=/tmp/.X11-unix:/tmp/.X11-unix:rw"
   ],
   "mounts": [
     "source=/sys/class/gpio,target=/sys/class/gpio,type=bind,consistency=cached",
