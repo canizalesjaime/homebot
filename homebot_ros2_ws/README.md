@@ -15,6 +15,8 @@
 * touch keyboard app for kubuntu
 * design your own arm 
 * fix tennis navigation
+* try networking between computer, arm, and mini bot use ros_ip. Look into networking and firewalls
+
 
 ## steps to start
 1. cd /workspaces/robotics/ros2_ws
