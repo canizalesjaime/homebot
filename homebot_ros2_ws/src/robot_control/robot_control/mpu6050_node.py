@@ -23,6 +23,18 @@ class Mpu6050Node(Node):
 
         self.get_logger().info("MPU6050 node started.")
 
+
+    def get_roll_pitch(self, accel):
+        ax = accel['x']
+        ay = accel['y']
+        az = accel['z']
+
+        # Convert to roll and pitch (in degrees)
+        roll  = math.degrees(math.atan2(ay, az))
+        pitch = math.degrees(math.atan2(-ax, math.sqrt(ay*ay + az*az)))
+
+        return roll, pitch
+    
     def publish_sensor_data(self):
         accel = self.sensor.get_accel_data()
         gyro = self.sensor.get_gyro_data()
@@ -31,6 +43,8 @@ class Mpu6050Node(Node):
         print("Accelerometer data:", accel)
         print("Gyroscope data:", gyro)
         print("Temp:", temp)
+        roll, pitch = self.get_roll_pitch(accel)
+        print(f"Roll: {roll:.2f}°, Pitch: {pitch:.2f}°")
 
         # Populate IMU message
         imu_msg = Imu()
@@ -56,6 +70,8 @@ class Mpu6050Node(Node):
         temp_msg.header = imu_msg.header
         temp_msg.temperature = temp
         self.temp_pub.publish(temp_msg)
+
+
 
 def main(args=None):
     rclpy.init(args=args)
