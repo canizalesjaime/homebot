@@ -1,5 +1,5 @@
 # home_bot
-* keep messing around with the frequency and duty_us for turning, find best values for l298n, then update motor control node, or add two more motors
+* find a good 5v motor driver for homebot, or use lithium battery for pi
 * Make website(react): Add bio and teaching, stream video, control bot, gui for orientation(start with ros2 rviz) add flutter app?
 * Add some ml with pytorch course(make an unsupervised grasping model?) and simple vision like yolo
 * segmentation, stereo camera or ultrasound slam for 3d stuff
@@ -7,15 +7,11 @@
 * ros open source
 * add camera in ros2 to docker bot(still debugging) check the c++ camera packages
 * tmux and neovim for better performance outside vscode
-* solve power bank issue for pi 5
-* build better base for robot with 3d printer
 * make urdf file for homebot and arm, use dht table for arm frames
-* make a 3d printed drone
 * touch keyboard app for kubuntu
-* design your own arm 
 * fix tennis navigation
 * try networking between computer, arm, and mini bot use ros_ip. Look into networking and firewalls
-* autocad or freecad for designing
+* autocad or freecad for designing: drone, arm, homebot base
 
 
 ## steps to start

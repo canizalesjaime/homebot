@@ -17,25 +17,36 @@ in2_line = chip.get_line(27)
 in3_line = chip.get_line(23)
 in4_line = chip.get_line(24)
 
+
+in1_line2 = chip.get_line(16)
+in2_line2 = chip.get_line(13)
+in3_line2 = chip.get_line(22)
+in4_line2 = chip.get_line(12)
+
+
 # Request output lines
-for line in [in1_line, in2_line, in3_line, in4_line]:
+for line in [in1_line, in2_line, in3_line, in4_line, in1_line2, in2_line2, in3_line2, in4_line2]:
     line.request(consumer='motor_control', type=gpiod.LINE_REQ_DIR_OUT)
 
 # Motor control functions
-def motor_right_backward(): in1_line.set_value(1); in2_line.set_value(0)
-def motor_left_backward(): in3_line.set_value(1); in4_line.set_value(0)
-def motor_right_forward(): in1_line.set_value(0); in2_line.set_value(1)
-def motor_left_forward(): in3_line.set_value(0); in4_line.set_value(1)
+def motor_right_backward(): in1_line.set_value(1); in2_line.set_value(0); in1_line2.set_value(0); in2_line2.set_value(1)
+def motor_left_backward(): in3_line.set_value(1); in4_line.set_value(0); in3_line2.set_value(0); in4_line2.set_value(1)
+def motor_right_forward(): in1_line.set_value(0); in2_line.set_value(1); in1_line2.set_value(1); in2_line2.set_value(0)
+def motor_left_forward(): in3_line.set_value(0); in4_line.set_value(1); in3_line2.set_value(1); in4_line2.set_value(0)
 def motor_stop():
     in1_line.set_value(0); in2_line.set_value(0)
     in3_line.set_value(0); in4_line.set_value(0)
+    in1_line2.set_value(0); in2_line2.set_value(0)
+    in3_line2.set_value(0); in4_line2.set_value(0)
 
 def turn_left():
-    motor_right_forward()
     in3_line.set_value(0); in4_line.set_value(0)  # Stop left motor
+    in3_line2.set_value(0); in4_line2.set_value(0)
+    motor_right_forward()
 
 def turn_right():
     in1_line.set_value(0); in2_line.set_value(0)  # Stop right motor
+    in1_line2.set_value(0); in2_line2.set_value(0)
     motor_left_forward()
 
 def rotate_left():
@@ -56,6 +67,9 @@ PWM_PERIOD_US = int(1_000_000 / PWM_FREQUENCY)  # = 1000 µs for 1 kHz
 
 GPIO.gpio_claim_output(h, 4)
 GPIO.gpio_claim_output(h, 26)
+GPIO.gpio_claim_output(h, 14)
+GPIO.gpio_claim_output(h, 25)
+
 
 def set_speed(percent):
     percent = max(0, min(percent, 100))
@@ -63,10 +77,14 @@ def set_speed(percent):
     
     GPIO.tx_pwm(h, 4, PWM_FREQUENCY, percent)
     GPIO.tx_pwm(h, 26, PWM_FREQUENCY, percent)
+    GPIO.tx_pwm(h, 14, PWM_FREQUENCY, percent)
+    GPIO.tx_pwm(h, 25, PWM_FREQUENCY, percent)
 
 def stop_pwm():
     GPIO.tx_pwm(h, 4, PWM_FREQUENCY, 0)
     GPIO.tx_pwm(h, 26, PWM_FREQUENCY, 0)
+    GPIO.tx_pwm(h, 14, PWM_FREQUENCY, 0)
+    GPIO.tx_pwm(h, 25, PWM_FREQUENCY, 0)
 
 def get_distance():
     GPIO.gpio_write(h, TRIG, 0)
@@ -180,4 +198,8 @@ finally:
     in2_line.release()
     in3_line.release()
     in4_line.release()
+    in1_line2.release()
+    in2_line2.release()
+    in3_line2.release()
+    in4_line2.release()
     stop_pwm()

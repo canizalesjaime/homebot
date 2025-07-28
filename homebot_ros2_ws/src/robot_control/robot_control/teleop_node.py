@@ -37,6 +37,12 @@ class TeleopNode(Node):
                 elif key == ord('z'):
                     self.current_command = 'backward'
                     self.last_keypress_time = now
+                elif key == ord('l') and self.distance > 8.0:
+                    self.current_command = 'rotate_left'
+                    self.last_keypress_time = now
+                elif key == ord('r') and self.distance > 8.0:
+                    self.current_command = 'rotate_right'
+                    self.last_keypress_time = now
                 elif key == ord('x'):
                     self.current_command = 'stop'
                     self.last_keypress_time = now
