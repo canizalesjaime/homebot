@@ -1,4 +1,4 @@
-FROM jaimec21:latest
+FROM jaimec21/jazzy_pi:latest
 # FROM ros:jazzy
 
 # RUN apt-get update && apt-get install -y \
