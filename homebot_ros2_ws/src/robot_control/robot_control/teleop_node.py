@@ -20,7 +20,7 @@ class TeleopNode(Node):
 
     def control_loop(self, stdscr):
         stdscr.nodelay(True)
-        stdscr.addstr(0, 0, "Hold 'a' to move forward, 'z' backward, 'x' to stop. Ctrl+C to exit.")
+        stdscr.addstr(0, 0, "Hold 'a' to move forward, 'z' backward, 'l' rotate left, 'r' rotate right, 'x' to stop. Ctrl+C to exit.")
 
         rate_hz = 10
         delay = 1.0 / rate_hz

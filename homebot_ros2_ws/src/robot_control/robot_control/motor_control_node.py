@@ -30,7 +30,7 @@ class MotorControlNode(Node):
             GPIO.gpio_claim_output(self.h, pin) 
 
         self.frequency =1000
-        self.set_speed(75)
+        self.set_speed(100)
 
 
     ###########################################################################
@@ -43,9 +43,9 @@ class MotorControlNode(Node):
         elif cmd == 'backward':
             self.set_motor([1, 0, 1, 0, 0, 1, 0, 1])
         elif cmd == 'rotate_left':
-            self.set_motor([1, 0, 0, 0, 0, 0, 0, 1])
+            self.set_motor([1, 0, 0, 1, 1, 0, 0, 1])
         elif cmd == 'rotate_right':
-            self.set_motor([0, 0, 1, 0, 1, 0, 0, 0])
+            self.set_motor([0, 1, 1, 0, 1, 0, 0, 1])
         elif cmd == 'stop':
             self.set_motor([0, 0, 0, 0, 0, 0, 0, 0])
         else:
