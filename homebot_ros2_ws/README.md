@@ -1,5 +1,6 @@
 # to do
-* find a good 5v motor driver for homebot, or use lithium battery for pi, look into printing a pcb for your sitch. fix left rotation in ros(works in script). Upload vid.
+* find a good 5v motor driver for homebot, or use lithium battery for pi, look into printing a pcb for your sitch. 
+* fix left rotation in ros(works in script), its confusing cause front and back motor inputs seem inverted. Upload vid.
 * Make website(react): Add bio and teaching, stream video, control bot, gui for orientation(start with ros2 rviz) add flutter app?
 * Add some ml with pytorch course(make an unsupervised grasping model?) and simple vision like yolo
 * segmentation, stereo camera or ultrasound slam for 3d stuff

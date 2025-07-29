@@ -43,7 +43,7 @@ class MotorControlNode(Node):
         elif cmd == 'backward':
             self.set_motor([1, 0, 1, 0, 0, 1, 0, 1])
         elif cmd == 'rotate_left':
-            self.set_motor([1, 0, 0, 1, 1, 0, 0, 1])
+            self.set_motor([1, 0, 0, 1, 0, 1, 1, 0])
         elif cmd == 'rotate_right':
             self.set_motor([0, 1, 1, 0, 1, 0, 0, 1])
         elif cmd == 'stop':
@@ -63,6 +63,7 @@ class MotorControlNode(Node):
     ###########################################################################
     def release_lines(self):
         for name, line in self.drivers_input_map.items():
+            line.set_value(0)
             line.release()
         
         for name, pin in self.drivers_enable_pin_map.items():
