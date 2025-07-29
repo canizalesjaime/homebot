@@ -82,7 +82,9 @@ class MotorControlNode(Node):
 def main():
     rclpy.init()
     node = MotorControlNode()
-    rclpy.spin(node)
-    node.release_lines()
-    node.destroy_node()
-    rclpy.shutdown()
+    try:
+        rclpy.spin(node)
+    finally:
+        node.release_lines()
+        node.destroy_node()
+        rclpy.shutdown()
