@@ -13,7 +13,6 @@
 * try networking between computer, arm, and mini bot use ros_ip. Look into networking and firewalls. add arm to ros2 setup to check comm(understand rotations and make wave)
 * autocad or freecad for designing: drone, arm, homebot base
 * separate git for robot? (Upload vid.)
-* ultrasound node is not updated in teleop node cause of while loop 
 
 
 ## steps to start

@@ -27,7 +27,6 @@ class TeleopNode(Node):
 
 
         while rclpy.ok():
-            print(self.distance)
             try:
                 key = stdscr.getch()
                 now = time.time()
