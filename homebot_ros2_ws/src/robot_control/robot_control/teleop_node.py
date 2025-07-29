@@ -61,7 +61,8 @@ class TeleopNode(Node):
                 if self.current_command:
                     self.cmd_pub.publish(String(data=self.current_command))
 
-                time.sleep(delay)
+                #time.sleep(delay)
+                rclpy.spin_once(self, timeout_sec=delay)
 
             except KeyboardInterrupt:
                 break
