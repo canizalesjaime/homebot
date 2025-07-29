@@ -30,7 +30,7 @@ class MotorControlNode(Node):
             GPIO.gpio_claim_output(self.h, pin) 
 
         self.frequency =1000
-        self.set_speed(100)
+        self.set_speed(75)
 
 
     ###########################################################################

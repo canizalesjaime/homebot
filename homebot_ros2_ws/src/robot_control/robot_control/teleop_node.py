@@ -1,4 +1,3 @@
-# robot_control/teleop_node.py
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String, Float32
@@ -26,7 +25,9 @@ class TeleopNode(Node):
         delay = 1.0 / rate_hz
         key_hold_timeout = 0.5  # seconds
 
+
         while rclpy.ok():
+            print(self.distance)
             try:
                 key = stdscr.getch()
                 now = time.time()
