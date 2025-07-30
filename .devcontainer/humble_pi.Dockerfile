@@ -28,3 +28,4 @@ FROM jaimec21/jazzy_pi:latest
 # RUN echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
 # RUN echo "source /workspaces/robotics/homebot_ros2_ws/install/setup.bash" >> ~/.bashrc
 
+##pip3 install pigpio --break-system-packages

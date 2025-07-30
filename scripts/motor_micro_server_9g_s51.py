@@ -1,5 +1,6 @@
 #from gpiozero import AngularServo
 import gpiod
+import pigpio
 from time import sleep 
 
 ## USING GPIZERO ##############################################################
