@@ -36,7 +36,7 @@ def degrees_to_pulse(deg):
             
 
 try:
-    pi.set_servo_pulsewidth(motor_map["shoulder_gpio"], degrees_to_pulse(110))
+    pi.set_servo_pulsewidth(motor_map["shoulder_gpio"], degrees_to_pulse(100))
     sleep(1)
     while True:
         pi.set_servo_pulsewidth(motor_map["arm_gpio"], degrees_to_pulse(0))
