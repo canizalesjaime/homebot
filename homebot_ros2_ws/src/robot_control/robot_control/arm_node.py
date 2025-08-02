@@ -1,3 +1,6 @@
+#ros2 topic pub /servo_angles std_msgs/Int32MultiArray "data: [90, 90, 90, 90]"
+#pip3 install pigpio --break-system-packages
+
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray

@@ -28,6 +28,7 @@ setup(
             'ultrasonic = robot_control.ultrasonic_node:main',
             'mpu6050 = robot_control.mpu6050_node:main',
             'picam = robot_control.picam_node:main',
+            'arm = robot_control.arm_node:main',
         ],
     },
 )

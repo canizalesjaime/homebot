@@ -10,9 +10,9 @@
 * make urdf file for homebot and arm, use dht table for arm frames
 * touch keyboard app for kubuntu
 * fix tennis navigation
-* try networking between computer, arm, and mini bot use ros_ip. Look into networking and firewalls. add arm to ros2 setup to check comm(understand rotations and make wave)
+* try networking between computer, arm, and mini bot use ros_ip. Look into networking and firewalls. add arm to ros2 setup to check comm(understand rotations and pick up hacky sack ball)
 * autocad or freecad for designing: drone, arm, homebot base
-* separate git for robot? (Upload vid.)
+* separate git for robot? (Upload vid.) arm pic, servo specs
 
 
 ## steps to start
