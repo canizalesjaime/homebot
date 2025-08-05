@@ -19,7 +19,7 @@ class TeleopNode(Node):
 
     def control_loop(self, stdscr):
         stdscr.nodelay(True)
-        stdscr.addstr(0, 0, "Hold 'a' to move forward, 'z' backward, 'l' rotate left, 'r' rotate right, 'x' to stop. Ctrl+C to exit.")
+        stdscr.addstr(0, 0, "Hold 'a' to move forward, 'z' backward, 'l' rotate left, 'r' rotate right, 'x' to stop. 'u' to increase speed and 'd' to decrease speed")
 
         rate_hz = 10
         delay = 1.0 / rate_hz
@@ -45,6 +45,12 @@ class TeleopNode(Node):
                     self.last_keypress_time = now
                 elif key == ord('x'):
                     self.current_command = 'stop'
+                    self.last_keypress_time = now
+                elif key == ord('u'):
+                    self.current_command = 'increase'
+                    self.last_keypress_time = now
+                elif key == ord('d'):
+                    self.current_command = 'decrease'
                     self.last_keypress_time = now
                 elif key != -1:
                     # Unknown key — treat it as stop for safety

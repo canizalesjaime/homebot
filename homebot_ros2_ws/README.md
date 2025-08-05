@@ -1,4 +1,4 @@
-# to do
+# To Do
 * find a good 5v motor driver for homebot, or use lithium battery for pi, look into printing a pcb for your sitch. 
 * Make website(react): Add bio and teaching, stream video, control bot, gui for orientation(start with ros2 rviz) add flutter app?
 * Add some ml with pytorch course(make an unsupervised grasping model?) and simple vision like yolo
@@ -13,6 +13,7 @@
 * try networking between computer, arm, and mini bot use ros_ip. Look into networking and firewalls. add arm to ros2 setup to check comm(understand rotations and pick up hacky sack ball)
 * autocad or freecad for designing: drone, arm, homebot base
 * separate git for robot? (Upload vid.) arm pic, servo specs
+* test update speed
 
 
 ## steps to start

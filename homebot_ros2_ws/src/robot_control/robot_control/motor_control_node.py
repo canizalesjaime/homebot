@@ -30,13 +30,14 @@ class MotorControlNode(Node):
             GPIO.gpio_claim_output(self.h, pin) 
 
         self.frequency =1000
-        self.set_speed(75)
+        self.curr_speed=75
+        self.set_speed(self.curr_speed)
 
 
     ###########################################################################
     def cmd_callback(self, msg):
         cmd = msg.data
-        print(cmd)
+        print(cmd, "speed: ", self.curr_speed)
 
         if cmd == 'forward':
             self.set_motor([0, 1, 0, 1, 1, 0, 1, 0])
@@ -48,6 +49,12 @@ class MotorControlNode(Node):
             self.set_motor([0, 1, 1, 0, 1, 0, 0, 1])
         elif cmd == 'stop':
             self.set_motor([0, 0, 0, 0, 0, 0, 0, 0])
+        elif cmd == 'increase':
+            self.curr_speed=self.curr_speed+5
+            self.set_speed(self.curr_speed)
+        elif cmd == 'decrease':
+            self.curr_speed=self.curr_speed-5
+            self.set_speed(self.curr_speed)
         else:
             self.get_logger().warn(f'Unknown command: {cmd}')
 
