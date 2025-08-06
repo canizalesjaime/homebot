@@ -11,8 +11,8 @@
 * fix tennis navigation
 * try networking between computer, arm, and mini bot use ros_ip. Look into networking and firewalls. add arm to ros2 setup to check comm(understand rotations and pick up hacky sack ball)
 * autocad or freecad for designing: drone, arm, homebot base, pcb board
-* separate git for robot? (Upload vid.) arm pic, servo specs
-* test update speed, motor driver tb6612
+* separate git for robot? (Upload vid.) arm pic, servo specs 
+* convert FROM l298n motor driver to tb6612 motor driver
 
 
 ## steps to start

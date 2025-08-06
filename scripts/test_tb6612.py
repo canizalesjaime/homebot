@@ -5,8 +5,12 @@ import lgpio as GPIO
 chip = gpiod.Chip('/dev/gpiochip0')
 # gpios used in drivers_map
 drivers_input_map ={"driverA_in1": chip.get_line(5), "driverA_in2": chip.get_line(6),
-                    "driverB_in1": chip.get_line(22),"driverB_in2": chip.get_line(23), "stby": chip.get_line(24)}
+                    "driverB_in1": chip.get_line(22),"driverB_in2": chip.get_line(23) }
 drivers_enable_pin_map ={"driverA_enA":12,"driverB_enB":13}
+
+stby = chip.get_line(24)
+stby.request(consumer='motor_control', type=gpiod.LINE_REQ_DIR_OUT)
+stby.set_value(1)
 
 for name, line in drivers_input_map.items():
     line.request(consumer='motor_control', type=gpiod.LINE_REQ_DIR_OUT)
@@ -54,6 +58,7 @@ def set_motor(motor_inputs):
 
 ###########################################################################
 def release_lines():
+    global stby
     for name, line in drivers_input_map.items():
         line.set_value(0)
         line.release()
@@ -61,6 +66,9 @@ def release_lines():
     for name, pin in drivers_enable_pin_map.items():
         GPIO.tx_pwm(h, pin, frequency, 0)
     GPIO.gpiochip_close(h)
+
+    stby.set_value(0)
+    stby.release()
 
 
 ###############################################################################
@@ -74,8 +82,11 @@ def set_speed(percent):
 ###############################################################################
 def main():
     try:
-        move("forward")
         set_speed(curr_speed)
+        while True:
+            cmd=input("enter one of the following - forward, backward, increase, decrease, rotate_left, rotate_right: ")
+            move(cmd)
+        
     finally:
         release_lines()
 
