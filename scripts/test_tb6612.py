@@ -4,9 +4,9 @@ import lgpio as GPIO
 
 chip = gpiod.Chip('/dev/gpiochip0')
 # gpios used in drivers_map
-drivers_input_map ={"driverA_in1": chip.get_line(17), "driverA_in2": chip.get_line(27),
-                    "driverB_in3": chip.get_line(23),"driverB_in4": chip.get_line(24)}
-drivers_enable_pin_map ={"driverA_enA":4,"driverB_enB":26}
+drivers_input_map ={"driverA_in1": chip.get_line(5), "driverA_in2": chip.get_line(6),
+                    "driverB_in1": chip.get_line(22),"driverB_in2": chip.get_line(23), "stby": chip.get_line(24)}
+drivers_enable_pin_map ={"driverA_enA":12,"driverB_enB":13}
 
 for name, line in drivers_input_map.items():
     line.request(consumer='motor_control', type=gpiod.LINE_REQ_DIR_OUT)
@@ -21,6 +21,7 @@ curr_speed=75
 
 ###########################################################################
 def move(cmd):
+    global curr_speed
     print(cmd, "speed: ", curr_speed)
 
     if cmd == 'forward':
@@ -77,3 +78,7 @@ def main():
         set_speed(curr_speed)
     finally:
         release_lines()
+
+
+if __name__ == "__main__":
+    main()
