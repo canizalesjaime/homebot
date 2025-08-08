@@ -23,5 +23,9 @@ RUN echo "export LC_ALL=en_US.UTF-8" >> ~/.bashrc
 RUN apt install nodejs -y
 RUN apt install npm -y
 
-# visualization with windows
-RUN echo "LIBGL_ALWAYS_INDIRECT=0" >> ~/.bashrc
+# Create a new Vite React project & install Tailwind
+RUN npm create vite@latest my-robot-dashboard -- --template react && \
+    cd my-robot-dashboard && \
+    npm install && \
+    npm install -D tailwindcss postcss autoprefixer && \
+    npx tailwindcss init -p

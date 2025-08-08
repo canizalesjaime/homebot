@@ -1,7 +1,7 @@
 {
   "name": "Ros2-Setup",
   "build": {
-    "dockerfile": "./humble_pi.Dockerfile"
+    "dockerfile": "./node_psql.Dockerfile"
   },
   "runArgs": [
     "--init",
