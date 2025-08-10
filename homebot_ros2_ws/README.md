@@ -22,3 +22,7 @@
 3. ros2 service call /capture_image std_srvs/srv/Trigger
 4. xhost +local:root and xhost -local:root for rviz2
 5. ros2 launch my_robot_description display.launch.py
+
+## useful commands
+1. docker rmi $(docker images -q)
+
