@@ -8,24 +8,29 @@ RUN apt install vim -y
 RUN apt install build-essential -y
 RUN apt install -y python3
 RUN apt install python3-pip -y
+RUN apt install git -y
 RUN apt-get update && apt-get install -y sudo curl
 RUN pip3 install beautifulsoup4 requests --break-system-packages
 
 # postgresql 
-RUN apt install -y postgresql
-RUN locale-gen en_US.UTF-8
-RUN update-locale LANG=en_US.UTF-8
-RUN echo "export LANG=en_US.UTF-8" >> ~/.bashrc
-RUN echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
-RUN echo "export LC_ALL=en_US.UTF-8" >> ~/.bashrc
+# RUN apt install -y postgresql
+# RUN locale-gen en_US.UTF-8
+# RUN update-locale LANG=en_US.UTF-8
+# RUN echo "export LANG=en_US.UTF-8" >> ~/.bashrc
+# RUN echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
+# RUN echo "export LC_ALL=en_US.UTF-8" >> ~/.bashrc
 
-# node 
-RUN apt install nodejs -y
-RUN apt install npm -y
 
-# Create a new Vite React project & install Tailwind
-RUN npm create vite@latest my-robot-dashboard -- --template react && \
-    cd my-robot-dashboard && \
-    npm install && \
-    npm install -D tailwindcss postcss autoprefixer && \
-    npx tailwindcss init -p
+# Install Node 20 LTS
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
+
+
+# ENV DEBIAN_FRONTEND=noninteractive
+
+# # Create a new Vite React project & install Tailwind
+# RUN npm create vite@latest my-robot-dashboard -- --template react && \
+#     cd my-robot-dashboard && \
+#     npm install && \
+#     npm install -D tailwindcss postcss autoprefixer && \
+#     npx tailwindcss init -p

@@ -8,16 +8,16 @@ import CameraView from "./pages/CameraView";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div>
       <Navbar />
-      <div className="p-4">
+      <main className="pt-20 max-w-7xl mx-auto px-6">
         <Routes>
           <Route path="/" element={<MotionControl />} />
           <Route path="/arm" element={<ArmControl />} />
           <Route path="/accelerometer" element={<Accelerometer />} />
           <Route path="/camera" element={<CameraView />} />
         </Routes>
-      </div>
+      </main>
     </div>
   );
 }

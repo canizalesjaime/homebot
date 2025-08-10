@@ -13,14 +13,12 @@
 * autocad or freecad for designing: drone, arm, homebot base, pcb board
 * separate git for robot? (Upload vid.) arm pic, servo specs 
 * convert FROM l298n motor driver to tb6612 motor driver
+* automate git push for ci/cd
 
 
 ## steps to start
-1. cd /workspaces/robotics/ros2_ws
-2. colcon build
-3. source install/setup.bash
-4. ros2 run robot_control \<executable_name\>
-5. ros2 launch robot_control \<executable_name\>
-6. ros2 service call /capture_image std_srvs/srv/Trigger
-7. xhost +local:root and xhost -local:root for rviz2
-8. ros2 launch my_robot_description display.launch.py
+1. ros2 run robot_control \<executable_name\>
+2. ros2 launch robot_control \<executable_name\>
+3. ros2 service call /capture_image std_srvs/srv/Trigger
+4. xhost +local:root and xhost -local:root for rviz2
+5. ros2 launch my_robot_description display.launch.py
