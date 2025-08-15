@@ -39,6 +39,7 @@ class MotorControlNode(Node):
         cmd = msg.data
         print(cmd, "speed: ", self.curr_speed)
 
+        # note front motors face towards back, which is why its inverted for front and back
         if cmd == 'forward':
             self.set_motor([0, 1, 0, 1, 1, 0, 1, 0])
         elif cmd == 'backward':
