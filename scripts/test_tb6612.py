@@ -4,11 +4,11 @@ import lgpio as GPIO
 
 chip = gpiod.Chip('/dev/gpiochip0')
 # gpios used in drivers_map
-drivers_input_map ={"driverA_in1": chip.get_line(5), "driverA_in2": chip.get_line(6),
-                    "driverB_in1": chip.get_line(22),"driverB_in2": chip.get_line(23) }
-drivers_enable_pin_map ={"driverA_enA":12,"driverB_enB":13}
+drivers_input_map ={"driverA_in1": chip.get_line(17), "driverA_in2": chip.get_line(27),
+                    "driverB_in1": chip.get_line(23),"driverB_in2": chip.get_line(24) }
+drivers_enable_pin_map ={"driverA_enA":4,"driverB_enB":26}
 
-stby = chip.get_line(24)
+stby = chip.get_line(8)
 stby.request(consumer='motor_control', type=gpiod.LINE_REQ_DIR_OUT)
 stby.set_value(1)
 
