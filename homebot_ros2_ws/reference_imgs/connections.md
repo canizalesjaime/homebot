@@ -12,8 +12,8 @@
 * SDA -> PIN 3 (GPIO 2 SDA)(I^2C)
 
 
-## L298N Motor Drvier 1
-* GND -> LIPO Battery and PIN 34 (GND)
+## TB6612 Motor Drvier 1
+* GND -> LIPO Battery and PIN 9 (GND)
 * +12V -> LIPO Battery
 * ENA -> PIN 7(GPIO 4)
 * IN1 -> PIN 11 (GPIO 17)
@@ -21,10 +21,11 @@
 * IN3 -> PIN 16 (GPIO 23)
 * IN4 -> PIN 18 (GPIO 24)
 * ENB -> PIN 37 (GPIO 26)
-* OUT1 -> LEFT MOTOR
-* OUT2 -> LEFT MOTOR
-* OUT3 -> RIGHT MOTOR
-* OUT4 -> RIGHT MOTOR
+* motorA blue -> LEFT MOTOR
+* motorB white -> RIGHT MOTOR
+* STBY -> PIN 24 (GPIO 8)
+* VCC -> PIN 17
+
 
 ## L298N Motor Drvier 2
 * GND -> LIPO Battery and PIN 20 (GND)
