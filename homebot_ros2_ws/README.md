@@ -14,6 +14,7 @@
 13. segmentation, stereo camera or ultrasound slam for 3d stuff 
 14. touch keyboard app for kubuntu
 15. ros open source
+16. build computer
 
 
 ## steps to start
