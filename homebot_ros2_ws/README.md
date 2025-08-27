@@ -2,7 +2,7 @@
 1. convert FROM l298n motor driver to tb6612 motor driver 
 2. autocad or freecad for designing: drone, arm, homebot base, pcb board 
 3. Finish website: Add bio and teaching, add flutter app?
-4. Add some ml with pytorch course(make an unsupervised grasping model?) and simple vision like yolo
+4. Add some ml with pytorch course(make an unsupervised grasping model?) and simple vision like yolo(addintional hardware?)
 5. automate git push for ci/cd, aws? separate git for robot? (Upload vid.) arm pic, servo specs
 6. add camera in ros2 to docker bot(still debugging) check the c++ camera packages
 7. make urdf file for homebot and arm, use dht table for arm frames 
