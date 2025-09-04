@@ -14,6 +14,7 @@
 13. touch keyboard app for kubuntu
 14. ros open source
 15. build computer, check out study material on nvidia
+16. add notes for electronics
 
 
 ## steps to start
