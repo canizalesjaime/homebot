@@ -15,6 +15,7 @@
 14. ros open source
 15. build computer, check out study material on nvidia
 16. add notes for electronics
+17. Poison recon
 
 
 ## steps to start
