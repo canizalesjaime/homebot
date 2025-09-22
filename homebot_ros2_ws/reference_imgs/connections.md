@@ -29,8 +29,8 @@
 * GND -> LIPO Battery and PIN 20 (GND)
 * +12V -> LIPO Battery
 * ENA -> PIN 22(GPIO 25)
-* IN1 -> PIN 36 (GPIO 16)
-* IN2 -> PIN 13 (GPIO 33)
+* IN1 -> PIN  (GPIO 10)
+* IN2 -> PIN 33 (GPIO 13)
 * IN3 -> PIN 15 (GPIO 22)
 * IN4 -> PIN 32 (GPIO 12)
 * ENB -> PIN 8 (GPIO 14)

@@ -1,5 +1,5 @@
 # To Do
-1. convert FROM l298n motor driver to tb6612 motor driver 
+1. convert FROM l298n motor driver to tb6612 motor driver **check connection continuity for motor drivers**
 2. **autocad or freecad for designing: drone, arm(bigger arm), homebot base, pcb board** 
 3. Finish website: Add bio and teaching, add flutter app?
 4. Add some ml with pytorch course(make an unsupervised grasping model?) and simple vision like yolo(addintional hardware?)
@@ -16,7 +16,6 @@
 15. build computer, check out study material on nvidia
 16. add notes for electronics
 17. Poison recon
-18. **check connection continuity for motor drivers**
 
 
 ## steps to start
