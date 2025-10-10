@@ -1,6 +1,6 @@
 # To Do
 1. convert FROM l298n motor driver to tb6612 motor driver
-2. autocad or freecad for designing: drone, arm(bigger arm), homebot base, pcb board 
+2. autocad or freecad for designing: drone, arm(bigger arm), homebot base(85 mm × 56 mm ×17 mm), pcb board 
 3. Finish website: Add bio and teaching, add flutter app?
 4. Add some ml with pytorch course(make an unsupervised grasping model?) and simple vision like yolo(addintional hardware?)
 5. automate git push for ci/cd, aws? separate git for robot? (Upload vid.) arm pic, servo specs
