@@ -3,7 +3,7 @@
 2. autocad or freecad for designing: drone, optimal homebot base and add plexiglass, pcb board 
 3. House keeping: Finish website-Add bio and teaching, add flutter app, automate git push for ci/cd, aws? separate git for robot? Upload vid, arm pic, servo specs,  add notes for electronics
 4. arm: urdf file, dht table for arm frames, add infared sensor to follow motion, and accelerometer, add to ros2 setup to check comm, understand rotations to pick up hacky sack ball, using pytorch course make an unsupervised grasping model, use jetson orin(check out study material on nvidia)
-5. try networking between computer, arm, and homebot use ros_ip. Look into networking and firewalls.    
+5. try networking between computer, arm, and homebot use ros_ip. Look into networking and firewalls and other security features.    
 6. tmux and neovim for better performance outside vscode
 7. touch keyboard app for kubuntu
 8. contribute to ros open source
