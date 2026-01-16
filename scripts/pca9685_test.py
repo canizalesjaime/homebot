@@ -27,7 +27,7 @@ def move_servo(channel):
 #move_servo(0) #wrist roll (3)
 #move_servo(1) #gripper(weird) (1)
 #move_servo(3) #wrist pitch (2)
-#move_servo(4) #didnt move
+#move_servo(4) #elbow(4)
 #move_servo(5) #shoulder (5)
 #move_servo(7)  #base (6)
 
