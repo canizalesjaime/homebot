@@ -28,20 +28,20 @@ def move(cmd):
     global curr_speed
     print(cmd, "speed: ", curr_speed)
 
-    if cmd == 'forward':
+    if cmd == 'f':
         set_motor([0, 1, 1, 0])
-    elif cmd == 'backward':
+    elif cmd == 'b':
         set_motor([1, 0, 0, 1])
-    elif cmd == 'rotate_left':
+    elif cmd == 'rl':
         set_motor([1, 0, 1, 0])
-    elif cmd == 'rotate_right':
+    elif cmd == 'rr':
         set_motor([0, 1, 0, 1])
-    elif cmd == 'stop':
+    elif cmd == 's':
         set_motor([0, 0, 0, 0])
-    elif cmd == 'increase':
+    elif cmd == 'i':
         curr_speed=curr_speed+5
         set_speed(curr_speed)
-    elif cmd == 'decrease':
+    elif cmd == 'd':
         curr_speed=curr_speed-5
         set_speed(curr_speed)
     else:
