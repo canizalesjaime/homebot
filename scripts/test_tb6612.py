@@ -20,7 +20,7 @@ for name, pin in drivers_enable_pin_map.items():
     GPIO.gpio_claim_output(h, pin) 
 
 frequency =1000
-curr_speed=75
+curr_speed=20
 
 
 ###########################################################################
@@ -29,13 +29,13 @@ def move(cmd):
     print(cmd, "speed: ", curr_speed)
 
     if cmd == 'forward':
-        set_motor([1, 0, 1, 0])
-    elif cmd == 'backward':
-        set_motor([0, 1, 0, 1])
-    elif cmd == 'rotate_left':
         set_motor([0, 1, 1, 0])
-    elif cmd == 'rotate_right':
+    elif cmd == 'backward':
         set_motor([1, 0, 0, 1])
+    elif cmd == 'rotate_left':
+        set_motor([1, 0, 1, 0])
+    elif cmd == 'rotate_right':
+        set_motor([0, 1, 0, 1])
     elif cmd == 'stop':
         set_motor([0, 0, 0, 0])
     elif cmd == 'increase':
