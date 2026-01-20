@@ -24,7 +24,7 @@ class MotorNode():
             GPIO.gpio_claim_output(self.h, pin) 
 
         self.frequency =1000
-        self.curr_speed=20
+        self.curr_speed=30
         self.set_speed(self.curr_speed)
 
 
@@ -48,8 +48,12 @@ class MotorNode():
         elif cmd == 'd':
             self.curr_speed=self.curr_speed-5
             self.set_speed(self.curr_speed)
+        elif cmd == 'l':
+            self.set_motor([0,0,1,0])
+        elif cmd == 'r':
+            self.set_motor([0,1,0,0])
         else:
-            print("error worng command")
+            print("error wrong command")
 
     # python version >= 3.7, and dictionaries are ordered by insert
     ###########################################################################
@@ -67,7 +71,7 @@ class MotorNode():
             line.release()
         
         for name, pin in self.drivers_enable_pin_map.items():
-            GPIO.tx_pwm(h, pin, self.frequency, 0)
+            GPIO.tx_pwm(self.h, pin, self.frequency, 0)
         GPIO.gpiochip_close(self.h)
 
         self.stby.set_value(0)

@@ -12,12 +12,12 @@ dist = 0
 action_lock = threading.Lock()
 motor=MotorNode()
 ultra = UltrasonicNode()
-
+stop_event=threading.Event()
 
 
 def distance_monitor():
     global current_action, dist, motor, ultra
-    while True:
+    while not stop_event.is_set():
         dist = ultra.get_distance()
         with action_lock:
             if current_action == 'forward' and dist <= 11.0:
@@ -61,14 +61,14 @@ def curses_input_control():
                         stdscr.addstr(1, 0, "Stopped               ")
                         motor.move("s")
                         current_action = None
-                    # elif key == ord('j'):
-                    #     stdscr.addstr(1, 0, "Turning left          ")
-                    #     turn_left()
-                    #     current_action = 'left'
-                    # elif key == ord('l'):
-                    #     stdscr.addstr(1, 0, "Turning right         ")
-                    #     turn_right()
-                    #     current_action = 'right'
+                    elif key == ord('j'):
+                        stdscr.addstr(1, 0, "Turning left          ")
+                        motor.move("l")
+                        current_action = 'left'
+                    elif key == ord('l'):
+                        stdscr.addstr(1, 0, "Turning right         ")
+                        motor.move("r")
+                        current_action = 'right'
                     elif key == ord('q'):
                         stdscr.addstr(1, 0, "Rotating left         ")
                         motor.move("rl")
@@ -99,6 +99,8 @@ except KeyboardInterrupt:
     print("\nExiting...")
    
 finally:
+    stop_event.set()
+    monitor_thread.join()
     motor.release_lines()
-    GPIO.gpiochip_close(ultra.h)
+    ultra.free_gpio()
 

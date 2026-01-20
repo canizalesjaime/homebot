@@ -27,6 +27,10 @@ class UltrasonicNode():
         distance_cm = duration * 17150
         return round(distance_cm / 2.54, 2)  # inches
 
+
+    def free_gpio(self):
+        GPIO.gpiochip_close(self.h)
+
 def main():
     node = UltrasonicNode()
     try:
@@ -38,6 +42,6 @@ def main():
     
 
     finally:
-        GPIO.gpiochip_close(node.h)
+        node.free_gpio()
 
 #main()
