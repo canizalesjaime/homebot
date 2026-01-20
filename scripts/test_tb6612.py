@@ -2,94 +2,96 @@ import gpiod
 import lgpio as GPIO
 
 
-chip = gpiod.Chip('/dev/gpiochip0')
-# gpios used in drivers_map
-drivers_input_map ={"driverA_in1": chip.get_line(17), "driverA_in2": chip.get_line(27),
-                    "driverB_in1": chip.get_line(23),"driverB_in2": chip.get_line(24) }
-drivers_enable_pin_map ={"driverA_enA":4,"driverB_enB":26}
+class MotorNode():
+    def __init__(self):
+        self.chip = gpiod.Chip('/dev/gpiochip0')
+        # gpios used in drivers_map
+        self.drivers_input_map ={"driverA_in1": self.chip.get_line(17), 
+                                 "driverA_in2": self.chip.get_line(27),
+                                 "driverB_in1": self.chip.get_line(23),
+                                 "driverB_in2": self.chip.get_line(24) }
+        self.drivers_enable_pin_map ={"driverA_enA":4,"driverB_enB":26}
 
-stby = chip.get_line(8)
-stby.request(consumer='motor_control', type=gpiod.LINE_REQ_DIR_OUT)
-stby.set_value(1)
+        self.stby = self.chip.get_line(8)
+        self.stby.request(consumer='motor_control', type=gpiod.LINE_REQ_DIR_OUT)
+        self.stby.set_value(1)
 
-for name, line in drivers_input_map.items():
-    line.request(consumer='motor_control', type=gpiod.LINE_REQ_DIR_OUT)
+        for name, line in self.drivers_input_map.items():
+            line.request(consumer='motor_control', type=gpiod.LINE_REQ_DIR_OUT)
 
-h = GPIO.gpiochip_open(0)
-for name, pin in drivers_enable_pin_map.items():
-    GPIO.gpio_claim_output(h, pin) 
+        self.h = GPIO.gpiochip_open(0)
+        for name, pin in self.drivers_enable_pin_map.items():
+            GPIO.gpio_claim_output(self.h, pin) 
 
-frequency =1000
-curr_speed=20
-
-
-###########################################################################
-def move(cmd):
-    global curr_speed
-    print(cmd, "speed: ", curr_speed)
-
-    if cmd == 'f':
-        set_motor([0, 1, 1, 0])
-    elif cmd == 'b':
-        set_motor([1, 0, 0, 1])
-    elif cmd == 'rl':
-        set_motor([1, 0, 1, 0])
-    elif cmd == 'rr':
-        set_motor([0, 1, 0, 1])
-    elif cmd == 's':
-        set_motor([0, 0, 0, 0])
-    elif cmd == 'i':
-        curr_speed=curr_speed+5
-        set_speed(curr_speed)
-    elif cmd == 'd':
-        curr_speed=curr_speed-5
-        set_speed(curr_speed)
-    else:
-        print("error worng command")
-
-# python version >= 3.7, and dictionaries are ordered by insert
-###########################################################################
-def set_motor(motor_inputs):
-    i = 0 
-    for name, line in drivers_input_map.items():
-        line.set_value(motor_inputs[i])
-        i=i+1
-    
-
-###########################################################################
-def release_lines():
-    global stby
-    for name, line in drivers_input_map.items():
-        line.set_value(0)
-        line.release()
-    
-    for name, pin in drivers_enable_pin_map.items():
-        GPIO.tx_pwm(h, pin, frequency, 0)
-    GPIO.gpiochip_close(h)
-
-    stby.set_value(0)
-    stby.release()
+        self.frequency =1000
+        self.curr_speed=20
+        self.set_speed(self.curr_speed)
 
 
-###############################################################################
-def set_speed(percent):
-    percent=min(max(percent,0),100)
-    
-    for name, pin in drivers_enable_pin_map.items():
-        GPIO.tx_pwm(h, pin, frequency, percent)
-         
+    ###########################################################################
+    def move(self,cmd):
+        print(cmd, "speed: ", self.curr_speed)
+
+        if cmd == 'f':
+            self.set_motor([0, 1, 1, 0])
+        elif cmd == 'b':
+            self.set_motor([1, 0, 0, 1])
+        elif cmd == 'rl':
+            self.set_motor([1, 0, 1, 0])
+        elif cmd == 'rr':
+            self.set_motor([0, 1, 0, 1])
+        elif cmd == 's':
+            self.set_motor([0, 0, 0, 0])
+        elif cmd == 'i':
+            self.curr_speed=self.curr_speed+5
+            self.set_speed(self.curr_speed)
+        elif cmd == 'd':
+            self.curr_speed=self.curr_speed-5
+            self.set_speed(self.curr_speed)
+        else:
+            print("error worng command")
+
+    # python version >= 3.7, and dictionaries are ordered by insert
+    ###########################################################################
+    def set_motor(self,motor_inputs):
+        i = 0 
+        for name, line in self.drivers_input_map.items():
+            line.set_value(motor_inputs[i])
+            i=i+1
+        
+
+    ###########################################################################
+    def release_lines(self):
+        for name, line in self.drivers_input_map.items():
+            line.set_value(0)
+            line.release()
+        
+        for name, pin in self.drivers_enable_pin_map.items():
+            GPIO.tx_pwm(h, pin, self.frequency, 0)
+        GPIO.gpiochip_close(self.h)
+
+        self.stby.set_value(0)
+        self.stby.release()
+
+
+    ###########################################################################
+    def set_speed(self,percent):
+        percent=min(max(percent,0),100)
+        
+        for name, pin in self.drivers_enable_pin_map.items():
+            GPIO.tx_pwm(self.h, pin, self.frequency, percent)
+            
 
 ###############################################################################
 def main():
     try:
-        set_speed(curr_speed)
+        motor=MotorNode()
         while True:
-            cmd=input("enter one of the following - forward, backward, increase, decrease, rotate_left, rotate_right: ")
-            move(cmd)
+            cmd=input("enter one of the following - f(forward), b(back), i(increase), d(decrease), rotate_left(rl), rotate_right(rr): ")
+            motor.move(cmd)
         
     finally:
-        release_lines()
+        motor.release_lines()
 
 
-if __name__ == "__main__":
-    main()
+#main()

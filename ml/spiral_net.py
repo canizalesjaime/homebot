@@ -94,4 +94,3 @@ plt.title("Test")
 plot_decision_boundary(spiral_net, X_test, y_test)
 plt.savefig("plot_spiral_2.png")
 
-
