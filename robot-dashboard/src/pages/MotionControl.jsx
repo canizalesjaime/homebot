@@ -14,6 +14,9 @@ export default function MotionControl() {
         <button onClick={() => sendCommand("right")} className="bg-yellow-500 text-white p-2 rounded">→</button>
         <button onClick={() => sendCommand("backward")} className="bg-red-500 text-white p-2 rounded col-span-3">↓</button>
       </div>
+      <div className="bg-blue-500 text-white p-4">
+        Tailwind is working
+      </div>
     </div>
   );
 }
