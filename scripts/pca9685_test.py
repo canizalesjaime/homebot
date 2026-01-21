@@ -49,8 +49,8 @@ def move_servo(channel):
     min_angle, max_angle = SERVO_LIMITS.get(channel, (0, 180))
     move_smooth(channel, min_angle, max_angle)
     time.sleep(0.5)
-    # move_smooth(channel, max_angle, min_angle)
-    # time.sleep(0.5)
+    move_smooth(channel, max_angle, min_angle)
+    time.sleep(0.5)
 
 # ------------------ Run ------------------
 try:
@@ -61,8 +61,14 @@ try:
     # move_servo(5)  # shoulder
     # move_servo(7)  # base
 
-    set_servo_angle(1,90)
-   
+    #for i in range(0,50,10):
+    #    set_servo_angle(1,i)
+
+    set_servo_angle(1,70)
+    time.sleep(3)
+    set_servo_angle(1,0)    
+    #set_servo_angle(1,170)
+    pca.deinit()
 
 finally:
     pca.deinit()
