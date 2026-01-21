@@ -1,8 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Optional: global base font & background */
+/* Optional: global base font & background
 body {
   @apply bg-gray-100 text-gray-900;
   margin: 0;
@@ -12,6 +8,22 @@ body {
 }
 
 /* Optional: link styling */
-a {
+/* a {
   @apply text-blue-600 hover:underline;
-}
+} */ 
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @layer base {
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+   
+    background-color: #f3f4f6; 
+    color: #111827; 
+} 
+*/
