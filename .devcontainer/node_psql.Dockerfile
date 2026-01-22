@@ -10,7 +10,8 @@ RUN apt install -y python3
 RUN apt install python3-pip -y
 RUN apt install git -y
 RUN apt-get update && apt-get install -y sudo curl
-RUN pip3 install beautifulsoup4 requests --break-system-packages
+RUN pip3 install beautifulsoup4 requests fastapi uvicorn opencv-python --break-system-packages
+
 
 # postgresql 
 # RUN apt install -y postgresql
