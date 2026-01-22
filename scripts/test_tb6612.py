@@ -1,3 +1,6 @@
+
+#PWM is used here to control motor speed. Duty cycle(speed) is the percentage of time high per cycle.
+# When high is on motor is on if high is low motor is off.
 import gpiod
 import lgpio as GPIO
 
