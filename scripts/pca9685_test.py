@@ -54,24 +54,32 @@ def move_servo(channel):
 
 # ------------------ Run ------------------
 try:
-    #move_servo(3)  
-    #move_servo(7)  # base
-
-
     # start pos (arm is straigthened out)
-    #set_servo_angle(1,70) #gripper
-    #set_servo_angle(0,0) #wrist roll
-    #set_servo_angle(4,0) #elbow
-    #set_servo_angle(5,0) #shoulder
-    set_servo_angle(3,50) #wrist pitch
-    #set_servo_angle(7,170) #base
-    
-    # grasp it- gripper
-    
-    #time.sleep(3)
-    #set_servo_angle(1,0)
-    #set_servo_angle(5,50)     
+    #USE MOVE SMOOTH INSTEAD
+    set_servo_angle(1,70) #gripper
+    time.sleep(2)
+    set_servo_angle(0,0) #wrist roll
+    time.sleep(2)
+    set_servo_angle(4,0) #elbow
+    time.sleep(2)
+    set_servo_angle(5,0) #shoulder
+    time.sleep(2)
+    set_servo_angle(3,0) #wrist pitch
+    time.sleep(2)
+    set_servo_angle(7,170) #base
+    time.sleep(2)
 
+    # grasp it- gripper
+    set_servo_angle(3,130)
+    time.sleep(2)
+    set_servo_angle(5,80)
+    time.sleep(2)     
+    set_servo_angle(4,0)
+    time.sleep(2)
+    set_servo_angle(0,30)
+    time.sleep(2)
+    set_servo_angle(1,0)
+    time.sleep(2)
     pca.deinit()
 
 finally:
