@@ -49,25 +49,29 @@ def move_servo(channel):
     min_angle, max_angle = SERVO_LIMITS.get(channel, (0, 180))
     move_smooth(channel, min_angle, max_angle)
     time.sleep(0.5)
-    move_smooth(channel, max_angle, min_angle)
-    time.sleep(0.5)
+    # move_smooth(channel, max_angle, min_angle)
+    # time.sleep(0.5)
 
 # ------------------ Run ------------------
 try:
-    # move_servo(0)  # wrist roll
-    # move_servo(1)  # gripper - BROKE
-    # move_servo(3)  # wrist pitch
-    # move_servo(4)  # elbow
-    # move_servo(5)  # shoulder
-    # move_servo(7)  # base
+    #move_servo(3)  
+    #move_servo(7)  # base
 
-    #for i in range(0,50,10):
-    #    set_servo_angle(1,i)
 
-    set_servo_angle(1,70)
-    time.sleep(3)
-    set_servo_angle(1,0)    
-    #set_servo_angle(1,170)
+    # start pos (arm is straigthened out)
+    #set_servo_angle(1,70) #gripper
+    #set_servo_angle(0,0) #wrist roll
+    #set_servo_angle(4,0) #elbow
+    #set_servo_angle(5,0) #shoulder
+    set_servo_angle(3,50) #wrist pitch
+    #set_servo_angle(7,170) #base
+    
+    # grasp it- gripper
+    
+    #time.sleep(3)
+    #set_servo_angle(1,0)
+    #set_servo_angle(5,50)     
+
     pca.deinit()
 
 finally:
