@@ -10,12 +10,11 @@ pca.frequency = 50
 
 # ------------------ Per-servo angle limits ------------------
 SERVO_LIMITS = {
-    0: (10, 170),   # wrist roll (MG90S)
-    1: (10, 170),   # gripper (MG90S)
-    3: (10, 170),   # wrist pitch (MG90S)
-    4: (20, 160),   # elbow (MG995)
-    5: (20, 160),   # shoulder (MG995)
-    7: (20, 160),   # base (MG995)
+    0: (10, 170),   # base
+    1: (10, 170),   # elbow
+    3: (10, 170),   # shoulder
+    4: (10, 170),   # gripper
+   
 }
 
 # ------------------ Servo Functions ------------------
@@ -57,23 +56,18 @@ def move_servo_full_range(channel):
 
 # ------------------ Servo Functions ------------------
 def straighten_arm():
-    for s in SERVO_LIMITS: 
-        set_servo_angle(s,10)
-        time.sleep(2)     
-    move_smooth(1,10,70) 
-    move_smooth(7,10,170) 
+    move_smooth(3,40,170)
+    move_smooth(4,0,170)
 
 # ------------------ Servo Functions ------------------
 def pick_up_static_hacky():
-    move_smooth(3,10,130)
-    move_smooth(5,10,80)
-    move_smooth(0,10,80)
-    move_smooth(1,70,10)
+    move_smooth(3,170,40)
+    move_smooth(4,170,0)
 
 # ------------------ Run ------------------
 try:
-    straighten_arm()
     pick_up_static_hacky()
+    straighten_arm()
 
 finally:
     pca.deinit()
