@@ -13,9 +13,9 @@ class MotorNode():
                                  "driverA_in2": self.chip.get_line(27),
                                  "driverB_in1": self.chip.get_line(23),
                                  "driverB_in2": self.chip.get_line(24) }
-        self.drivers_enable_pin_map ={"driverA_enA":4,"driverB_enB":26}
+        self.drivers_enable_pin_map ={"driverA_enA":12,"driverB_enB":13}
 
-        self.stby = self.chip.get_line(8)
+        self.stby = self.chip.get_line(25)
         self.stby.request(consumer='motor_control', type=gpiod.LINE_REQ_DIR_OUT)
         self.stby.set_value(1)
 

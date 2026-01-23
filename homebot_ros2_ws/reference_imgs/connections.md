@@ -12,31 +12,14 @@
 * SDA -> PIN 3 (GPIO 2 SDA)(I^2C)
 
 
-## TB6612 Motor Drvier 1
+## TB6612 Motor Driver 1
 * GND -> LIPO Battery and PIN 9 (GND)
 * +12V -> LIPO Battery
-* ENA -> PIN 7 (GPIO 4)
+* ENA -> PIN 32 (GPIO 12)
 * IN1 -> PIN 11 (GPIO 17)
 * IN2 -> PIN 13 (GPIO 27)
 * IN3 -> PIN 16 (GPIO 23)
 * IN4 -> PIN 18 (GPIO 24)
-* ENB -> PIN 37 (GPIO 26)
-* STBY -> PIN 24 (GPIO 8)
+* ENB -> PIN 33 (GPIO 13)
+* STBY -> PIN 22 (GPIO 25) 
 * VCC -> PIN 17
-
-
-## TB6612 Motor Drvier 2
-* GND -> LIPO Battery and PIN 20 (GND)
-* +12V -> LIPO Battery
-* ENA -> PIN 22(GPIO 25)
-* IN1 -> PIN  (GPIO 10)
-* IN2 -> PIN 33 (GPIO 13)
-* IN3 -> PIN 15 (GPIO 22)
-* IN4 -> PIN 32 (GPIO 12)
-* ENB -> PIN 8 (GPIO 14)
-* STBY -> PIN 26 (GPIO 7)
-* VCC -> PIN 1 
-
-###
-* motorA blue -> LEFT MOTOR
-* motorB white -> RIGHT MOTOR
