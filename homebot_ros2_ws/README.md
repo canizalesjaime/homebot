@@ -1,6 +1,6 @@
 # To Do
 1. homebot: urdf file, add yolo, fix tennis navigation, add camera in ros2 to docker, check the c++ camera packages, CSI camera support in Docker is tricky; often easier to stream the camera via host and have the ROS node access /dev/video0 inside the container. segmentation, stereo camera, lidar slam for 3d stuff  
-2. House keeping: Finish website-Add bio and teaching. Video stream, yolo install, database for objects seen with dates(web dev course), make cover to mount arm, check if i2c can be connected to pca9865, automate git push for ci/cd, aws? separate git for robot? add notes for electronics
+2. House keeping: Finish website-Add bio and teaching. Video stream, yolo install, database for objects seen with dates(web dev course), make cover to mount arm, check if i2c can be connected to pca9865 and mpu6050(prolly have to use pcb board), automate git push for ci/cd, aws? separate git for robot? add notes for electronics
 3. arm: urdf file, dht table for arm frames, add infared sensor to follow motion, and accelerometer, add to ros2 setup to check comm, communicate with camera for grasping, using pytorch course make an unsupervised grasping model, use jetson orin(check out study material on nvidia(test with olama))
 4. try networking between computer, arm, and homebot use ros_ip. Look into networking and firewalls and other security features.    
 
