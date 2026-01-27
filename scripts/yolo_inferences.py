@@ -10,7 +10,7 @@ from pathlib import Path
 # Config
 # ----------------------------
 MODEL_PATH = "yolov8n.pt"   # auto-downloads if not present
-IMAGE_PATH = "test.jpg"     # image to run inference on
+IMAGE_PATH = "test_image.jpg"     # image to run inference on
 IMG_SIZE = 480              # good balance for Pi 5
 CONF_THRESH = 0.4
 
@@ -80,6 +80,7 @@ for r in results:
 # ----------------------------
 # Show result
 # ----------------------------
-cv2.imshow("YOLOv8n Detection", annotated)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# cv2.imshow("YOLOv8n Detection", annotated)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+cv2.imwrite("yolov8n_detection.jpg", annotated)

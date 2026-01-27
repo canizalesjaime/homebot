@@ -12,6 +12,8 @@ RUN apt install git -y
 RUN apt-get update && apt-get install -y sudo curl
 RUN pip3 install beautifulsoup4 requests fastapi uvicorn ultralytics opencv-python --break-system-packages
 RUN pip3 install --no-cache-dir torch torchvision torchaudio matplotlib scikit-learn pandas notebook --break-system-packages
+RUN apt update && apt install -y libgl1 libglib2.0-0
+
 
 # postgresql 
 RUN apt update && apt install -y postgresql

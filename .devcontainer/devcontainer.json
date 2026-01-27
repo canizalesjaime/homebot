@@ -1,8 +1,9 @@
 {
   "name": "Ros2-Setup",
-  "build": {
-    "dockerfile": "./node_psql.Dockerfile"
-  },
+  // "build": {
+  //   "dockerfile": "./robot_dashboard.Dockerfile"
+  // },
+  "image": "jaimec21/robot-dashboard:latest",
   "runArgs": [
     "--init",
     "--privileged",

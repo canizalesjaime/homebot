@@ -30,3 +30,4 @@
 *dist-ssr
 *.local
 
+scripts/yolov8n.pt
