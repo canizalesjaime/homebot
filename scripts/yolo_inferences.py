@@ -1,7 +1,3 @@
-# python3 -m pip install --upgrade pip
-# pip install ultralytics opencv-python
-
-
 #!/usr/bin/env python3
 
 from ultralytics import YOLO
