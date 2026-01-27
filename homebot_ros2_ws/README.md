@@ -20,6 +20,26 @@
 5. xhost +local:root and xhost -local:root for rviz2
 6. ros2 launch my_robot_description display.launch.py
 
+or 
+1. docker build -f ./node_psql.Dockerfile -t ros2-setup .
+2. docker run -it --rm \
+  --init \
+  --privileged \
+  --net=host \
+  --device=/dev/gpiomem \
+  --device=/dev/mem \
+  --device=/dev/ttyAMA0 \
+  --cap-add=SYS_RAWIO \
+  -e DISPLAY=$DISPLAY \
+  -e QT_X11_NO_MITSHM=1 \
+  -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
+  -v /sys/class/gpio:/sys/class/gpio:cached \
+  -v /dev:/dev \
+  -v /run:/run \
+  --name ros2-container \
+  ros2-setup \
+  /bin/bash
+
 ## useful commands
 * docker rmi $(docker images -q)
 

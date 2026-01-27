@@ -21,7 +21,7 @@ app.add_middleware(
 # --- Camera setup ---
 picam2 = Picamera2()
 config = picam2.create_video_configuration(
-    main={"size": (640, 480), "format": "RGB888"}
+    main={"size": (320, 240), "format": "RGB888"}
 )
 picam2.configure(config)
 picam2.start()
@@ -37,7 +37,7 @@ def capture_frames():
     global frame
     while True:
         img = picam2.capture_array()
-        _, jpeg = cv2.imencode(".jpg", img)
+        _, jpeg = cv2.imencode(".jpg", img, [int(cv2.IMWRITE_JPEG_QUALITY), 50])
         with lock:
             frame = jpeg.tobytes()
         time.sleep(0.03)  # ~30 FPS

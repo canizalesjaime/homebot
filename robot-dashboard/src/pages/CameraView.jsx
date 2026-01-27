@@ -1,14 +1,5 @@
 import React from "react";
 
-// export default function CameraView() {
-//   return (
-//     <div>
-//       <h1 className="text-2xl font-bold mb-4">Live Camera</h1>
-//       <img src="/api/camera/stream" alt="Robot Camera" className="border" />
-//     </div>
-//   );
-// }
-
 export default function CameraView() {
   return (
     <div className="space-y-4">
@@ -16,7 +7,7 @@ export default function CameraView() {
 
       <div className="border rounded overflow-hidden">
         <img
-          src="http://localhost:8001/camera"
+          src="http://192.168.1.156:8001/camera"
           alt="Robot Camera"
           className="w-full"
         />
