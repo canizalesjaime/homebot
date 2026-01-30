@@ -17,10 +17,18 @@ app.add_middleware(
 class Command(BaseModel):
     action: str
 
+class Speed(BaseModel):
+    speed: int
+
 @app.post("/command")
 def send_command(cmd: Command):
     robot.command(cmd.action)
     return {"ok": True}
+
+@app.post("/speed")
+def set_speed(spd: Speed):
+    robot.set_speed(spd.speed)
+    return {"ok": True, "speed": spd.speed}
 
 @app.get("/status")
 def get_status():

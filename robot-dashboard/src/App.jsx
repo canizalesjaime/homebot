@@ -15,7 +15,6 @@ export default function App() {
           <Route path="/" element={<MotionControl />} />
           <Route path="/arm" element={<ArmControl />} />
           <Route path="/accelerometer" element={<Accelerometer />} />
-          <Route path="/camera" element={<CameraView />} />
         </Routes>
       </main>
     </div>

@@ -5,7 +5,6 @@ const links = [
   { to: "/", label: "Motion Control" },
   { to: "/arm", label: "Arm Control" },
   { to: "/accelerometer", label: "Accelerometer Data" },
-  { to: "/camera", label: "Camera View" },
 ];
 
 export default function Navbar() {
