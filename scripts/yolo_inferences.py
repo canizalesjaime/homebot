@@ -10,7 +10,7 @@ from pathlib import Path
 # Config
 # ----------------------------
 MODEL_PATH = "yolov8n.pt"   # auto-downloads if not present
-IMAGE_PATH = "test_image.jpg"     # image to run inference on
+IMAGE_PATH = "snapshot.jpg"     # image to run inference on
 IMG_SIZE = 480              # good balance for Pi 5
 CONF_THRESH = 0.4
 

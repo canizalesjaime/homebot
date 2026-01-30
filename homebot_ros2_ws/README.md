@@ -40,6 +40,14 @@ or
   ros2-setup \
   /bin/bash
 
+
+docker run -it --rm \
+--privileged \
+--net=host \
+-v /c/Users/Caniz/repos/robotics:/workspace \
+--name ros2-container \
+jaimec21/robot-dashboard:latest
+
 ## useful commands
 * docker rmi $(docker images -q)
 
