@@ -16,7 +16,7 @@ body {
 @tailwind components;
 @tailwind utilities;
 
-/* @layer base {
+@layer base {
   body {
     margin: 0;
     min-width: 320px;
@@ -26,4 +26,5 @@ body {
     background-color: #f3f4f6; 
     color: #111827; 
 } 
-*/
+}
+
