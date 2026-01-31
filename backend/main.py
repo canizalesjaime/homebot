@@ -1,4 +1,10 @@
 #uvicorn main:app --host 0.0.0.0 --port 8000
+from ultralytics import YOLO
+import cv2
+import time
+import sys
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -43,11 +49,68 @@ atexit.register(picam2.stop)
 frame = None
 lock = threading.Lock()
 
+# Load model
+print("[INFO] Loading YOLOv8n model...")
+model = YOLO("yolov8n.pt")
+
+# Force CPU (important on Pi)
+model.to("cpu")
+
+
+def run_inference(image):
+    if image is None:
+        print(f"[ERROR] Could not load image: {image}")
+        sys.exit(1)
+
+    print("[INFO] Running inference...")
+    start = time.time()
+
+    results = model(
+        image,
+        imgsz=240,
+        conf=.4,
+        verbose=False
+    )
+
+    elapsed = (time.time() - start) * 1000
+    print(f"[INFO] Inference time: {elapsed:.2f} ms")
+
+    annotated = image.copy()
+
+    for r in results:
+        boxes = r.boxes
+        if boxes is None:
+            continue
+
+        for box in boxes:
+            x1, y1, x2, y2 = map(int, box.xyxy[0])
+            conf = float(box.conf[0])
+            cls = int(box.cls[0])
+            label = f"{model.names[cls]} {conf:.2f}"
+
+            # Draw box
+            cv2.rectangle(annotated, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+            # Draw label
+            cv2.putText(
+                annotated,
+                label,
+                (x1, y1 - 10),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.5,
+                (0, 255, 0),
+                2
+            )
+
+    return annotated
+
+
 # --- Frame capture thread ---
 def capture_frames():
     global frame
     while True:
         img = picam2.capture_array()
+        img = run_inference(img)
         _, jpeg = cv2.imencode(".jpg", img, [int(cv2.IMWRITE_JPEG_QUALITY), 50])
         with lock:
             frame = jpeg.tobytes()

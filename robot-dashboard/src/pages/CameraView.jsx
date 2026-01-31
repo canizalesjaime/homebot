@@ -7,7 +7,7 @@ export default function CameraView() {
 
       <div className="border rounded overflow-hidden">
         <img
-          src="http://192.168.1.156:8001/camera"
+          src="http://192.168.1.156:8000/camera"
           alt="Robot Camera"
           className="w-full"
         />
