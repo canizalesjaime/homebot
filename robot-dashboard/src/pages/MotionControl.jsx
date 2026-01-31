@@ -3,6 +3,7 @@ import CameraView from "./CameraView";
 
 export default function MotionControl() {
   const [speed, setSpeed] = React.useState("");
+  const activeKeyRef = React.useRef(null); // prevents repeat firing
 
   const sendCommand = (action) => {
     fetch("http://192.168.1.156:8000/command", {
@@ -30,6 +31,52 @@ export default function MotionControl() {
       body: JSON.stringify({ speed: value }),
     });
   };
+
+  /* ---------------- Keyboard Controls ---------------- */
+
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (activeKeyRef.current) return; // already moving
+
+      switch (e.key) {
+        case "ArrowUp":
+          sendCommand("forward");
+          activeKeyRef.current = "ArrowUp";
+          break;
+        case "ArrowDown":
+          sendCommand("backward");
+          activeKeyRef.current = "ArrowDown";
+          break;
+        case "ArrowLeft":
+          sendCommand("left");
+          activeKeyRef.current = "ArrowLeft";
+          break;
+        case "ArrowRight":
+          sendCommand("right");
+          activeKeyRef.current = "ArrowRight";
+          break;
+        default:
+          break;
+      }
+    };
+
+    const handleKeyUp = (e) => {
+      if (e.key === activeKeyRef.current) {
+        sendCommand("stop");
+        activeKeyRef.current = null;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
+
+  /* --------------------------------------------------- */
 
   return (
     <div className="space-y-6">
