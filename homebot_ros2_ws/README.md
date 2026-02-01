@@ -37,17 +37,7 @@ or
   -v /dev:/dev \
   -v /run:/run \
   --name ros2-container \
-  ros2-setup \
+  -v /c/Users/Caniz/repos/robotics:/workspace \
+  jaimec21/robot-dashboard:latest \
   /bin/bash
-
-
-docker run -it --rm \
---privileged \
---net=host \
--v /c/Users/Caniz/repos/robotics:/workspace \
---name ros2-container \
-jaimec21/robot-dashboard:latest
-
-## useful commands
-* docker rmi $(docker images -q)
 
