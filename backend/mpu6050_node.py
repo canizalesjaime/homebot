@@ -1,7 +1,10 @@
 # mpu6050 GY-521 Module
-# right-hand rule. from inputs to chip(is postive  x-axis)
+# right-hand rule. Z is thumb, Y is toward VCC
 # gyroscrope computes the change in angular velocity
-# accelerometer computes acceleration(rate of change in velocity) 
+# accelerometer computes acceleration(rate of change in velocity)
+# 
+# ADD TO WEBSITE 
+ 
 from mpu6050 import mpu6050
 import math
 
@@ -58,4 +61,4 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
 #    finally:
-main()
+#main()

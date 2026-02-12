@@ -31,3 +31,4 @@
 *.local
 
 */yolov8n.pt
+*desktop.ini

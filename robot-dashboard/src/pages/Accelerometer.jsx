@@ -5,7 +5,7 @@ export default function Accelerometer() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      fetch("/api/accelerometer")
+      fetch("http://192.168.1.156:8000/accelerometer")
         .then((res) => res.json())
         .then(setData);
     }, 500);

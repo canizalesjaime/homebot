@@ -1,6 +1,7 @@
+# Teleop node
 import time
 import threading
-from test_tb6612 import MotorNode
+from motor_node import MotorNode
 from ultrasonic import UltrasonicNode
 
 class RobotController:

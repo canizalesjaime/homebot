@@ -2,7 +2,7 @@ import time
 import threading
 import sys
 import curses
-from test_tb6612 import MotorNode
+from motor_node import MotorNode
 from ultrasonic import UltrasonicNode
 
 
