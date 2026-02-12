@@ -4,7 +4,6 @@ import Navbar from "./components/Navbar";
 import MotionControl from "./pages/MotionControl";
 import ArmControl from "./pages/ArmControl";
 import Accelerometer from "./pages/Accelerometer";
-import CameraView from "./pages/CameraView";
 
 export default function App() {
   return (
