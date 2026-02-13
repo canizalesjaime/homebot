@@ -28,6 +28,11 @@ class Command(BaseModel):
 class Speed(BaseModel):
     speed: int
 
+class ArmAngles(BaseModel):
+    base: int
+    shoulder: int
+    elbow: int
+    gripper: int
 
 @app.get("/camera")
 def camera():
@@ -55,8 +60,8 @@ def get_accelerometer_data():
     return accelerometer.sensor_data()
 
 @app.post("/set_angles")
-def set_angles(angs: Speed):
-    arm.set_angles_api(angs.angles)
+def set_angles(angs: ArmAngles):
+    arm.set_angles_api([angs.base,angs.shoulder,angs.elbow,angs.gripper])
 
 @app.on_event("shutdown")
 def shutdown():

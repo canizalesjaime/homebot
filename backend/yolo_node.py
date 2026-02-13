@@ -84,13 +84,12 @@ class YoloNode():
 
     # --- Frame capture thread ---
     def capture_frames(self):
-        global frame
         while True:
             img = self.picam2.capture_array()
             img = self.run_inference(img)
             _, jpeg = cv2.imencode(".jpg", img, [int(cv2.IMWRITE_JPEG_QUALITY), 50])
             with self.lock:
-                frame = jpeg.tobytes()
+                self.frame = jpeg.tobytes()
             time.sleep(0.03)  # ~30 FPS
 
     threading.Thread(target=capture_frames, daemon=True).start()
@@ -98,11 +97,11 @@ class YoloNode():
     def mjpeg_stream(self):
         while True:
             with self.lock:
-                if frame is None:
+                if self.frame is None:
                     continue
                 yield (
                     b"--frame\r\n"
                     b"Content-Type: image/jpeg\r\n\r\n" +
-                    frame +
+                    self.frame +
                     b"\r\n"
                 )
