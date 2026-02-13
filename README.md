@@ -1,5 +1,5 @@
 # To Do (CONVERT THIS TO DOCUMENTATION)
-1. homebot: urdf file, fix tennis navigation, refactor new code to ros2 with urdf files using dht tables for frames, segmentation, stereo camera, lidar slam for 3d stuff , separate yolo from main.py
+1. homebot: urdf file, fix tennis navigation, refactor new code to ros2 with urdf files using dht tables for frames, segmentation, stereo camera, lidar slam for 3d stuff
 2. House keeping: database for objects seen with dates(web dev course), automate git push for ci/cd, aws? separate git for robot? add notes for electronics
 3. using pytorch course make an unsupervised grasping model, use jetson orin(check out study material on nvidia(test with olama))
 4. try networking between computer, arm, and homebot use ros_ip. Look into networking and firewalls and other security features.    
@@ -20,7 +20,7 @@
 5. xhost +local:root and xhost -local:root for rviz2
 6. ros2 launch my_robot_description display.launch.py
 
-**or** 
+**or(pi)** 
 
 1. docker build -f ./node_psql.Dockerfile -t ros2-setup .
 2. docker run -it --rm \
@@ -41,6 +41,10 @@
   -v /c/Users/Caniz/repos/robotics:/workspace \
   jaimec21/robot-dashboard:latest \
   /bin/bash
+
+
+**or(windows on powershell)** 
+docker run -it --init --privileged --rm -p 5173:5173 --name ros2-container -v /c/Users/Caniz/repos/robotics:/workspace jaimec21/robot-dashboard:latest
 
 ## Ultrasonic HCSR04
 * VCC -> PIN 2(5V)
