@@ -7,11 +7,13 @@ from pydantic import BaseModel
 from robot_controller import RobotController
 from yolo_node import YoloNode
 from mpu6050_node import Mpu6050Node
+from small_arm import SmallArmNode
 
 app = FastAPI()
 robot = RobotController()
 yolo_node = YoloNode()
 accelerometer = Mpu6050Node()
+arm = SmallArmNode()
 
 app.add_middleware(
     CORSMiddleware,
@@ -48,11 +50,13 @@ def set_speed(spd: Speed):
 def get_status():
     return robot.status()
 
-
 @app.get("/accelerometer")
 def get_accelerometer_data():
     return accelerometer.sensor_data()
 
+@app.post("/set_angles")
+def set_angles(angs: Speed):
+    arm.set_angles_api(angs.angles)
 
 @app.on_event("shutdown")
 def shutdown():

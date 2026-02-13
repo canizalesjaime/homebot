@@ -1,18 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function ArmControl() {
-  const sendArmCommand = (action) => {
-    fetch(`/api/arm/${action}`, { method: "POST" });
+  const [angles, setAngles] = useState({
+    base: 90,
+    shoulder: 90,
+    elbow: 90,
+    gripper: 90,
+  });
+
+  const handleChange = (joint, value) => {
+    const clamped = Math.max(0, Math.min(180, Number(value)));
+    setAngles({ ...angles, [joint]: clamped });
+  };
+
+  const sendAngles = () => {
+    fetch("http://192.168.1.156:8000/set_angles", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(angles),
+    });
   };
 
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Arm Control</h1>
-      <div className="flex gap-4">
-        <button onClick={() => sendArmCommand("up")} className="bg-blue-500 text-white p-2 rounded">Up</button>
-        <button onClick={() => sendArmCommand("down")} className="bg-blue-500 text-white p-2 rounded">Down</button>
-        <button onClick={() => sendArmCommand("open")} className="bg-green-500 text-white p-2 rounded">Open</button>
-        <button onClick={() => sendArmCommand("close")} className="bg-red-500 text-white p-2 rounded">Close</button>
+
+      <div className="flex flex-col gap-3 max-w-xs">
+        {["base", "shoulder", "elbow", "gripper"].map((joint) => (
+          <div key={joint} className="flex justify-between items-center">
+            <label className="capitalize">{joint}</label>
+            <input
+              type="number"
+              min="0"
+              max="180"
+              value={angles[joint]}
+              onChange={(e) => handleChange(joint, e.target.value)}
+              className="border p-1 w-20"
+            />
+          </div>
+        ))}
+
+        <button
+          onClick={sendAngles}
+          className="bg-blue-500 text-white p-2 rounded mt-3"
+        >
+          Send Angles
+        </button>
       </div>
     </div>
   );

@@ -29,28 +29,29 @@ class Mpu6050Node():
         gyro = self.sensor.get_gyro_data()
         temp = self.sensor.get_temp()
 
-        print("Accelerometer data:", accel)
-        print("Gyroscope data:", gyro)
-        print("Temp:", temp)
+        # print("Accelerometer data:", accel)
+        # print("Gyroscope data:", gyro)
+        # print("Temp:", temp)
         roll, pitch = self.get_roll_pitch(accel)
-        print(f"Roll: {roll:.2f}°, Pitch: {pitch:.2f}°")
+        # print(f"Roll: {roll:.2f}°, Pitch: {pitch:.2f}°")
 
        
 
-        print("linear_acceleration.x: ", accel['x'] * 9.80665)  # g to m/s^2
-        print("linear_acceleration.y: ", accel['y'] * 9.80665)
-        print("linear_acceleration.z: ", accel['z'] * 9.80665)
+        # print("linear_acceleration.x: ", accel['x'] * 9.80665)  # g to m/s^2
+        # print("linear_acceleration.y: ", accel['y'] * 9.80665)
+        # print("linear_acceleration.z: ", accel['z'] * 9.80665)
 
-        print("angular_velocity.x: ", math.radians(gyro['x']))  # deg/s to rad/s
-        print("angular_velocity.y: ", math.radians(gyro['y']))
-        print("angular_velocity.z: ", math.radians(gyro['z']))
+        # print("angular_velocity.x: ", math.radians(gyro['x']))  # deg/s to rad/s
+        # print("angular_velocity.y: ", math.radians(gyro['y']))
+        # print("angular_velocity.z: ", math.radians(gyro['z']))
 
         # Optionally set covariance if known (identity = unknown)
         # linear_acceleration_covariance[0] = -1.0
         # angular_velocity_covariance[0] = -1.0
 
         # Publish temperature
-        print("Temperature: ", temp)
+        # print("Temperature: ", temp)
+        return {"x": roll, "y":pitch, "z":temp}
         
 
 def main(args=None):

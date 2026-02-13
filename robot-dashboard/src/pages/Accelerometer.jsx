@@ -15,9 +15,9 @@ export default function Accelerometer() {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Accelerometer Data</h1>
-      <p>X: {data.x}</p>
-      <p>Y: {data.y}</p>
-      <p>Z: {data.z}</p>
+      <p>Roll: {data.x}</p>
+      <p>Pitch: {data.y}</p>
+      <p>Temp: {data.z}</p>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import threading
 from motor_node import MotorNode
 from ultrasonic import UltrasonicNode
 
-class RobotController:
+class RobotController():
     def __init__(self):
         self.current_action = None
         self.dist = 0

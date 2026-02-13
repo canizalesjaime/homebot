@@ -11,7 +11,7 @@ import time
 import atexit
 
 
-class YoloNode:
+class YoloNode():
     def __init__(self):
         self.picam2 = Picamera2()
         self.config = self.picam2.create_video_configuration(
