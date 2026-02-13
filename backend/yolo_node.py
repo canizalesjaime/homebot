@@ -52,7 +52,7 @@ class YoloNode():
         )
 
         elapsed = (time.time() - start) * 1000
-        print(f"[INFO] Inference time: {elapsed:.2f} ms")
+        #print(f"[INFO] Inference time: {elapsed:.2f} ms")
 
         annotated = image.copy()
 
