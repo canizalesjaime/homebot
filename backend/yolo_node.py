@@ -33,13 +33,15 @@ class YoloNode():
         # Force CPU
         self.model.to("cpu")
 
+        threading.Thread(target=self.capture_frames, daemon=True).start()
+
 
     def run_inference(self, image):
         if image is None:
             print(f"[ERROR] Could not load image: {image}")
             sys.exit(1)
 
-        print("[INFO] Running inference...")
+        #print("[INFO] Running inference...")
         start = time.time()
 
         results = self.model(
@@ -90,14 +92,14 @@ class YoloNode():
             _, jpeg = cv2.imencode(".jpg", img, [int(cv2.IMWRITE_JPEG_QUALITY), 50])
             with self.lock:
                 self.frame = jpeg.tobytes()
-            time.sleep(0.03)  # ~30 FPS
+            #time.sleep(0.03)  # ~30 FPS
 
-    threading.Thread(target=capture_frames, daemon=True).start()
 
     def mjpeg_stream(self):
         while True:
             with self.lock:
                 if self.frame is None:
+                    time.sleep(0.01) 
                     continue
                 yield (
                     b"--frame\r\n"

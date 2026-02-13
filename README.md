@@ -1,5 +1,5 @@
 # To Do (CONVERT THIS TO DOCUMENTATION)
-1. homebot: urdf file, fix tennis navigation, refactor new code to ros2 with urdf files using dht tables for frames, segmentation, stereo camera, lidar slam for 3d stuff , seaparate yolo from main.py
+1. homebot: urdf file, fix tennis navigation, refactor new code to ros2 with urdf files using dht tables for frames, segmentation, stereo camera, lidar slam for 3d stuff , separate yolo from main.py
 2. House keeping: database for objects seen with dates(web dev course), automate git push for ci/cd, aws? separate git for robot? add notes for electronics
 3. using pytorch course make an unsupervised grasping model, use jetson orin(check out study material on nvidia(test with olama))
 4. try networking between computer, arm, and homebot use ros_ip. Look into networking and firewalls and other security features.    
