@@ -29,13 +29,13 @@ class SmallArmNode():
             4: (10, 170),   # gripper
         }
 
-        self.SERVO_ANGLES = { 0: 90, # base
-            1: (10, 90),   # elbow
-            3: (10, 90),   # shoulder
-            4: (10, 90),   # gripper
+        self.SERVO_ANGLES = { 0: 90,   # base
+                              1: 90,   # elbow
+                              3: 90,   # shoulder
+                              4: 90,   # gripper
         }
 
-        for serv in self.SERVO_LIMITS:
+        for serv in self.SERVO_ANGLES:
             self.set_servo_angle(serv,90)
 
 
@@ -60,13 +60,7 @@ class SmallArmNode():
         for angle in rng:
             self.set_servo_angle(channel, angle)
             time.sleep(delay)
-        time.sleep(2)
-
-
-    def move_servo_full_range(self,channel):
-        min_angle, max_angle = self.SERVO_LIMITS.get(channel, (0, 180))
-        self.move_smooth(channel, min_angle, max_angle)
-        time.sleep(2)
+        #time.sleep(1)
 
 
     def straighten_arm(self):

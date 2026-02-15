@@ -1,120 +1,42 @@
-# Page 1 Transcription
+# Notes to move arm 
 
-(Diagram)
-- wrist frame
-- object frame
-- base_link frame
-- Axes labeled x, y, z
-- Vectors drawn between object and wrist
+<img src="./pickup_frames.png" width="400"/>
 
+1) $ _{wrist} ^{base}T[:,3] = ^{base} d$
 
-1)
-
-a)
-
-^base_link T[:,3] = ^base d
+2) $^{obj} d = ^{obj} _{head}T  ^{head} _{base}T  ^{base}d$
 
 
-b)
+3) $^{wrist} _{obj}T ( ^{obj} d + ^{obj} x ) = ^{wrist} x_{obj-axis}$
 
-^obj d = ^obj T_head  ^head T_base_link  d
-
-(some crossed-out work above this line)
+4) where, $^{wrist} _{obj}T = ^{wrist} _{base}T ^{base} _{head}T ^{head} _{obj}T$
 
 
-2)
-
-^wrist T_obj ( ^obj d + ^obj x ) = ^wrist X_obj-axis
-
-where
-
-^wrist T_obj =
-^wrist T_base_link
-^base_link T_head
-^head T_obj
-
-
-3)
-
-arccos(
-(
-[0
- 0
- 1]
-·
-^wrist X_obj-axis
-)
-/
-(
-||[0
-   0
-   1]||
-  ||
-^wrist X_obj-axis||
-)
-)
+5) $ arccos( \frac{\begin{bmatrix}0 \\ 0 \\ 1 \end{bmatrix}· ^{wrist} X_{obj-axis}}{|\begin{bmatrix}0 \\ 0 \\ 1 \end{bmatrix}| * |^{wrist} X_{obj-axis}|})$
 
 
 
-# Page 2 Transcription
+# Part 2
 
-(Origin of wrist frame w.r.t base frame)
-
-1)
-
-^base P_wrist-org = ^base T_wrist[:,3]
-(last column = translation)
+1) (Origin of wrist frame w.r.t base frame(last column = translation))
+$^{base} p_{wrist-org} = ^{base} _{wrist}T[:,3]$ 
 
 
-2)
-
-^head T_obj =
-
-[ 0   0   1   0
- -1   0   0   0
-  0  -1   0   0
-  0   0   0   1 ]
-
-(reference file)
-
+2) $^{head} _{obj}T = \begin{bmatrix} 0 & 0 & 1 & 0 \\ -1 & 0 & 0 & 0 \\ 0 & -1 & 0 & 0 \\ 0 & 0 & 0 & 1\end{bmatrix}[reference file]$
 (Add to TF tree: obj frame as child of head)
 
 
-^obj T_head  ^head T_base = ^obj P_wrist-org
+$^{obj} _{head}T  ^{head} _{base}T ^{obj} _{base}T= ^{obj} p_{wrist-org}$
 
 
 Origin of wrist frame w.r.t object frame
 
-3)
-
-^obj P_wrist-org + [1
-                     0
-                     0
-                     0]
-(to align x-axis)
+3) $^{obj} p_{wrist-org} + \begin{bmatrix} 1 \\ 0 \\ 0 \\ 0 \end{bmatrix}$ (to align x-axis)
 
 
-4)
-
-^wrist T_base
-^base T_head
-^head T_obj
-d_x
-=
-^wrist d_x
-
-but in code:
-
-^wrist T_base
-^base T_head
-^head T_obj
-d_x
-=
-^wrist d_x
+4) $^{wrist} _{base}T ^{base} _{obj}T ^{head} _{obj}T d_x = ^{wrist} d_x$ <br>
+but in code:<br>
+$^{wrist} _{base}T ^{base} _{head}T ^{head} _{obj}T ^{obj}d_x = ^{wrist} d_x$
 
 
-5)
-
-Display
-
-^wrist d_x
+5) Display $^{wrist} d_x$
