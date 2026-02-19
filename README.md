@@ -54,10 +54,10 @@
 
 
 ## Accelerometer MPU6050 
-* VCC -> PIN 1 (3.3V)
+* VCC -> PCB
 * GND -> PIN 6 (GND)
-* SCL -> PIN 5 (GPIO 3 SCL)(I^2C)
-* SDA -> PIN 3 (GPIO 2 SDA)(I^2C)
+* SCL -> PCB
+* SDA -> PCB
 
 
 ## TB6612 Motor Driver 1
@@ -71,3 +71,15 @@
 * ENB -> PIN 33 (GPIO 13)
 * STBY -> PIN 22 (GPIO 25) 
 * VCC -> PIN 17
+
+## PCA9865
+* VCC(3.3) -> PCB
+* SDA -> PCB
+* SCL -> PCB
+* GND -> PIN 34
+
+## Lidar
+* VCC -> PIN 4(5V)
+* RX -> PIN 8 (GPIO 14)
+* TX -> PIN 10(GPIO 15)
+* GND -> PIN 14
