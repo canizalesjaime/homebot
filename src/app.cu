@@ -1,3 +1,7 @@
+// test 
+// nvcc app.cu -o app
+// ./app
+
 #include<stdio.h>
 #include<iostream>
 using namespace std;
