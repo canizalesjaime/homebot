@@ -1,7 +1,7 @@
 import serial
 
 # Open UART (Pi 4 default)
-ser = serial.Serial("/dev/serial0", 115200, timeout=1)
+ser = serial.Serial("/dev/ttyAMA0", 115200, timeout=1)
 
 print("Reading TF-Luna data...")
 

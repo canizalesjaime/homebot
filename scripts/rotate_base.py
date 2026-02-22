@@ -23,7 +23,7 @@ class SmallArmNode():
     def set_servo_angle(self,channel, angle):
         MIN_PULSE = 150   # ~0.75 ms, 0 degrees
         MAX_PULSE = 550   # ~2.7 ms, 180 degrees
-        min_angle, max_angle = self.SERVO_LIMITS.get(channel, (0, 180))
+        min_angle, max_angle = (10,170)
         angle = max(min(angle, max_angle), min_angle)
 
         pulse = MIN_PULSE + (angle / 180.0) * (MAX_PULSE - MIN_PULSE)
@@ -59,3 +59,5 @@ def main():
 
     finally:
         node.pca.deinit()
+
+main()
