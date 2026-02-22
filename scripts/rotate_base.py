@@ -11,9 +11,9 @@ class SmallArmNode():
         self.pca.frequency = 50
 
         self.SERVO_ANGLES = { 0: 90,   # base
-                              1: 90,   # elbow
-                              3: 90,   # shoulder
-                              4: 90,   # gripper
+                            #   1: 90,   # elbow
+                            #   3: 90,   # shoulder
+                            #   4: 90,   # gripper
         }
 
         for serv in self.SERVO_ANGLES:
