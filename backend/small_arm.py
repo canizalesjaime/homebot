@@ -72,6 +72,15 @@ class SmallArmNode():
         self.move_smooth(3,170,40)
         self.move_smooth(4,170,0)
 
+
+    def rotate_base(self):
+        while True:
+            self.move_smooth(0,90,170)
+            self.move_smooth(0,170,90)
+            self.move_smooth(0,90,10)
+            self.move_smooth(0,10,90)
+
+
     def set_angles_api(self, angles):
         for i,channel in enumerate(self.SERVO_ANGLES):
             self.move_smooth(channel, self.SERVO_ANGLES[channel],angles[i])
@@ -79,8 +88,7 @@ class SmallArmNode():
 def main():
     try:
         node =SmallArmNode()
-        node.pick_up_static_hacky()
-        node.straighten_arm()
+        node.rotate_base()
 
     finally:
         node.pca.deinit()
