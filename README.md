@@ -13,7 +13,7 @@
 5. autocad or freecad for designing: drone, pcb board
 
 ## steps to start
-1. cd /workspaces/robotics/homebot_ros2_ws && colcon build && source install/setup.bash
+1. cd /workspaces/homebot/ros2_ws && colcon build && source install/setup.bash
 2. ros2 run robot_control \<executable_name\>
 3. ros2 launch robot_control \<executable_name\>
 4. ros2 service call /capture_image std_srvs/srv/Trigger
@@ -37,14 +37,14 @@
   -v /dev:/dev \
   -v /run:/run \
   --name ros2-container \
-  -v /home/jaime/robotics:/workspace \
+  -v /home/jaime/homebot:/workspace \
   ros2-setup:latest \
   /bin/bash
 
 
 **on kubuntu for web app(just use dev container on windows)**  
 1. docker build -f ./robot_dashboard.Dockerfile -t ros2-setup .
-2. docker run -it --rm --net=host --name web-container -v /home/jaime/robotics:/workspace web-setup:latest
+2. docker run -it --rm --net=host --name web-container -v /home/jaime/homebot:/workspace web-setup:latest
 
 ## Ultrasonic HCSR04
 * VCC -> PIN 2(5V)

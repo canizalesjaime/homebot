@@ -26,4 +26,4 @@ FROM jaimec21/jazzy_pi:latest
 #  python3-pyqt6
 # RUN pip3 install mpu6050-raspberrypi picamera2 --break-system-packages
 # RUN echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
-# RUN echo "source /workspaces/robotics/homebot_ros2_ws/install/setup.bash" >> ~/.bashrc
+# RUN echo "source /workspaces/homebot/ros2_ws/install/setup.bash" >> ~/.bashrc
