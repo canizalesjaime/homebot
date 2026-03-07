@@ -19,11 +19,13 @@ import atexit
 from robot_controller import RobotController
 from mpu6050_node import Mpu6050Node
 from small_arm import SmallArmNode
+from lunar import LunarNode
 
 app = FastAPI()
 robot = RobotController()
 accelerometer = Mpu6050Node()
 arm = SmallArmNode()
+lidar = LunarNode()
 
 app.add_middleware(
     CORSMiddleware,
@@ -168,6 +170,17 @@ def get_accelerometer_data():
 @app.post("/set_angles")
 def set_angles(angs: ArmAngles):
     arm.set_angles_api([angs.base,angs.shoulder,angs.elbow,angs.gripper])
+
+@app.get("/rotate_base")
+def rotate_base():
+    arm.rotate_base()
+    return {"status": "rotating"}
+
+@app.get("/stop_base")
+def stop_base():
+    arm.stop_base()
+    return {"status": "stopped"}
+
 
 @app.on_event("shutdown")
 def shutdown():

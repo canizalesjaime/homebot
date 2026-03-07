@@ -14,6 +14,7 @@ import time
 import board
 import busio
 from adafruit_pca9685 import PCA9685
+import threading
 
 
 class SmallArmNode():
@@ -21,6 +22,7 @@ class SmallArmNode():
         self.i2c = busio.I2C(board.SCL, board.SDA)
         self.pca = PCA9685(self.i2c)
         self.pca.frequency = 50
+        self.rotating = False
 
 
         self.SERVO_LIMITS = { 0: (10, 170), # base
@@ -74,12 +76,20 @@ class SmallArmNode():
 
 
     def rotate_base(self):
-        while True:
+        if not self.rotating:
+            self.rotating = True
+            threading.Thread(target=self.rotate_loop, daemon=True).start()
+
+
+    def rotate_loop(self):
+        while self.rotating:
             self.move_smooth(0,90,170)
             self.move_smooth(0,170,90)
             self.move_smooth(0,90,10)
             self.move_smooth(0,10,90)
 
+    def stop_base(self):
+        self.rotating = False
 
     def set_angles_api(self, angles):
         for i,channel in enumerate(self.SERVO_ANGLES):

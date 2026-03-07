@@ -1,5 +1,5 @@
 # To Do (CONVERT THIS TO DOCUMENTATION)
-1. homebot: urdf file, fix tennis navigation, refactor new code to ros2 with urdf files using dht tables for frames, segmentation, stereo camera, lidar slam for 3d stuff. Make the base rotate, at the same time as being able to receive other commads to arm and wheels.
+1. homebot: urdf file, fix tennis navigation, refactor new code to ros2 with urdf files using dht tables for frames, segmentation, stereo camera, lidar slam for 3d stuff. Make the base rotate, at the same time as being able to receive other commands to arm and wheels.
 2. House keeping: database for objects seen with dates(web dev course), automate git push for ci/cd, aws?
 3. using pytorch course make an unsupervised grasping model, use jetson orin(check out study material on nvidia(test with olama))
 4. try networking between computer, arm, and homebot use ros_ip. Look into networking and firewalls and other security features.    
