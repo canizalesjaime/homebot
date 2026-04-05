@@ -100,5 +100,9 @@ def main():
         node =SmallArmNode()
         node.rotate_base()
 
+        while True:
+            time.sleep(.1)
+
     finally:
         node.pca.deinit()
+main()
