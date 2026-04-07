@@ -32,4 +32,4 @@ def main():
     # finally:
     #     node.free_gpio()
 
-main()
+#main()
