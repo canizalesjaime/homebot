@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 const links = [
   { to: "/", label: "Motion Control" },
   { to: "/arm", label: "Arm Control" },
-  { to: "/accelerometer", label: "Accelerometer Data" },
+  { to: "/sensors", label: "Sensors Data" },
 ];
 
 export default function Navbar() {

@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import MotionControl from "./pages/MotionControl";
 import ArmControl from "./pages/ArmControl";
-import Accelerometer from "./pages/Accelerometer";
+import Sensors from "./pages/Sensors";
 
 export default function App() {
   return (
@@ -13,7 +13,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<MotionControl />} />
           <Route path="/arm" element={<ArmControl />} />
-          <Route path="/accelerometer" element={<Accelerometer />} />
+          <Route path="/sensors" element={<Sensors />} />
         </Routes>
       </main>
     </div>

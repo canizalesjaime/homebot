@@ -167,6 +167,14 @@ def get_status():
 def get_accelerometer_data():
     return accelerometer.sensor_data()
 
+@app.get("/lidar")
+def get_lidar_data():
+    distance, strength = lidar.get_distance()
+    return {
+        "distance": distance,
+        "strength": strength
+    }
+
 @app.post("/set_angles")
 def set_angles(angs: ArmAngles):
     arm.set_angles_api([angs.base,angs.shoulder,angs.elbow,angs.gripper])
