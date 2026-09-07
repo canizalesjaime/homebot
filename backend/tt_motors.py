@@ -76,13 +76,13 @@ class TtMotors():
     ###########################################################################
     def move(self,cmd):
         if cmd == 'f':
-            self.set_motor([0, 1, 1, 0])
-        elif cmd == 'b':
-            self.set_motor([1, 0, 0, 1])
-        elif cmd == 'rl':
-            self.set_motor([1, 0, 1, 0])
-        elif cmd == 'rr':
             self.set_motor([0, 1, 0, 1])
+        elif cmd == 'b':
+            self.set_motor([1, 0, 1, 0])
+        elif cmd == 'rl':
+            self.set_motor([0, 1, 1, 0])
+        elif cmd == 'rr':
+            self.set_motor([1, 0, 0, 1])
         elif cmd == 's':
             self.set_motor([0, 0, 0, 0])
         elif cmd == 'i':
@@ -92,7 +92,7 @@ class TtMotors():
             self.curr_speed=self.curr_speed-5
             self.set_speed(self.curr_speed)
         elif cmd == 'l':
-            self.set_motor([0,0,1,0])
+            self.set_motor([0,0,0,1])
         elif cmd == 'r':
             self.set_motor([0,1,0,0])
         else:
