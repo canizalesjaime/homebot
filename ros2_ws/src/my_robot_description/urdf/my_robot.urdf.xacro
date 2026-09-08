@@ -178,7 +178,7 @@
     <parent link="base_link"/>
     <child link="imu_link"/>
 
-    <origin xyz="0.02 0 0.0459"
+    <origin xyz="0.02 0.12 0.0459"
             rpy="0 0 0"/>
 
 </joint>
@@ -258,7 +258,7 @@
     <parent link="base_cover_link"/>
     <child link="rplidar_link"/>
 
-    <origin xyz=".08 .07 .002"
+    <origin xyz=".12 .07 .002"
             rpy="0 0 0"/>
 
 </joint>
