@@ -31,7 +31,7 @@ class TtMotors():
             GPIO.gpio_claim_output(self.h, pin) 
 
         self.frequency =1000
-        self.curr_speed=30
+        self.curr_speed=50
         self.set_speed(self.curr_speed)
 
         # Encoder pins
