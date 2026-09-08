@@ -69,11 +69,9 @@ class TtMotors():
         elif cmd == 's':
             self.set_motor([0, 0, 0, 0])
         elif cmd == 'i':
-            self.curr_speed=self.curr_speed+5
-            self.set_speed(self.curr_speed)
+            self.curr_speed=self.set_speed(self.curr_speed+5)
         elif cmd == 'd':
-            self.curr_speed=self.curr_speed-5
-            self.set_speed(self.curr_speed)
+            self.curr_speed=self.set_speed(self.curr_speed-5)
         elif cmd == 'l':
             self.set_motor([1,0,0,0])
         elif cmd == 'r':
@@ -95,6 +93,7 @@ class TtMotors():
         percent=min(max(percent,0),100)
         GPIO.tx_pwm(self.h, self.driver_map["enA"], self.frequency, percent)
         GPIO.tx_pwm(self.h, self.driver_map["enB"], self.frequency, percent)
+        return percent
 
 
     # Encoder callbacks
