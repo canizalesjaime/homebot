@@ -1,14 +1,12 @@
 # PWM is used to control motor speed. Duty cycle(speed) is the percentage of 
 # time high per cycle. If high -> motor on if low motor -> off.
 # The more time the the signal is high during a cycle the faster the speed.
-
 import time
 import lgpio as GPIO
+import math
 
 
 class TtMotors():
-    
-
     def __init__(self):
         self.h = GPIO.gpiochip_open(0)
         self.driver_map={"a_in1":17,"a_in2":27,"b_in1":23,"b_in2":24,
@@ -66,18 +64,16 @@ class TtMotors():
             self.set_motor([1, 0, 0, 1])
         elif cmd == 'rr':
             self.set_motor([0, 1, 1, 0])
-        elif cmd == 's':
-            self.set_motor([0, 0, 0, 0])
-        elif cmd == 'i':
-            self.curr_speed=self.set_speed(self.curr_speed+5)
-        elif cmd == 'd':
-            self.curr_speed=self.set_speed(self.curr_speed-5)
         elif cmd == 'l':
             self.set_motor([1,0,0,0])
         elif cmd == 'r':
             self.set_motor([0,0,1,0])
+        elif cmd == 'i':
+            self.curr_speed=self.set_speed(self.curr_speed+5)
+        elif cmd == 'd':
+            self.curr_speed=self.set_speed(self.curr_speed-5)
         else:
-            print("error wrong command")
+            self.set_motor([0, 0, 0, 0])
 
 
     ###########################################################################
@@ -95,28 +91,26 @@ class TtMotors():
         GPIO.tx_pwm(self.h, self.driver_map["enB"], self.frequency, percent)
         return percent
 
-
-    # Encoder callbacks
-    ###########################################################################
+    
+    # Encoder callbacks########################################################
     def left_encoder_event(self, chip, gpio, level, timestamp):
         if GPIO.gpio_read(self.h, self.encoder_pins["left_b"]) == 0:
             self.left_ticks += 1
         else:
             self.left_ticks -= 1
 
-    ################################################################
+    ###########################################################################
     def right_encoder_event(self, chip, gpio, level, timestamp):
         if GPIO.gpio_read(self.h, self.encoder_pins["right_b"]) == 0:
             self.right_ticks += 1
         else:
             self.right_ticks -= 1
 
-    ################################################################
+    ###########################################################################
     def get_ticks(self):
         return self.left_ticks, self.right_ticks
 
-
-    ################################################################
+    ###########################################################################
     def get_wheel_velocities(self): # angular
         current_time = time.monotonic()
 
@@ -130,7 +124,6 @@ class TtMotors():
 
         # Number of ticks since last measurement
         left_delta_ticks = current_left_ticks - self.previous_left_ticks
-
         right_delta_ticks = current_right_ticks - self.previous_right_ticks
 
         # Save current values for next measurement
@@ -139,12 +132,11 @@ class TtMotors():
         self.previous_time = current_time
 
         left_revolutions = left_delta_ticks / self.ticks_per_wheel_rev
-        right_revolutions = right_delta_ticks / self.ticks_per_wheel_rev
-        
+        right_revolutions = right_delta_ticks / self.ticks_per_wheel_rev  
 
         # revolutions → radians
-        left_angle = left_revolutions * 2.0 * 3.14159265359
-        right_angle = right_revolutions * 2.0 * 3.14159265359
+        left_angle = left_revolutions * 2.0 * math.pi
+        right_angle = right_revolutions * 2.0 * math.pi
 
         # radians → radians/second
         left_velocity = left_angle / dt
@@ -178,15 +170,20 @@ class TtMotors():
 
 ###############################################################################
 def main():
+    motor=None
     try:
         motor=TtMotors()
         while True:
-            cmd=input("enter one of the following - f(forward), b(back), i(increase), d(decrease), rotate_left(rl), rotate_right(rr): ")
+            cmd=input("Enter -- f(forward), b(back), left(l), right(r), i(increase), d(decrease), stop(any other key): ")
             motor.move(cmd)
-            print(motor.get_ticks(), " speed: ", motor.curr_speed)
+            left_tick, right_tick = motor.get_ticks() 
+            print(f"total # of wheel revolutions(left,right): ({left_tick/motor.ticks_per_wheel_rev}, {right_tick/motor.ticks_per_wheel_rev})")
+            lw, rw = motor.get_wheel_velocities()
+            print(f"speed: {motor.curr_speed}. Velocity Vector(left, right) r/s: ({lw},{rw})")
         
     finally:
-        motor.release_lines()
+        if motor is not None:
+            motor.release_lines()
 
 
 if __name__ == '__main__':
