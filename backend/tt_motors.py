@@ -92,9 +92,9 @@ class TtMotors():
             self.curr_speed=self.curr_speed-5
             self.set_speed(self.curr_speed)
         elif cmd == 'l':
-            self.set_motor([0,0,1,0])
-        elif cmd == 'r':
             self.set_motor([1,0,0,0])
+        elif cmd == 'r':
+            self.set_motor([0,0,1,0])
         else:
             print("error wrong command")
 
