@@ -26,6 +26,14 @@ class TtMotors():
         #GPIO.gpio_set_debounce_micros(self.h, self.encoder_pins["right_a"], 1000)
 
         self.ticks_per_wheel_rev = 1080 # 12 PPR × 90:1 gearbox
+        self.wheel_radius = 0.0205
+        #self.wheel_thickness = .017 
+        # base is 150mm by 125mm
+        self.distance_between_wheels = 0.1335 # or 0.16145
+        self.x = 0.0
+        self.y = 0.0
+        self.theta = 0.0
+
         self.frequency=1000
         self.curr_speed=50
         self.set_speed(self.curr_speed)
@@ -111,7 +119,7 @@ class TtMotors():
         return self.left_ticks, self.right_ticks
 
     ###########################################################################
-    def get_wheel_velocities(self): # angular
+    def get_wheel_angular_velocities(self):
         current_time = time.monotonic()
 
         current_left_ticks = self.left_ticks
@@ -120,7 +128,7 @@ class TtMotors():
         dt = current_time - self.previous_time
 
         if dt <= 0:
-            return 0.0, 0.0
+            return 0.0, 0.0, 0.0
 
         # Number of ticks since last measurement
         left_delta_ticks = current_left_ticks - self.previous_left_ticks
@@ -142,7 +150,28 @@ class TtMotors():
         left_velocity = left_angle / dt
         right_velocity = right_angle / dt
 
-        return left_velocity, right_velocity
+        return left_velocity, right_velocity, dt
+
+
+    ###########################################################################
+    def get_robot_velocity(self):
+        left_ang_wheel, right_ang_wheel, dt = self.get_wheel_angular_velocities()
+        left_vel = left_ang_wheel * self.wheel_radius # meters per sec
+        right_vel = right_ang_wheel * self.wheel_radius
+        robot_lin_vel = (left_vel+right_vel)/2
+        robot_ang_vel = (right_vel-left_vel)/self.distance_between_wheels
+        return robot_lin_vel, robot_ang_vel, dt
+
+
+    ###########################################################################
+    def get_odom(self):
+        linear_velocity, angular_velocity, dt=self.get_robot_velocity()
+        # using Euler integration, once this works switch to midpoint integration
+        self.x += linear_velocity * math.cos(self.theta) * dt
+        self.y += linear_velocity * math.sin(self.theta) * dt
+        self.theta += angular_velocity * dt
+        return self.x,self.y,self.theta
+
 
     ###########################################################################
     def reset_ticks(self):
@@ -153,6 +182,7 @@ class TtMotors():
         self.previous_right_ticks = 0
 
         self.previous_time = time.monotonic()
+
 
     ###########################################################################
     def release_lines(self):
@@ -178,8 +208,8 @@ def main():
             motor.move(cmd)
             left_tick, right_tick = motor.get_ticks() 
             print(f"total # of wheel revolutions(left,right): ({left_tick/motor.ticks_per_wheel_rev}, {right_tick/motor.ticks_per_wheel_rev})")
-            lw, rw = motor.get_wheel_velocities()
-            print(f"speed: {motor.curr_speed}. Velocity Vector(left, right) r/s: ({lw},{rw})")
+            x,y,theta = motor.get_odom()
+            print(f"speed: {motor.curr_speed}. Odom: ({x},{y},{theta})")
         
     finally:
         if motor is not None:
