@@ -155,14 +155,16 @@ docker exec -it ros2-container bash
 
 
 # To Do 
-1. one motor slower(left motor from homebots frame)and laggy and ticks stop updating, fix in code by analyzing ticks-differential-drive/odom in rviz(action?), test navigation with tennis
-2. slam/urdf file for frames and kinematics for arm
-3. fix dockerfile humble_pi on on pi (image on dockerhub works fine (jazzy_pi))
-4. network between computer, and homebot(ros_ip) for faster rviz. Look into networking and firewalls and other security features.
-5. add camera to docker and rviz, maybe get stereo camera
-6. make a better physical build, make your own arm, design pcb board no cables 
-7. using pytorch course make an unsupervised grasping model, use jetson orin(check out study material on nvidia(test with olama))   
-8. add flutter app
+1. one motor slower(left motor from homebots frame)and laggy and ticks seem weird, fix in code by analyzing ticks-differential-drive/odom in rviz(turn to action?)
+2. test navigation with tennis(need inverse kinematics)
+3. network between computer, and homebot(ros_ip) for faster rviz. Look into networking and firewalls and other security features.
+4. slam for homebot 
+5. forward and inverse kinematics for arm
+6. fix dockerfile humble_pi on on pi (image on dockerhub works fine (jazzy_pi))
+7. add camera to docker and rviz, maybe get stereo camera
+8. make a better physical build, make your own arm, design pcb board no cables 
+9. using pytorch course make an unsupervised grasping model, use jetson orin(check out study material on nvidia(test with olama))   
+10. add flutter app
 
 
 [CODE LINK](https://github.com/canizalesjaime/homebot)
