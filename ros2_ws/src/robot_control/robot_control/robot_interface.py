@@ -1,6 +1,3 @@
-# post:publish, get:subscribe
-# you must run this using uvicorn and not ros: 
-# uvicorn robot_interface:app --host 0.0.0.0 --port 8000
 import math
 import threading
 

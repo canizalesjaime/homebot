@@ -154,17 +154,19 @@ docker exec -it ros2-container bash
 
 
 
-# To Do 
-1. one motor slower(left motor from homebots frame)and laggy and ticks seem weird, fix in code by analyzing ticks-differential-drive/odom in rviz(turn to action?), then implement inverse kinematics
-2. test navigation with tennis(need inverse kinematics)
-3. network between computer, and homebot(ros_ip) for faster rviz. Look into networking and firewalls and other security features,modify /etc/hosts file and kubuntu also wheres ros master ?
-4. slam for homebot 
-5. Implement forward and inverse kinematics for arm
-6. fix dockerfile humble_pi on on pi (image on dockerhub works fine (jazzy_pi))
-7. add camera to docker and rviz, maybe get stereo camera
-8. make a better physical build, make your own arm, design pcb board no cables 
-9. using pytorch course make an unsupervised grasping model, use jetson orin(check out study material on nvidia(test with olama))   
-10. add flutter app
+# To Do (phase 1)
+1. one motor slower(left motor from homebots frame)and laggy and ticks seem weird, fix in code by analyzing ticks-differential-drive/odom in rviz(turn to action?), then implement inverse kinematics(test with tennis navigation)
+2. network between computer, and homebot(ros_ip) for faster rviz. Look into networking and firewalls and other security features,modify /etc/hosts file(try kubuntu for better networking) ?
+3. slam for homebot, (bno055, motor encoders, lidar)(look up command on heracles on how to run lidar in ros2(in terminal and add here))
+4. Implement forward and inverse kinematics for arm
+5. fix dockerfile humble_pi on pi (image on dockerhub works fine (jazzy_pi))
+6. add camera to docker and rviz
+
+# Phase 2
+1. get stereo camera
+2. make a better physical build, make your own arm, design pcb board no cables 
+3. using pytorch course make an unsupervised grasping model, use jetson orin(check out study material on nvidia(test with olama))   
+4. add flutter app
 
 
 [CODE LINK](https://github.com/canizalesjaime/homebot)
