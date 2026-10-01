@@ -123,10 +123,11 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 ### workspace setup(backend with ros2)
 1. source /opt/jazzy/setup.bash
 2. cd /workspaces/homebot/ros2_ws
-3. colcon build or or colcon build --symlink-install
+3. colcon build or colcon build --symlink-install or colcon build --packages-select arm_description or colcon build --symlink-install --packages-select arm_description 
 4. source install/setup.bash
 5. ros2 launch robot_control robot_move_launch.py
 6. ros2 launch my_robot_description display.launch.py
+7. ros2 launch arm_description display_arm.launch.py
 
 
 ### useful commands to remember

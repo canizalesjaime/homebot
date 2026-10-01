@@ -27,16 +27,21 @@ velocity of each wheel(radians per second), and convert that to the linear and a
 
 
 ## Forward Kinematics(big arm)
-### joint 1
+### joint 1(base_link)
 * wP1 - center of rotational plane of joint 1 = (40.35,103,92.75) (x,y,z)
 * joint 1 is parallel to worlds xz plane
 
-### joint 2
+### joint 2(shoulder)
 * joint 1 to joint 2: roll=0 pitch=90
 * wP2 - center of rotational plane of joint 2 = (28.85, 161.45,92.87) (x,y,z)
 * parallel to xy plane
 * wP2 - wP1=(-11.50, 58.45,0) (in mm)
 * using pythagoreas theorem, we get L12 = sqrt(-11.5^2+58.45^2+0^2)=59.57mm (I measured 60.325mm)
+
+### joint 3(elbow)
+* I need to measure from joint 2 to joint 3 in real world or rviz
+* wP3 - ? 
+* wP3 - wp1 ?
 
 ## fixing reference frame
 * the stl files were drawn in a way that makes it seem like world frame has a roll of -90 degrees, 

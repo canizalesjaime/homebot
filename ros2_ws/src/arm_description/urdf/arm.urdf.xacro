@@ -3,15 +3,15 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"
        name="arm">
 
-
-<!-- <xacro:property name="base_length" value="0.1500"/> -->
-
 <link name="world"/>
-
 
 <link name="base_link">
 
     <visual>
+        <origin
+            xyz="-0.04035 0.09275 -0.10300"
+            rpy="1.5708 0 0"/>
+
         <geometry>
             <mesh filename="package://arm_description/meshes/base.stl"
                   scale="0.001 0.001 0.001"/>
@@ -22,13 +22,18 @@
         </material>
     </visual>
 
+
     <collision>
-     <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin
+            xyz="-0.04035 0.09275 -0.10300"
+            rpy="1.5708 0 0"/>
+
         <geometry>
             <mesh filename="package://arm_description/meshes/base.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
     </collision>
+
 
     <inertial>
         <mass value="1.0"/>
@@ -49,14 +54,17 @@
     <parent link="world"/>
     <child link="base_link"/>
 
-    <!-- Change these values to move or rotate the entire robot -->
-    <origin xyz="0 0 0" rpy="-1.5708 0 0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
 </joint>
 
 
 <link name="central_axis_link">
 
     <visual>
+
+        <origin
+            xyz="-0.04035 0.09275 -0.10300"
+            rpy="1.5708 0 0"/>
 
         <geometry>
             <mesh filename="package://arm_description/meshes/central_axis.stl"
@@ -69,8 +77,11 @@
 
     </visual>
 
-
     <collision>
+
+        <origin
+            xyz="-0.04035 0.09275 -0.10300"
+            rpy="1.5708 0 0"/>
 
         <geometry>
             <mesh filename="package://arm_description/meshes/central_axis.stl"
@@ -101,9 +112,12 @@
 </joint>
 
 
-<!-- <link name="shoulder_link">
+<link name="shoulder_link">
 
     <visual>
+         <origin
+            xyz="-0.02885 0.09287 -0.16145"
+            rpy="1.5708 0 0"/>
 
         <geometry>
             <mesh filename="package://arm_description/meshes/shoulder.stl"
@@ -118,6 +132,9 @@
 
 
     <collision>
+         <origin
+            xyz="-0.02885 0.09287 -0.16145"
+            rpy="1.5708 0 0"/>
 
         <geometry>
             <mesh filename="package://arm_description/meshes/shoulder.stl"
@@ -130,13 +147,21 @@
 
 
 
-<joint name="shoulder_joint" type="fixed">
+<joint name="shoulder_joint" type="revolute">
 
     <parent link="central_axis_link"/>
     <child link="shoulder_link"/>
 
-    <origin xyz="0 0 0"
+    <origin xyz="-0.01150 0 0.05845"
             rpy="0 0 0"/>
+
+    <axis xyz="0 1 0"/>
+
+    <limit
+        lower="-2.6"
+        upper="-.4"
+        effort="2"
+        velocity="5"/>
 
 </joint>
 
@@ -145,6 +170,9 @@
 <link name="elbow_link">
 
     <visual>
+        <origin
+            xyz="0 0 0"
+            rpy="1.5708 0 0"/>
 
         <geometry>
             <mesh filename="package://arm_description/meshes/elbow.stl"
@@ -159,6 +187,10 @@
 
 
     <collision>
+        <origin
+            xyz="0 0 0"
+            rpy="1.5708 0 0"/>
+
 
         <geometry>
             <mesh filename="package://arm_description/meshes/elbow.stl"
@@ -178,13 +210,24 @@
 
     <origin xyz="0 0 0"
             rpy="0 0 0"/>
+    
+    <axis xyz="0 1 0"/>
+
+    <limit
+        lower="-2.6"
+        upper="-.4"
+        effort="2"
+        velocity="5"/>
 
 </joint>
 
 
-<link name="wrist_link">
+<!-- <link name="wrist_link">
 
     <visual>
+        <origin
+            xyz="-0.04035 0.09275 -0.10300"
+            rpy="1.5708 0 0"/>
 
         <geometry>
             <mesh filename="package://arm_description/meshes/wrist.stl"
@@ -199,6 +242,9 @@
 
 
     <collision>
+        <origin
+            xyz="-0.04035 0.09275 -0.10300"
+            rpy="1.5708 0 0"/>
 
         <geometry>
             <mesh filename="package://arm_description/meshes/wrist.stl"
@@ -219,11 +265,22 @@
     <origin xyz="0 0 0"
             rpy="0 0 0"/>
 
+    <axis xyz="0 0 1"/>
+
+    <limit
+        lower="-2.6"
+        upper="-.4"
+        effort="2"
+        velocity="5"/>
+
 </joint>
 
 <link name="gripper_link">
 
     <visual>
+        <origin
+            xyz="-0.04035 0.09275 -0.10300"
+            rpy="1.5708 0 0"/>
 
         <geometry>
             <mesh filename="package://arm_description/meshes/gripper.stl"
@@ -238,6 +295,9 @@
 
 
     <collision>
+        <origin
+            xyz="-0.04035 0.09275 -0.10300"
+            rpy="1.5708 0 0"/>
 
         <geometry>
             <mesh filename="package://arm_description/meshes/gripper.stl"
@@ -257,6 +317,14 @@
 
     <origin xyz="-.21 .33 .048"
             rpy="1.5708 0 0"/>
+
+    <axis xyz="0 0 1"/>
+
+    <limit
+        lower="-2.6"
+        upper="-.4"
+        effort="2"
+        velocity="5"/>
 
 </joint> -->
 </robot>
