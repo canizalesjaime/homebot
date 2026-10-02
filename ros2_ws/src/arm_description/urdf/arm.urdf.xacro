@@ -124,7 +124,7 @@
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
-        <material name="gray">
+        <material name="white">
             <color rgba="1 1 1 1"/>
         </material>
 
@@ -177,7 +177,7 @@
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
-        <material name="gray">
+        <material name="white">
             <color rgba="1 1 1 1"/>
         </material>
 
@@ -231,8 +231,8 @@
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
-        <material name="gray">
-            <color rgba="1 1 1 1"/>
+        <material name="black">
+            <color rgba="0 0 0 1"/>
         </material>
 
     </visual>
@@ -275,7 +275,7 @@
 
     <visual>
         <origin
-            xyz="-0.04035 0.09275 -0.10300"
+            xyz="-0.11823 0.01750 -0.03923"
             rpy="1.5708 0 0"/>
 
         <geometry>
@@ -283,7 +283,7 @@
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
-        <material name="gray">
+        <material name="white">
             <color rgba="1 1 1 1"/>
         </material>
 
@@ -292,7 +292,7 @@
 
     <collision>
         <origin
-            xyz="-0.04035 0.09275 -0.10300"
+            xyz="-0.11823 0.01750 -0.03923"
             rpy="1.5708 0 0"/>
 
         <geometry>
@@ -310,14 +310,14 @@
     <parent link="wrist_link"/>
     <child link="gripper_link"/>
 
-    <origin xyz="-.21 .33 .048"
+    <origin xyz="-0.026525 0.013365 0.005365"
             rpy="1.5708 0 0"/>
 
     <axis xyz="0 0 1"/>
 
     <limit
-        lower="-2.6"
-        upper="-.4"
+        lower="-2"
+        upper="1"
         effort="2"
         velocity="5"/>
 

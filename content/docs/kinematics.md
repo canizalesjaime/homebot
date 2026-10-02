@@ -54,9 +54,9 @@ velocity of each wheel(radians per second), and convert that to the linear and a
 
 ### joint 5(gripper 1)
 * joint 4 to joint 5(orientation): 
-* ${}^{cad}P_5 = (,,)mm$ 
-* ${}^{cad}P_5 - {}^{cad}P_4 = (,,)mm $
-* $R_x(90^\circ)({}^{cad}P_5$ - $^{cad}P_4) = (,,)mm $
+* ${}^{cad}P_5 = (-85.92,308.36,92.01)mm$ 
+* ${}^{cad}P_5 - {}^{cad}P_4 = (-26.53,5.37,-13.37)mm $
+* $R_x(90^\circ)({}^{cad}P_5$ - $^{cad}P_4) = (-26.53,13.37,5.37)mm $
 
 
 ## fixing reference frame
@@ -87,3 +87,8 @@ z_0 &= +y_{CAD}.
 $$
 
 * final formula(applies to all points in cad): ${}^{robot}P_{1}=R_x(90^\circ)(^{cad}P_{a}-^{cad}P_{1})$
+
+* The "link origin" is really the \<visual\>\<origin\>. It tells ROS:
+```How do I place/orient this STL relative to the link's coordinate frame?```
+And the joint \<origin\> tells ROS:
+```How do I get from the parent link frame {J-1} to the child link frame{J}?```
