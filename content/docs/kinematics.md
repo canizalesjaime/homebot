@@ -40,11 +40,23 @@ velocity of each wheel(radians per second), and convert that to the linear and a
 * using pythagoreas theorem, we get $L_{12} = \sqrt{-11.5^2+58.45^2+0^2}=59.57mm$ (I measured 60.325mm)
 
 ### joint 3(elbow)
-* I need to measure from joint 2 to joint 3 in real world or rviz
 * joint 2 to joint 3(orientation): 
 * ${}^{cad}P_3 = (31.1,283.5,92.67)mm$ 
-* ${}^{cad}P_3 =  {}^{cad}P_2 = (2.25,122.05.-.2)mm $
+* ${}^{cad}P_3 - {}^{cad}P_2 = (2.25,122.05,-.2)mm $
 * $R_x(90^\circ)({}^{cad}P_3$ - $^{cad}P_2) = (2.25,.2,122.05)mm $
+
+
+### joint 4(wrist)
+* joint 3 to joint 4(orientation): 
+* ${}^{cad}P_4 = (-59.4, 303, 105.37)mm$ 
+* ${}^{cad}P_4 - {}^{cad}P_3 = (-90.5,19.5,12.7)mm $
+* $R_x(90^\circ)({}^{cad}P_4$ - $^{cad}P_3) = (-90.5,-12.7,19.5)mm $
+
+### joint 5(gripper 1)
+* joint 4 to joint 5(orientation): 
+* ${}^{cad}P_5 = (,,)mm$ 
+* ${}^{cad}P_5 - {}^{cad}P_4 = (,,)mm $
+* $R_x(90^\circ)({}^{cad}P_5$ - $^{cad}P_4) = (,,)mm $
 
 
 ## fixing reference frame
