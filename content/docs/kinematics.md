@@ -28,25 +28,29 @@ velocity of each wheel(radians per second), and convert that to the linear and a
 
 ## Forward Kinematics(big arm)
 ### joint 1(base_link)
-* wP1 - center of rotational plane of joint 1 = (40.35,103,92.75) (x,y,z)
-* joint 1 is parallel to worlds xz plane
+* $^{cad}P_1$ : center of rotational plane of joint 1 = (40.35,103,92.75)(mm)(x,y,z)
+* joint 1 is parallel to worlds xz plane (in cad frame)
 
 ### joint 2(shoulder)
-* joint 1 to joint 2: roll=0 pitch=90
-* wP2 - center of rotational plane of joint 2 = (28.85, 161.45,92.87) (x,y,z)
-* parallel to xy plane
-* wP2 - wP1=(-11.50, 58.45,0) (in mm)
-* using pythagoreas theorem, we get L12 = sqrt(-11.5^2+58.45^2+0^2)=59.57mm (I measured 60.325mm)
+* joint 1 to joint 2(orientation): pitch=90
+* ${}^{cad}P_2$ : center of rotational plane of joint 2 = (28.85, 161.45,92.87)(mm)(x,y,z)
+* parallel to xy plane (in cad frame)
+* ${}^{cad}P_2 - {}^{cad}P_1=(-11.50, 58.45,0)mm$ 
+* $R_x(90^\circ)({}^{cad}P_2 - {}^{cad}P_1)=(-11.50, 0, 58.45)mm$
+* using pythagoreas theorem, we get $L_{12} = \sqrt{-11.5^2+58.45^2+0^2}=59.57mm$ (I measured 60.325mm)
 
 ### joint 3(elbow)
 * I need to measure from joint 2 to joint 3 in real world or rviz
-* wP3 - ? 
-* wP3 - wp1 ?
+* joint 2 to joint 3(orientation): 
+* ${}^{cad}P_3 = (31.1,283.5,92.67)mm$ 
+* ${}^{cad}P_3 =  {}^{cad}P_2 = (2.25,122.05.-.2)mm $
+* $R_x(90^\circ)({}^{cad}P_3$ - $^{cad}P_2) = (2.25,.2,122.05)mm $
+
 
 ## fixing reference frame
 * the stl files were drawn in a way that makes it seem like world frame has a roll of -90 degrees, 
 but in reality its just that up is defined in the y direction of the arm.
-* since this is the case, for simplicity we will make joint 1 the origin of frame {0}. joint 1 is located at wp1=(40.35,103,92.75), so for every other point we consider we must subtract wp1 from it.
+* since this is the case, for simplicity we will make joint 1 the origin of frame {0}. joint 1 is located at $^{cad}P_1$=(40.35,103,92.75)(mm), so for every other point we consider we must subtract $^{cad}P_1$ from it.
 * make physical up become $z_{\text{robot}}:$
 $$
 R_x(90^\circ)
@@ -58,6 +62,8 @@ R_x(90^\circ)
 \end{bmatrix}.
 $$
 
+* ${}^{cad}P_2 - {}^{cad}P_1$ shifts the origin to(joint 1 becomes origin) ${}^{cad}P_1$ 
+
 * Some intuition on how the axes are beiong transformed: 
 $$
 \boxed{
@@ -68,4 +74,4 @@ z_0 &= +y_{CAD}.
 \end{aligned}}
 $$
 
-* final formula(applies to all points in cad): $P_{J1}^{robot}=R_x(90^\circ)\left(P_{J1}^{CAD}-P_{J1}^{CAD}\right)$
+* final formula(applies to all points in cad): ${}^{robot}P_{1}=R_x(90^\circ)(^{cad}P_{a}-^{cad}P_{1})$
