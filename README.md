@@ -161,7 +161,7 @@ docker exec -it ros2-container bash
 1. one motor slower(left motor from homebots frame)and laggy and ticks seem weird, fix in code by analyzing ticks-differential-drive/odom in rviz(turn to action?), then implement inverse kinematics(test with tennis navigation)
 2. network between computer, and homebot(ros_ip) for faster rviz. Look into networking and firewalls and other security features,modify /etc/hosts file(try kubuntu for better networking) ?
 3. slam for homebot, (bno055, motor encoders, lidar)(look up command on heracles on how to run lidar in ros2(in terminal and add here))
-4. ```ARM: ```**forward:** test on actual and print ${}^0 T_5$, also make it move smoothly in rviz. **inverse:** Given some ${}^0 T_{5-desired}$, solve for the arm angles.
+4. ```ARM: ```**forward:** (done)test on actual arm. **inverse:** Given some ${}^0 T_{5-desired}$, solve for the arm angles.
 5. fix dockerfile humble_pi on pi (image on dockerhub works fine (jazzy_pi))
 6. add camera to docker and rviz
 

@@ -14,12 +14,10 @@ import time
 
 
 class ArmNode():
-    def __init__(self,arm="base",rasp_pi="False"):
-        self.rasp_pi=rasp_pi
-        # if self.rasp_pi:
-        #     self.i2c = busio.I2C(board.SCL, board.SDA)
-        #     self.pca = PCA9685(self.i2c)
-        #     self.pca.frequency = 50
+    def __init__(self,arm="base"):
+        #self.i2c = busio.I2C(board.SCL, board.SDA)
+        #self.pca = PCA9685(self.i2c)
+        #self.pca.frequency = 50
         self.SERVO_ANGLES={} #{"joint name:[pca channel, current angle]"}
 
         if arm=="base":
@@ -52,12 +50,11 @@ class ArmNode():
         #pulse = MIN_PULSE + (angle / 180.0) * (MAX_PULSE - MIN_PULSE)
         pulse = MIN_PULSE + ((angle - min_angle) / (max_angle - min_angle)) * (MAX_PULSE - MIN_PULSE)
         duty = int(pulse)<<4
-        # if self.rasp_pi:
-        #     self.pca.channels[channel].duty_cycle = duty
+        #self.pca.channels[channel].duty_cycle = duty
         self.SERVO_ANGLES[joint][1]=angle
 
         
-    def get_servo_angle(self):
+    def get_servo_angles(self):
         return self.SERVO_ANGLES
 
 

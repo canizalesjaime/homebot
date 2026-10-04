@@ -11,11 +11,11 @@ class ArmTeleopNode(Node):
 
           
     def publish_angles(self):
-        angles=input("Enter angles separated by ',' example: 40,50,60,70,80,90:")
+        angles=int(input("Enter angle: "))
         msg = Int32MultiArray()
-        msg.data=[int(angle) for angle in angles.split(',')]
+        msg.data=[angles for i in range(6)]
+        #msg.data=[int(angle) for angle in angles.split(',')]
         if len(msg.data) == 6:
-            print("hi", msg.data)
             self.angles_pub.publish(msg)
    
 

@@ -1,5 +1,6 @@
 #ros2 topic pub /servo_angles std_msgs/Int32MultiArray "data: [90, 90, 90, 90]"
 import math
+import time
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
@@ -18,12 +19,28 @@ class ArmRos(Node):
         self.joint_pub = self.create_publisher(JointState,"/joint_states",10)
 
         self.arm = ArmNode("big")
-        self.arm_msg([90,90,90,90,90,90])
+        self.arm_msg([90,90,90,90,90,90]) # start position
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
 
-    def arm_msg(self, angles_deg):
-        self.arm.set_angles_api(angles_deg)       
+    def move_smooth(self, goal_angles_deg):
+        curr_angles_deg=self.arm.get_servo_angles()
+        step=2
+        for i,joint in enumerate(curr_angles_deg):
+            curr_angle=curr_angles_deg[joint][1]
+            end_angle=goal_angles_deg[i]
+            if curr_angle < end_angle:
+                rng = range(curr_angle, end_angle + 1, step)
+            else:
+                rng = range(curr_angle, end_angle - 1, -step)
+
+            for angle in rng:
+                self.arm.set_servo_angle(joint, angle)
+                self.arm_msg(goal_angles_deg)
+                time.sleep(0.02)
+        
+    
+    def arm_msg(self, angles_deg):       
         arm_msg = JointState()
         arm_msg.header.stamp = self.get_clock().now().to_msg()
         arm_msg.name = ["base_joint","shoulder_joint","elbow_joint",
@@ -32,14 +49,14 @@ class ArmRos(Node):
         self.joint_pub.publish(arm_msg)  
 
     def angle_callback(self, msg):
-        self.arm_msg(msg.data)
+        self.move_smooth(msg.data)
         
         #check out forward kinematics 
-        transform = self.tf_buffer.lookup_transform(
-        'world',       # reference frame
-        'gripper1_link',    # end-effector frame
-        rclpy.time.Time())
-        print("HELLOOOOOOOOOOO",transform)
+        # transform = self.tf_buffer.lookup_transform(
+        # 'world',       # reference frame
+        # 'gripper1_link',    # end-effector frame
+        # rclpy.time.Time())
+        # print("HELLOOOOOOOOOOO",transform)
                   
 
     def destroy_node(self):
