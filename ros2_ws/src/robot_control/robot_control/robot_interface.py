@@ -4,11 +4,11 @@ import threading
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String,Int32
-from sensor_msgs.msg import Imu #, Temperature, JointState
+from sensor_msgs.msg import Imu #, Temperature
 from tf_transformations import euler_from_quaternion
 
 import robot_control.paths
-from fast_models import app, Command, Speed #, ArmAngles
+from fast_models import app, Command, Speed, ArmAngles
 
 bridge = None
 
@@ -77,14 +77,8 @@ def set_speed(spd: Speed):
 
 # @app.post("/set_angles")
 # def set_angles(angs: ArmAngles):
-#     arm_msg = JointState()
-
-#     arm_msg.name = ["base","shoulder","elbow","gripper"]
-
-#     arm_msg.position = [math.radians(angs.base),math.radians(angs.shoulder),
-#                         math.radians(angs.elbow),math.radians(angs.gripper)]
-
-#     bridge.arm_pub.publish(arm_msg)
+#     arm.set_angles_api([angs.base,angs.shoulder,angs.elbow,angs.wrist,
+#                         angs.gripper1,angs.gripper2])
     
 
 def ros_spin():

@@ -59,6 +59,13 @@ velocity of each wheel(radians per second), and convert that to the linear and a
 * $R_x(90^\circ)({}^{cad}P_5$ - $^{cad}P_4) = (-26.53,13.37,5.37)mm $
 
 
+### joint 6(gripper 2)
+* joint 5 to joint 6(orientation): 
+* ${}^{cad}P_6=(105.73, 11.95, 0.008)mm$ 
+* ${}^{cad}P_6 - {}^{cad}P_5 = (-12.5,-27.29,-17.49)mm $
+* $R_x(90^\circ)({}^{cad}P_6$ - $^{cad}P_5) = (-12.5,17.49,-27.29)mm $
+
+
 ## fixing reference frame
 * the stl files were drawn in a way that makes it seem like world frame has a roll of -90 degrees, 
 but in reality its just that up is defined in the y direction of the arm.

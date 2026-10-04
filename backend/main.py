@@ -77,7 +77,8 @@ def get_accelerometer_data():
 
 @app.post("/set_angles")
 def set_angles(angs: ArmAngles):
-    arm.set_angles_api([angs.base,angs.shoulder,angs.elbow,angs.gripper])
+    arm.set_angles_api([angs.base,angs.shoulder,angs.elbow,angs.wrist,
+                        angs.gripper1,angs.gripper2])
 
 
 @app.on_event("shutdown")

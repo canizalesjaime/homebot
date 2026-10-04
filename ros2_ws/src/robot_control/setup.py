@@ -29,6 +29,7 @@ setup(
             'mpu6050 = robot_control.mpu6050_node:main',
             'picam = robot_control.picam_node:main',
             'arm = robot_control.arm_node:main',
+            'arm_teleop = robot_control.arm_teleop:main',
             'lunar = robot_control.lunar_node:main',
             'robot_interface = robot_control.robot_interface:main',
             'imu_bno055 = robot_control.imu_bno055_node:main',

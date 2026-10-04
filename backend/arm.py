@@ -8,16 +8,18 @@
 # pulses below are estimated, and in general should be calibrated
 
 import time
-import board
-import busio
-from adafruit_pca9685 import PCA9685
+# import board
+# import busio
+# from adafruit_pca9685 import PCA9685
 
 
 class ArmNode():
-    def __init__(self,arm="base"):
-        self.i2c = busio.I2C(board.SCL, board.SDA)
-        self.pca = PCA9685(self.i2c)
-        self.pca.frequency = 50
+    def __init__(self,arm="base",rasp_pi="False"):
+        self.rasp_pi=rasp_pi
+        # if self.rasp_pi:
+        #     self.i2c = busio.I2C(board.SCL, board.SDA)
+        #     self.pca = PCA9685(self.i2c)
+        #     self.pca.frequency = 50
         self.SERVO_ANGLES={} #{"joint name:[pca channel, current angle]"}
 
         if arm=="base":
@@ -30,18 +32,15 @@ class ArmNode():
                                  "gripper": [4,90] }
 
         else:
-            self.SERVO_ANGLES = {"wrist roll":[0, 90],# MG90S below
-                                 "gripper":[1, 90],
-                                 "wrist pitch":[3, 90],
-                                 "elbow":[4, 90],  # MG995 below
-                                 "shoulder":[5, 90],    
-                                 "base":[7, 90] }
-
-        for joint, channel_angle in self.SERVO_ANGLES.items():
-            channel, angle = channel_angle
-            self.set_servo_angle(joint,angle)
-            time.sleep(1)
-
+            self.SERVO_ANGLES = {"base":[7, 90],
+                                 "elbow":[4, 90],
+                                 "shoulder":[5, 90],
+                                 "wrist":[0, 90],
+                                 "gripper1":[3, 90],
+                                 "gripper2":[1, 90]}
+                                 
+        self.set_angles_api([90,90,90,90,90,90])
+            
 
     def set_servo_angle(self,joint, angle):
         channel = self.SERVO_ANGLES[joint][0]
@@ -53,8 +52,13 @@ class ArmNode():
         #pulse = MIN_PULSE + (angle / 180.0) * (MAX_PULSE - MIN_PULSE)
         pulse = MIN_PULSE + ((angle - min_angle) / (max_angle - min_angle)) * (MAX_PULSE - MIN_PULSE)
         duty = int(pulse)<<4
-        self.pca.channels[channel].duty_cycle = duty
+        # if self.rasp_pi:
+        #     self.pca.channels[channel].duty_cycle = duty
         self.SERVO_ANGLES[joint][1]=angle
+
+        
+    def get_servo_angle(self):
+        return self.SERVO_ANGLES
 
 
     def move_smooth(self,joint, end_angle, step=2, delay=0.02):
@@ -72,7 +76,6 @@ class ArmNode():
     def clean_up(self):
         for joint in self.SERVO_ANGLES:
             self.move_smooth(joint,90)  
-        self.stop_base()
 
 
     def set_angles_api(self, angles):
@@ -82,8 +85,6 @@ class ArmNode():
 def main():
     try:
         node = ArmNode()
-        node.rotate_base(True)
-            
 
     finally:
         node.clean_up()

@@ -21,4 +21,6 @@ class ArmAngles(BaseModel):
     base: int
     shoulder: int
     elbow: int
-    gripper: int
+    wrist: int
+    gripper1: int
+    gripper2: int
