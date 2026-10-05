@@ -50,13 +50,15 @@ class ArmRos(Node):
 
     def angle_callback(self, msg):
         self.move_smooth(msg.data)
-        
+
+
+    def inverse_kinematics_position(self, p_desired):
         #check out forward kinematics 
-        # transform = self.tf_buffer.lookup_transform(
-        # 'world',       # reference frame
-        # 'gripper1_link',    # end-effector frame
-        # rclpy.time.Time())
-        # print("HELLOOOOOOOOOOO",transform)
+        p_curr = self.tf_buffer.lookup_transform(
+        'world',       # reference frame
+        'gripper1_link',    # end-effector frame
+        rclpy.time.Time())
+        print("HELLOOOOOOOOOOO",p_curr)
                   
 
     def destroy_node(self):
