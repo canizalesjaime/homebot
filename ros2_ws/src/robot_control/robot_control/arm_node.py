@@ -1,6 +1,8 @@
 #ros2 topic pub /servo_angles std_msgs/Int32MultiArray "data: [90, 90, 90, 90]"
 import math
 import time
+import numpy as np
+
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
@@ -18,10 +20,17 @@ class ArmRos(Node):
         
         self.joint_pub = self.create_publisher(JointState,"/joint_states",10)
 
-        self.arm = ArmNode("big")
-        self.arm_msg([90,90,90,90,90,90]) # start position
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
+        self.joints = {"base_joint":[0,0,1], # joint name, axis of rotation
+                       "shoulder_joint":[0,1,0],
+                       "elbow_joint":[0,1,0],
+                       "wrist_joint":[1,0,0],
+                       "gripper1_joint":[0,0,1],
+                       "gripper2_joint":[1,0,0]}
+        self.arm = ArmNode("big")
+        self.arm_msg([90,90,90,90,90,90]) # start position
+
 
     def move_smooth(self, goal_angles_deg):
         curr_angles_deg=self.arm.get_servo_angles()
@@ -43,27 +52,48 @@ class ArmRos(Node):
     def arm_msg(self, angles_deg):       
         arm_msg = JointState()
         arm_msg.header.stamp = self.get_clock().now().to_msg()
-        arm_msg.name = ["base_joint","shoulder_joint","elbow_joint",
-                        "wrist_joint","gripper1_joint", "gripper2_joint"]
+        arm_msg.name = self.joints.keys
         arm_msg.position = [math.radians(i) for i in angles_deg]
         self.joint_pub.publish(arm_msg)  
+
 
     def angle_callback(self, msg):
         self.move_smooth(msg.data)
 
 
     def inverse_kinematics_position(self, p_desired):
-        #check out forward kinematics 
-        p_curr = self.tf_buffer.lookup_transform(
-        'world',       # reference frame
-        'gripper1_link',    # end-effector frame
-        rclpy.time.Time())
-        print("HELLOOOOOOOOOOO",p_curr)
-                  
+        J=self.jacobian()
 
+
+    def p_0_i(self, frame_i):
+        frame_0='world'# reference frame is 0, end effector frame is i
+        t=self.tf_buffer.lookup_transform(frame_0,frame_i,rclpy.time.Time())
+        return [t.transform.translation.x,t.translation.y,t.transform.translation.z]
+
+
+    def a_0_i(self,frame_i):
+        frame_0='world'# reference frame is 0, end effector frame is i
+        #a_i^0 = {}^0R_i,a_i^{local}}
+        t=self.tf_buffer.lookup_transform(frame_0,frame_i,rclpy.time.Time())
+        r=t.transform.rotation
+        return r @ self.joints[frame_i]
+
+
+    def jacobian(self):
+        p_i_list=[self.p_0_i(joint) for joint in self.joints.keys]
+        p_e=p_i_list[-1]
+
+        a_i_list=[self.a_0_i(joint) for joint in self.joints.keys]
+
+        j = [np.cross(a_i_list[i],p_e-p_i_list[i]) for i in range(len(self.joints))]
+        # somehow stack j ontop of a_i_list like an sql union
+
+        
     def destroy_node(self):
         super().destroy_node()
         self.get_logger().info('Servo Controller Node stopped and GPIO released.')
+
+
 
 def main(args=None):
     rclpy.init(args=args)
