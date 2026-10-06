@@ -52,17 +52,20 @@ class ArmRos(Node):
     def arm_msg(self, angles_deg):       
         arm_msg = JointState()
         arm_msg.header.stamp = self.get_clock().now().to_msg()
-        arm_msg.name = self.joints.keys
+        print(list(self.joints))
+        arm_msg.name = list(self.joints)
         arm_msg.position = [math.radians(i) for i in angles_deg]
         self.joint_pub.publish(arm_msg)  
 
 
     def angle_callback(self, msg):
         self.move_smooth(msg.data)
+        self.inverse_kinematics_position([0,0,0])
 
 
     def inverse_kinematics_position(self, p_desired):
         J=self.jacobian()
+        print(J)
 
 
     def p_0_i(self, frame_i):
@@ -80,13 +83,14 @@ class ArmRos(Node):
 
 
     def jacobian(self):
-        p_i_list=[self.p_0_i(joint) for joint in self.joints.keys]
+        p_i_list=[self.p_0_i(joint) for joint in self.joints.keys()]
         p_e=p_i_list[-1]
 
-        a_i_list=[self.a_0_i(joint) for joint in self.joints.keys]
+        a_i_list=[self.a_0_i(joint) for joint in self.joints.keys()]
 
         j = [np.cross(a_i_list[i],p_e-p_i_list[i]) for i in range(len(self.joints))]
         # somehow stack j ontop of a_i_list like an sql union
+        return j
 
         
     def destroy_node(self):
