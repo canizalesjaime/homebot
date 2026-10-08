@@ -8,6 +8,7 @@ from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
 from sensor_msgs.msg import JointState
 from tf2_ros import Buffer, TransformListener
+from tf_transformations import quaternion_matrix
 
 import robot_control.paths
 from arm import ArmNode 
@@ -22,6 +23,7 @@ class ArmRos(Node):
 
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
+
         self.joints = {"base_joint":[0,0,1], # joint name, axis of rotation
                        "shoulder_joint":[0,1,0],
                        "elbow_joint":[0,1,0],
@@ -29,7 +31,8 @@ class ArmRos(Node):
                        "gripper1_joint":[0,0,1],
                        "gripper2_joint":[1,0,0]}
         self.arm = ArmNode("big")
-        self.arm_msg([90,90,90,90,90,90]) # start position
+        self.curr_angles=[ang[1][1] for ang in self.arm.get_servo_angles().items()]
+        self.timer = self.create_timer(0.05,self.publish_joint_states) #20hz
 
 
     def move_smooth(self, goal_angles_deg):
@@ -45,16 +48,15 @@ class ArmRos(Node):
 
             for angle in rng:
                 self.arm.set_servo_angle(joint, angle)
-                self.arm_msg(goal_angles_deg)
+                self.curr_angles=goal_angles_deg
                 time.sleep(0.02)
         
     
-    def arm_msg(self, angles_deg):       
+    def publish_joint_states(self):       
         arm_msg = JointState()
         arm_msg.header.stamp = self.get_clock().now().to_msg()
-        print(list(self.joints))
         arm_msg.name = list(self.joints)
-        arm_msg.position = [math.radians(i) for i in angles_deg]
+        arm_msg.position = [math.radians(i) for i in self.curr_angles]
         self.joint_pub.publish(arm_msg)  
 
 
@@ -65,30 +67,38 @@ class ArmRos(Node):
 
     def inverse_kinematics_position(self, p_desired):
         J=self.jacobian()
-        print(J)
 
 
     def p_0_i(self, frame_i):
         frame_0='world'# reference frame is 0, end effector frame is i
+        frame_i=frame_i[:-5]+"link"
         t=self.tf_buffer.lookup_transform(frame_0,frame_i,rclpy.time.Time())
-        return [t.transform.translation.x,t.translation.y,t.transform.translation.z]
+        return np.array([t.transform.translation.x,
+                         t.transform.translation.y,
+                         t.transform.translation.z])
 
 
     def a_0_i(self,frame_i):
-        frame_0='world'# reference frame is 0, end effector frame is i
-        #a_i^0 = {}^0R_i,a_i^{local}}
-        t=self.tf_buffer.lookup_transform(frame_0,frame_i,rclpy.time.Time())
-        r=t.transform.rotation
-        return r @ self.joints[frame_i]
+        #reference frame is 0, end effector frame is i,a_i^0={}^0R_i,a_i^{local}}
+        frame_0='world'
+        frame_i_link=frame_i[:-5]+"link"
+        t=self.tf_buffer.lookup_transform(frame_0,frame_i_link,rclpy.time.Time())
+        q=t.transform.rotation
+        r = quaternion_matrix([q.x, q.y, q.z, q.w])[:3, :3]
+        return r @ np.array(self.joints[frame_i])
 
 
     def jacobian(self):
-        p_i_list=[self.p_0_i(joint) for joint in self.joints.keys()]
+        p_i_list=np.array([self.p_0_i(joint) for joint in self.joints.keys()])
         p_e=p_i_list[-1]
 
-        a_i_list=[self.a_0_i(joint) for joint in self.joints.keys()]
+        a_i_list=np.array([self.a_0_i(joint) for joint in self.joints.keys()])
 
-        j = [np.cross(a_i_list[i],p_e-p_i_list[i]) for i in range(len(self.joints))]
+        j = np.array([])
+        for i in range(len(self.joints)):
+            c=np.cross(a_i_list[i],p_e-p_i_list[i])
+            j=np.append(j,c)
+
         # somehow stack j ontop of a_i_list like an sql union
         return j
 
