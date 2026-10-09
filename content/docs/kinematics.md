@@ -1,18 +1,5 @@
 # Forward Kinematics
-Given the joint values (input)(angles or displacements), where is the end effector(output)?
-
-${}^{0}T_{n}={}^{0}T_{1}\,{}^{1}T_{2}\,{}^{2}T_{3} \cdots {}^{n-1}T_{n}$
-
-In other words, where is robot in 3d space give the joint angles?​
-
-# Inverse Kinematics
-Given the desired end effector pose, what joint values produce it?
-
-${}^{0}T_{n}(\theta_1,\theta_2,\ldots,\theta_n)=T_{\text{desired}}$
-
-command robot to move to Tdesired
-
-
+In other words, where is robot in 3d space given the joint angles?​
 ## Forward Kinematics for homebot
 Pretty much just the odometry computation. 
 ### Algorithm to get odometry
@@ -66,7 +53,7 @@ velocity of each wheel(radians per second), and convert that to the linear and a
 * $R_x(90^\circ)({}^{cad}P_6$ - $^{cad}P_5) = (-12.5,17.49,-27.29)mm $
 
 
-## fixing reference frame
+### fixing reference frame
 * the stl files were drawn in a way that makes it seem like world frame has a roll of -90 degrees, 
 but in reality its just that up is defined in the y direction of the arm.
 * since this is the case, for simplicity we will make joint 1 the origin of frame {0}. joint 1 is located at $^{cad}P_1$=(40.35,103,92.75)(mm), so for every other point we consider we must subtract $^{cad}P_1$ from it.
@@ -99,3 +86,37 @@ $$
 ```How do I place/orient this STL relative to the link's coordinate frame?```
 And the joint \<origin\> tells ROS:
 ```How do I get from the parent link frame {J-1} to the child link frame{J}?```
+
+# Jacobian
+Is like a generalization of the gradient. It relates the joint velocities to the robots(cartesian(end effector)) velocities.
+In general, the purpose of the Jacobian is to tell you how a point changes locally relative to its inputs. For our robot arm case, we can use the following Jacobian which assumes all revolute joints:<br>
+$
+J(q)=
+\begin{bmatrix}
+a_1^0 \times (p_e^0-p_1^0) &
+a_2^0 \times (p_e^0-p_2^0) &
+\cdots &
+a_6^0 \times (p_e^0-p_6^0)\\[6pt]
+a_1^0 & a_2^0 & \cdots & a_6^0
+\end{bmatrix}
+$
+
+
+
+$\begin{bmatrix} v \\ \omega \end{bmatrix}=J(q)\hat{q}$, <br>
+where q is joint angles and $\hat{q}$ is the joint veolcities<br>
+$v,\omega$ are the linear and angular velocity of the robot respectively. 
+To get the jacobian you must compute: 
+
+
+
+# Inverse Kinematics
+Given the desired end effector pose, what joint values produce it?
+
+${}^{0}T_{n}(\theta_1,\theta_2,\ldots,\theta_n)=T_{\text{desired}}$
+
+command robot to move to Tdesired
+
+Given the joint values (input)(angles or displacements), where is the end effector(output)?
+
+${}^{0}T_{n}={}^{0}T_{1}\,{}^{1}T_{2}\,{}^{2}T_{3} \cdots {}^{n-1}T_{n}$
