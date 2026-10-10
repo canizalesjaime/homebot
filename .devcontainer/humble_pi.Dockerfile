@@ -2,7 +2,6 @@
 #FROM jaimec21/jazzy_pi:latest
 FROM ros:jazzy
 
-
 # ENV DEBIAN_FRONTEND=noninteractive
 
 # Update and install development tools
@@ -17,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     ros-jazzy-joint-state-publisher-gui \
     ros-jazzy-xacro \
     ros-jazzy-rqt-graph \
+    ros-jazzy-tf-transformations \
     iputils-ping \
     git \
     neovim \
@@ -53,17 +53,9 @@ RUN echo "source /workspaces/homebot/ros2_ws/install/setup.bash" >> ~/.bashrc
 # #  python3-libcamera \
 # #  python3-pyqt6
 
-#RUN pip3 install mpu6050-raspberrypi adafruit-blinka adafruit-circuitpython-pca9685 --break-system-packages
-RUN sudo apt install ros-jazzy-tf-transformations
+#RUN pip3 install mpu6050-raspberrypi adafruit-blinka adafruit-circuitpython-pca9685 adafruit-circuitpython-bno055 --break-system-packages
 #RUN pip3 install fastapi uvicorn ultralytics opencv-python --break-system-packages
 
 
-
-#RUN pip3 install adafruit-circuitpython-bno055 adafruit-blinka --break-system-packages
-
-
+# still testing:
 #RUN pip3 install picamera2 --break-system-packages
-
-
-# still gotts do in image
-#RUN pip3 install ultralytics opencv-python --break-system-packages

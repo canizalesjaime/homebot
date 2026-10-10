@@ -90,16 +90,14 @@ And the joint \<origin\> tells ROS:
 # Jacobian
 Is like a generalization of the gradient. It relates the joint velocities to the robots(cartesian(end effector)) velocities.
 In general, the purpose of the Jacobian is to tell you how a point changes locally relative to its inputs. For our robot arm case, we can use the following Jacobian which assumes all revolute joints:<br>
-$
-J(q)=
+$J(q)=
 \begin{bmatrix}
 a_1^0 \times (p_e^0-p_1^0) &
 a_2^0 \times (p_e^0-p_2^0) &
 \cdots &
 a_6^0 \times (p_e^0-p_6^0)\\[6pt]
 a_1^0 & a_2^0 & \cdots & a_6^0
-\end{bmatrix}
-$
+\end{bmatrix}$
 
 
 

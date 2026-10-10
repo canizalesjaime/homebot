@@ -24,7 +24,7 @@ class ArmRos(Node):
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
 
-        self.joints = {"base_joint":[0,0,1], # joint name, axis of rotation
+        self.joints = {"central_axis_joint":[0,0,1], # joint name, axis of rotation
                        "shoulder_joint":[0,1,0],
                        "elbow_joint":[0,1,0],
                        "wrist_joint":[1,0,0],
@@ -48,8 +48,9 @@ class ArmRos(Node):
 
             for angle in rng:
                 self.arm.set_servo_angle(joint, angle)
-                self.curr_angles=goal_angles_deg
+                self.curr_angles[i]=angle
                 time.sleep(0.02)
+        self.curr_angles=[ang[1][1] for ang in self.arm.get_servo_angles().items()] 
         
     
     def publish_joint_states(self):       
@@ -62,11 +63,22 @@ class ArmRos(Node):
 
     def angle_callback(self, msg):
         self.move_smooth(msg.data)
-        self.inverse_kinematics_position([0,0,0])
+        #self.inverse_kinematics_position([0,0,0])
 
 
     def inverse_kinematics_position(self, p_desired):
-        J=self.jacobian()
+        i = 0
+        while i < 1:
+            J=self.jacobian()
+            print(J)
+            p_curr = self.p_0_i("gripper2_joint")
+            p_err = p_desired-p_curr
+            J = self.jacobian()
+            J_v = J[:3, :6]
+            delta_q = np.linalg.pinv(J_v) @ p_err
+            alpha = 0.1
+            q_new = self.curr_angles + alpha * delta_q
+
 
 
     def p_0_i(self, frame_i):
@@ -91,15 +103,15 @@ class ArmRos(Node):
     def jacobian(self):
         p_i_list=np.array([self.p_0_i(joint) for joint in self.joints.keys()])
         p_e=p_i_list[-1]
-
+        
         a_i_list=np.array([self.a_0_i(joint) for joint in self.joints.keys()])
-
-        j = np.array([])
+        
+        j = []
         for i in range(len(self.joints)):
-            c=np.cross(a_i_list[i],p_e-p_i_list[i])
-            j=np.append(j,c)
-
-        # somehow stack j ontop of a_i_list like an sql union
+            j.append(np.cross(a_i_list[i],p_e-p_i_list[i]))
+    
+        j = np.column_stack(j)
+        j = np.vstack((j, a_i_list.T))
         return j
 
         
