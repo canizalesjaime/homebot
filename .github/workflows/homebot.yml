@@ -69,7 +69,7 @@ jobs:
           cd /workspaces/homebot/ros2_ws
           source /opt/ros/jazzy/setup.bash
           source install/setup.bash
-          ros2 launch my_robot_description display.launch.py
+          ros2 launch robot_description display.launch.py
         "
 
     # Tests

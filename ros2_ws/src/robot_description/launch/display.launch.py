@@ -5,12 +5,12 @@ from launch_ros.substitutions import FindPackageShare
 import os
 
 def generate_launch_description():
-    pkg_name = 'my_robot_description'
+    pkg_name = 'robot_description'
 
     urdf_path = PathJoinSubstitution([
         FindPackageShare(pkg_name),
         'urdf',
-        'my_robot.urdf.xacro'
+        'robot.urdf.xacro'
     ])
 
     rviz_config_path = PathJoinSubstitution([

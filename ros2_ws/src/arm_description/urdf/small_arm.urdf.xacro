@@ -9,7 +9,7 @@
     <visual>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/lidar_base.stl"
+            <mesh filename="package://robot_description/meshes/lidar_base.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -23,7 +23,7 @@
     <collision>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/lidar_base.stl"
+            <mesh filename="package://robot_description/meshes/lidar_base.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -85,7 +85,7 @@
     <visual>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/top.stl"
+            <mesh filename="package://robot_description/meshes/top.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -137,7 +137,7 @@
     <visual>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/shoulder_small.stl"
+            <mesh filename="package://robot_description/meshes/shoulder_small.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -151,7 +151,7 @@
     <collision>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/shoulder_small.stl"
+            <mesh filename="package://robot_description/meshes/shoulder_small.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -178,7 +178,7 @@
     <visual>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/elbow_small.stl"
+            <mesh filename="package://robot_description/meshes/elbow_small.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -192,7 +192,7 @@
     <collision>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/elbow_small.stl"
+            <mesh filename="package://robot_description/meshes/elbow_small.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -217,7 +217,7 @@
     <visual>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/base_gripper.stl"
+            <mesh filename="package://robot_description/meshes/base_gripper.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -231,7 +231,7 @@
     <collision>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/base_gripper.stl"
+            <mesh filename="package://robot_description/meshes/base_gripper.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -256,7 +256,7 @@
     <visual>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/gear1.stl"
+            <mesh filename="package://robot_description/meshes/gear1.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -270,7 +270,7 @@
     <collision>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/gear1.stl"
+            <mesh filename="package://robot_description/meshes/gear1.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -295,7 +295,7 @@
     <visual>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/gear2.stl"
+            <mesh filename="package://robot_description/meshes/gear2.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -309,7 +309,7 @@
     <collision>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/gear2.stl"
+            <mesh filename="package://robot_description/meshes/gear2.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -334,7 +334,7 @@
     <visual>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/bar1.stl"
+            <mesh filename="package://robot_description/meshes/bar1.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -348,7 +348,7 @@
     <collision>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/bar1.stl"
+            <mesh filename="package://robot_description/meshes/bar1.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -373,7 +373,7 @@
     <visual>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/bar2.stl"
+            <mesh filename="package://robot_description/meshes/bar2.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -387,7 +387,7 @@
     <collision>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/bar2.stl"
+            <mesh filename="package://robot_description/meshes/bar2.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -412,7 +412,7 @@
     <visual>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/gripper1.stl"
+            <mesh filename="package://robot_description/meshes/gripper1.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -426,7 +426,7 @@
     <collision>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/gripper1.stl"
+            <mesh filename="package://robot_description/meshes/gripper1.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -451,7 +451,7 @@
     <visual>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/gripper2.stl"
+            <mesh filename="package://robot_description/meshes/gripper2.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -465,7 +465,7 @@
     <collision>
 
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/gripper2.stl"
+            <mesh filename="package://robot_description/meshes/gripper2.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 

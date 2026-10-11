@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"
-       name="my_robot">
+       name="robot">
 
 
 <xacro:property name="base_length" value="0.1500"/>
@@ -20,7 +20,7 @@
 
     <visual>
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/base.stl"
+            <mesh filename="package://robot_description/meshes/base.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -216,7 +216,7 @@
 
     <visual>
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/base_cover.stl"
+            <mesh filename="package://robot_description/meshes/base_cover.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 
@@ -241,7 +241,7 @@
 <link name="rplidar_link">
     <visual>
         <geometry>
-            <mesh filename="package://my_robot_description/meshes/rplidar.stl"
+            <mesh filename="package://robot_description/meshes/rplidar.stl"
                   scale="0.001 0.001 0.001"/>
         </geometry>
 

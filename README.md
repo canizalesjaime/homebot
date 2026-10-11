@@ -126,16 +126,17 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 3. colcon build or colcon build --symlink-install or colcon build --packages-select arm_description or colcon build --symlink-install --packages-select arm_description 
 4. source install/setup.bash
 5. ros2 launch robot_control robot_move_launch.py
-6. ros2 launch my_robot_description display.launch.py
+6. ros2 launch robot_description display.launch.py
 7. ros2 launch arm_description display_arm.launch.py
 8. rpy is applied with roll first
+9. ros2 pkg create robot_interfaces --build-type ament_cmake
 
 
 ### useful commands to remember
 1. ros2 service call /capture_image std_srvs/srv/Trigger
 2. xhost +local:root and xhost -local:root (for rviz2 on kubuntu)
 3. ros2 run tf2_tools view_frames (saves tf frames in pdf)
-4. ros2 pkg create my_robot_description --build-type ament_python  (create package)
+4. ros2 pkg create robot_description --build-type ament_python  (create package)
 5. ros2 run rqt_graph rqt_graph (view sub-pub architecture)
 6. ros2 run \<package_name\> \<executable_name\>
 7. ros2 launch \<package_name\> \<executable_name\>
@@ -153,7 +154,7 @@ docker exec -it ros2-container bash
   --roll 0 --pitch 0 --yaw 0 \
   --frame-id map \
   --child-frame-id laser
-12. launch my_robot_description and ros2 launch rplidar_ros rplidar_c1_launch.py 
+12. launch robot_description and ros2 launch rplidar_ros rplidar_c1_launch.py 
 
 
 
