@@ -1,13 +1,12 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import PointStamped
-from arm_interfaces.srv import SetArmAngles
+from robot_interfaces.srv import SetArmAngles
 
 
 class ArmTeleopNode(Node):
     def __init__(self):
         super().__init__('arm_teleop_node')
-        #self.angles_pub = self.create_publisher(Int32MultiArray,'cmd_arm', 10)
         
         self.client = self.create_client(SetArmAngles,'set_arm_angles')      
         while not self.client.wait_for_service(timeout_sec=1.0):
