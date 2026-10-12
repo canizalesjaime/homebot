@@ -154,15 +154,17 @@ docker exec -it ros2-container bash
   --roll 0 --pitch 0 --yaw 0 \
   --frame-id map \
   --child-frame-id laser
-12. launch robot_description and ros2 launch rplidar_ros rplidar_c1_launch.py 
+12. launch robot_description and ros2 launch rplidar_ros rplidar_c1_launch.py
+13. ros2 service call /set_arm_angles robot_interfaces/srv/SetArmAngles "{angles: [90, 90, 90, 90, 90, 90]}"
+14. ros2 topic pub /servo_angles std_msgs/Int32MultiArray "data: [90, 90, 90, 90]" 
 
 
 
 # To Do (phase 1)
-1. one motor slower(left motor from homebots frame)and laggy and ticks seem weird, fix in code by analyzing ticks-differential-drive/odom in rviz(turn to action?), then implement inverse kinematics(test with tennis navigation)
+1. one motor slower(left motor from homebots frame)and laggy and ticks seem weird, fix in code by analyzing ticks-differential-drive/odom in rviz(turn to action), then implement inverse kinematics(test with tennis navigation)
 2. network between computer, and homebot(ros_ip) for faster rviz. Look into networking and firewalls and other security features,modify /etc/hosts file(try kubuntu for better networking) ?
 3. slam for homebot, (bno055, motor encoders, lidar)(look up command on heracles on how to run lidar in ros2(in terminal and add here))
-4. ```ARM: ```**forward:** (done)test on actual arm. **inverse:** Given some ${}^0 T_{5-desired}$, solve for the arm angles.(check jacobian), posible solution: publish arm_msg periodically, instead of just when command is sent.
+4. ```ARM: ```**forward:** (done)test on actual arm. **inverse:** Given some ${}^0 T_{5-desired}$, solve for the arm angles.(test first solution, then iterative solution)
 5. fix dockerfile humble_pi on pi (image on dockerhub works fine (jazzy_pi))
 6. add camera to docker and rviz
 

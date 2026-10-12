@@ -1,4 +1,4 @@
-#ros2 topic pub /servo_angles std_msgs/Int32MultiArray "data: [90, 90, 90, 90]"
+
 import math
 import time
 import numpy as np
@@ -9,15 +9,16 @@ from std_msgs.msg import Int32MultiArray
 from sensor_msgs.msg import JointState
 from tf2_ros import Buffer, TransformListener
 from tf_transformations import quaternion_matrix
+from rclpy.action import ActionServer, CancelResponse, GoalResponse
 
 import robot_control.paths
 from arm import ArmNode 
+from robot_interfaces.action import MoveArm
+from robot_interfaces.srv import CalculateIK
 
 class ArmRos(Node):
     def __init__(self):
         super().__init__('arm_ros')
-        self.angle_sub = self.create_subscription(Int32MultiArray,'cmd_arm',
-                                                  self.angle_callback, 10)
         
         self.joint_pub = self.create_publisher(JointState,"/joint_states",10)
 
@@ -33,6 +34,44 @@ class ArmRos(Node):
         self.arm = ArmNode("big")
         self.curr_angles=[ang[1][1] for ang in self.arm.get_servo_angles().items()]
         self.timer = self.create_timer(0.05,self.publish_joint_states) #20hz
+
+        self.move_arm_server = ActionServer(self,MoveArm,'move_arm',
+            execute_callback=self.execute_move_callback,
+            goal_callback=self.goal_callback,
+            cancel_callback=self.cancel_callback)
+
+
+    # Action server callbacks
+    def goal_callback(self, goal_request):
+        if len(goal_request.angles) != 6:
+            self.get_logger().warn("Expected exactly 6 angles")
+            return GoalResponse.REJECT
+
+        return GoalResponse.ACCEPT
+
+
+    def cancel_callback(self, goal_handle):
+        return CancelResponse.REJECT
+
+
+    def execute_move_callback(self, goal_handle):
+        goal_angles = list(goal_handle.request.angles)
+
+        self.get_logger().info(f"Moving arm to {goal_angles}")
+
+        result = MoveArm.Result()
+
+        try:
+            self.move_smooth(goal_angles)
+            goal_handle.succeed()
+            result.success = True
+            result.message = "Arm movement completed"
+        except Exception as e:
+            goal_handle.abort()
+            result.success = False
+            result.message = str(e)
+
+        return result
 
 
     def move_smooth(self, goal_angles_deg):
@@ -61,11 +100,33 @@ class ArmRos(Node):
         self.joint_pub.publish(arm_msg)  
 
 
-    def angle_callback(self, msg):
-        self.move_smooth(msg.data)
-        #self.inverse_kinematics_position([0,0,0])
+    def ik_callback(self, request, response):
+        p_desired = np.array([
+            request.x,
+            request.y,
+            request.z
+        ], dtype=float)
 
+        try:
+            solution = self.inverse_kinematics_position(p_desired)
 
+            if solution is None:
+                response.success = False
+                response.joint_angles = []
+                response.message = "IK failed to find a solution"
+            else:
+                response.success = True
+                response.joint_angles = [float(q) for q in solution]
+                response.message = "IK solution calculated"
+
+        except Exception as e:
+            response.success = False
+            response.joint_angles = []
+            response.message = str(e)
+
+        return response
+
+    
     def inverse_kinematics_position(self, p_desired):
         i = 0
         while i < 1:
@@ -78,7 +139,6 @@ class ArmRos(Node):
             delta_q = np.linalg.pinv(J_v) @ p_err
             alpha = 0.1
             q_new = self.curr_angles + alpha * delta_q
-
 
 
     def p_0_i(self, frame_i):
