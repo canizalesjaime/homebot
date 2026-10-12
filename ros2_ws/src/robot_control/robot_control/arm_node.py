@@ -5,7 +5,6 @@ import numpy as np
 
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Int32MultiArray
 from sensor_msgs.msg import JointState
 from tf2_ros import Buffer, TransformListener
 from tf_transformations import quaternion_matrix
@@ -32,13 +31,16 @@ class ArmRos(Node):
                        "gripper1_joint":[0,0,1],
                        "gripper2_joint":[1,0,0]}
         self.arm = ArmNode("big")
-        self.curr_angles=[ang[1][1] for ang in self.arm.get_servo_angles().items()]
+        self.curr_angles= [ang[1][1] for ang in self.arm.get_servo_angles().items()]
         self.timer = self.create_timer(0.05,self.publish_joint_states) #20hz
 
         self.move_arm_server = ActionServer(self,MoveArm,'move_arm',
             execute_callback=self.execute_move_callback,
             goal_callback=self.goal_callback,
             cancel_callback=self.cancel_callback)
+
+        self.ik_service = self.create_service(CalculateIK,'calculate_ik',
+                                              self.ik_callback)
 
 
     # Action server callbacks
@@ -62,7 +64,7 @@ class ArmRos(Node):
         result = MoveArm.Result()
 
         try:
-            self.move_smooth(goal_angles)
+            self.move_smooth(goal_angles, goal_handle)
             goal_handle.succeed()
             result.success = True
             result.message = "Arm movement completed"
@@ -74,9 +76,23 @@ class ArmRos(Node):
         return result
 
 
-    def move_smooth(self, goal_angles_deg):
+    def move_smooth(self, goal_angles_deg, goal_handle=None):
         curr_angles_deg=self.arm.get_servo_angles()
         step=2
+
+        # Calculate total number of movement steps
+        total_steps = 0
+        for i, joint in enumerate(curr_angles_deg):
+            curr_angle = curr_angles_deg[joint][1]
+            end_angle = goal_angles_deg[i]
+            total_steps += len(range(
+                curr_angle,
+                end_angle + 1 if curr_angle < end_angle else end_angle - 1,
+                step if curr_angle < end_angle else -step
+            ))
+
+        completed_steps = 0
+
         for i,joint in enumerate(curr_angles_deg):
             curr_angle=curr_angles_deg[joint][1]
             end_angle=goal_angles_deg[i]
@@ -88,8 +104,18 @@ class ArmRos(Node):
             for angle in rng:
                 self.arm.set_servo_angle(joint, angle)
                 self.curr_angles[i]=angle
-                time.sleep(0.02)
-        self.curr_angles=[ang[1][1] for ang in self.arm.get_servo_angles().items()] 
+                #time.sleep(0.02)
+
+                completed_steps += 1
+
+                if goal_handle is not None:
+                    feedback = MoveArm.Feedback()
+                    feedback.progress = float(
+                        completed_steps / total_steps * 100.0
+                    )
+                    goal_handle.publish_feedback(feedback)
+
+        self.curr_angles=[ang[1][1] for ang in self.arm.get_servo_angles().items()]
         
     
     def publish_joint_states(self):       
@@ -128,17 +154,15 @@ class ArmRos(Node):
 
     
     def inverse_kinematics_position(self, p_desired):
-        i = 0
-        while i < 1:
-            J=self.jacobian()
-            print(J)
-            p_curr = self.p_0_i("gripper2_joint")
-            p_err = p_desired-p_curr
-            J = self.jacobian()
-            J_v = J[:3, :6]
-            delta_q = np.linalg.pinv(J_v) @ p_err
-            alpha = 0.1
-            q_new = self.curr_angles + alpha * delta_q
+        J = self.jacobian()
+        p_curr = self.p_0_i("gripper2_joint")
+        p_err = p_desired - p_curr
+        J_v = J[:3, :6]
+        delta_q = np.linalg.pinv(J_v) @ p_err
+        alpha = 0.1
+        q_curr = np.radians(np.array(self.curr_angles[:6], dtype=float))
+        q_new = q_curr + alpha * delta_q
+        return q_new
 
 
     def p_0_i(self, frame_i):

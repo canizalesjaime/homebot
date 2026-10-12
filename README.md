@@ -155,8 +155,9 @@ docker exec -it ros2-container bash
   --frame-id map \
   --child-frame-id laser
 12. launch robot_description and ros2 launch rplidar_ros rplidar_c1_launch.py
-13. ros2 service call /set_arm_angles robot_interfaces/srv/SetArmAngles "{angles: [90, 90, 90, 90, 90, 90]}"
+13. ros2 service call /calculate_ik robot_interfaces/srv/CalculateIK "{x: 0.1, y: 0.0, z: 0.2}"
 14. ros2 topic pub /servo_angles std_msgs/Int32MultiArray "data: [90, 90, 90, 90]" 
+15. ros2 action send_goal /move_arm robot_interfaces/action/MoveArm "{angles: [30, 30, 30, 30, 30, 30]}"
 
 
 
