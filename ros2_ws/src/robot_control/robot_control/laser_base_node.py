@@ -6,7 +6,7 @@ from sensor_msgs.msg import JointState, LaserScan
 
 
 import robot_control.paths
-from arm import ArmNode 
+from arm import Arm 
 
 class LaserBaseNode(Node):
     def __init__(self):
@@ -18,7 +18,7 @@ class LaserBaseNode(Node):
         self.joint_pub = self.create_publisher(JointState,"/joint_states",10)
         self.scan_pub = self.create_publisher(LaserScan,"/scan",10)
 
-        self.arm = ArmNode()
+        self.arm = Arm()
         self.rotating = True
         self.lidar_data=-1
         self.rotate_timer = self.create_timer(0.1, self.rotate_callback)

@@ -13,7 +13,7 @@ import time
 # from adafruit_pca9685 import PCA9685
 
 
-class ArmNode():
+class Arm():
     def __init__(self,arm="base"):
         #self.i2c = busio.I2C(board.SCL, board.SDA)
         #self.pca = PCA9685(self.i2c)
@@ -81,7 +81,7 @@ class ArmNode():
 
 def main():
     try:
-        node = ArmNode()
+        node = Arm()
 
     finally:
         node.clean_up()

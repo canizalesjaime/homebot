@@ -12,9 +12,9 @@ from fast_models import app, Command, Speed, ArmAngles
 
 bridge = None
 
-class RobotInterface(Node):
+class WebInterface(Node):
     def __init__(self):
-        super().__init__('robot_interface_node')
+        super().__init__('web_interface_node')
         #tt motor
         self.cmd_pub = self.create_publisher(String, 'cmd_motor', 10)
         self.speed_pub = self.create_publisher(Int32, 'cmd_speed', 10)

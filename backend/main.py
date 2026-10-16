@@ -7,7 +7,7 @@ from fastapi.responses import StreamingResponse
 
 from imu_bn0055_sensor import ImuSensor
 from robot_controller import RobotController
-from arm import ArmNode
+from arm import Arm
 from fast_models import app, Command, Speed, ArmAngles
 from yolo_detector import YoloDetector
 
@@ -17,7 +17,7 @@ yolo_detector = YoloDetector()
 
 #outputs
 robot = RobotController()
-arm = ArmNode()
+arm = Arm()
 
 
 frame = None

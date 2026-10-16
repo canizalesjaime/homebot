@@ -14,7 +14,7 @@ def generate_launch_description():
         ),
         Node(
             package='robot_control',
-            executable='robot_interface',
+            executable='web_interface',
             parameters=[
               {
                "host": "0.0.0.0",
