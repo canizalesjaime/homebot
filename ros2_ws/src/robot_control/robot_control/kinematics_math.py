@@ -14,7 +14,6 @@ def load_kinematic_chain(urdf_path):
         child = joint.find("child").get("link")
         joints_by_child[child] = joint
 
-    print("JOINTS BY CHILD: ",joints_by_child)
     chain = []
     link = "gripper2_link"
 
@@ -26,11 +25,10 @@ def load_kinematic_chain(urdf_path):
         chain.append(joint)
         link = joint.find("parent").get("link")
 
-    self.kinematic_chain = list(reversed(chain))
-    print("KINEMATCIS CHAIN: ",self.kinematic_chain)
+    return list(reversed(chain))
 
 
-def jacobian():
+def jacobian(q):
     p_i_list=np.array([self.p_0_i(joint) for joint in self.joints.keys()])
     p_e=p_i_list[-1]
     
@@ -98,6 +96,7 @@ def axis_rotation(axis, angle):
         T[:3, :3] = R
 
         return T
+
 
 def forward_kinematics(q):
     """Calculate world-to-gripper2_link transform for joint angles q."""

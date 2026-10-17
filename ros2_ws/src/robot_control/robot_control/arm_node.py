@@ -11,7 +11,7 @@ from rclpy.action import ActionServer, CancelResponse, GoalResponse
 
 
 import robot_control.paths
-from kinematics_math import load_kinematic_chain,jacobian,make_transform,axis_rotation,inverse_kinematics_position
+from kinematics_math import load_kinematic_chain,inverse_kinematics_position
 from arm import Arm 
 from robot_interfaces.action import MoveArm
 from robot_interfaces.srv import CalculateIK
@@ -34,7 +34,7 @@ class ArmNode(Node):
         self.arm = Arm("big")
         self.curr_angles= [ang[1][1] for ang in self.arm.get_servo_angles().items()]
         self.timer = self.create_timer(0.05,self.publish_joint_states) #20hz
-        self.load_kinematic_chain("/workspaces/homebot/ros2_ws/src/arm_description/urdf/arm.urdf.xacro")
+        self.kinematic_chain=load_kinematic_chain("/workspaces/homebot/ros2_ws/src/arm_description/urdf/arm.urdf.xacro")
 
         self.move_arm_server = ActionServer(self,MoveArm,'move_arm',
             execute_callback=self.execute_move_callback,
@@ -136,7 +136,7 @@ class ArmNode(Node):
         ], dtype=float)
 
         try:
-            solution = self.inverse_kinematics_position(p_desired)
+            solution = inverse_kinematics_position(p_desired)
 
             if solution is None:
                 response.success = False
