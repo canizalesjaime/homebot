@@ -28,14 +28,14 @@ def load_kinematic_chain(urdf_path):
     return list(reversed(chain))
 
 
-def jacobian(q):
-    p_i_list=np.array([self.p_0_i(joint) for joint in self.joints.keys()])
+def jacobian(q, joints):
+    p_i_list=np.array([self.p_0_i(joint) for joint in joints.keys()])
     p_e=p_i_list[-1]
     
-    a_i_list=np.array([self.a_0_i(joint) for joint in self.joints.keys()])
+    a_i_list=np.array([self.a_0_i(joint) for joint in joints.keys()])
     
     j = []
-    for i in range(len(self.joints)):
+    for i in range(len(joints)):
         j.append(np.cross(a_i_list[i],p_e-p_i_list[i]))
 
     j = np.column_stack(j)
@@ -98,12 +98,12 @@ def axis_rotation(axis, angle):
         return T
 
 
-def forward_kinematics(q):
+def forward_kinematics(q, kinematic_chain):
     """Calculate world-to-gripper2_link transform for joint angles q."""
     T = np.eye(4)
     angle_index = 0
 
-    for joint in self.kinematic_chain:
+    for joint in kinematic_chain:
         origin = joint.find("origin")
 
         xyz = np.zeros(3)
@@ -113,7 +113,7 @@ def forward_kinematics(q):
             xyz = np.fromstring(origin.get("xyz", "0 0 0"), sep=" ")
             rpy = np.fromstring(origin.get("rpy", "0 0 0"), sep=" ")
 
-        T = T @ self.make_transform(xyz, rpy)
+        T = T @ make_transform(xyz, rpy)
 
         joint_type = joint.get("type")
 
@@ -127,7 +127,7 @@ def forward_kinematics(q):
             if angle_index >= len(q):
                 raise ValueError("Not enough joint angles")
 
-            T = T @ self.axis_rotation(axis, q[angle_index])
+            T = T @ axis_rotation(axis, q[angle_index])
             angle_index += 1
 
         elif joint_type != "fixed":

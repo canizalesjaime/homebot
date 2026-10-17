@@ -104,8 +104,6 @@ a_1^0 & a_2^0 & \cdots & a_6^0
 $\begin{bmatrix} v \\ \omega \end{bmatrix}=J(q)\hat{q}$, <br>
 where q is joint angles and $\hat{q}$ is the joint veolcities<br>
 $v,\omega$ are the linear and angular velocity of the robot respectively. 
-To get the jacobian you must compute: 
-
 
 
 # Inverse Kinematics
@@ -118,3 +116,6 @@ command robot to move to Tdesired
 Given the joint values (input)(angles or displacements), where is the end effector(output)?
 
 ${}^{0}T_{n}={}^{0}T_{1}\,{}^{1}T_{2}\,{}^{2}T_{3} \cdots {}^{n-1}T_{n}$
+
+## Algorithm
+1. 
