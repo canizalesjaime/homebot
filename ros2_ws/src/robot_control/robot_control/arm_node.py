@@ -136,7 +136,7 @@ class ArmNode(Node):
         ], dtype=float)
 
         try:
-            solution = inverse_kinematics_position(p_desired)
+            solution = inverse_kinematics_position(self.curr_angles,p_desired,self.kinematic_chain)
 
             if solution is None:
                 response.success = False
@@ -172,6 +172,20 @@ class ArmNode(Node):
         q=t.transform.rotation
         r = quaternion_matrix([q.x, q.y, q.z, q.w])[:3, :3]
         return r @ np.array(self.joints[frame_i])
+
+
+    def old_jacobian(self):
+        j = []
+        p_i_list=np.array([self.p_0_i(joint) for joint in self.joints.keys()])
+        p_e=p_i_list[-1]
+        a_i_list=np.array([self.a_0_i(joint) for joint in self.joints.keys()])
+        
+        for i in range(len(self.joints)):
+            j.append(np.cross(a_i_list[i],p_e-p_i_list[i]))
+
+        j = np.column_stack(j)
+        j = np.vstack((j, a_i_list.T))
+        return j
 
         
     def destroy_node(self):

@@ -1,4 +1,4 @@
-import np
+import numpy as np
 import xacro
 import xml.etree.ElementTree as ET
 
@@ -28,19 +28,40 @@ def load_kinematic_chain(urdf_path):
     return list(reversed(chain))
 
 
-def jacobian(q, joints):
-    p_i_list=np.array([self.p_0_i(joint) for joint in joints.keys()])
-    p_e=p_i_list[-1]
+def jacobian(q, kinematic_chain):
+    J = []
+    # End-effector position in world frame
+    T_e = forward_kinematics(q, kinematic_chain)
+    p_e = T_e[:3, 3]
     
-    a_i_list=np.array([self.a_0_i(joint) for joint in joints.keys()])
-    
-    j = []
-    for i in range(len(joints)):
-        j.append(np.cross(a_i_list[i],p_e-p_i_list[i]))
+    for joint in kinematic_chain:
+        if joint.get("type") not in ("revolute", "continuous"):
+            continue
 
-    j = np.column_stack(j)
-    j = np.vstack((j, a_i_list.T))
-    return j
+        # Transformation from world to joint's child link(p_i_list)
+        child_link = joint.find("child").get("link")
+        T_i = forward_kinematics(q, kinematic_chain, child_link)
+        p_i = T_i[:3, 3]
+
+        # Joint rotation axis from URDF (a_i_list)
+        axis_element = joint.find("axis")
+        axis = np.array([1.0, 0.0, 0.0])
+
+        if axis_element is not None:
+            axis = np.fromstring(axis_element.get("xyz", "1 0 0"), sep=" ")
+
+        axis = axis / np.linalg.norm(axis)
+
+        # Convert joint axis to world frame
+        a_i = T_i[:3, :3] @ axis
+
+        # Linear and angular Jacobian components
+        J_v = np.cross(a_i, p_e - p_i)
+        J_w = a_i
+
+        J.append(np.concatenate((J_v, J_w)))
+
+    return np.column_stack(J)
 
 
 def make_transform(xyz, rpy):
@@ -77,7 +98,10 @@ def make_transform(xyz, rpy):
 
 
 def axis_rotation(axis, angle):
-        """Create a 4x4 rotation about an arbitrary joint axis."""
+        """Create a 4x4 rotation about an arbitrary joint axis,
+           in other words, considering the rotation axis of the joint,
+           and how much that joint is rotated, return a corresponding 
+           transformation in se(3) (rodrigues formula)"""
         axis = np.asarray(axis, dtype=float)
         axis = axis / np.linalg.norm(axis)
 
@@ -98,10 +122,13 @@ def axis_rotation(axis, angle):
         return T
 
 
-def forward_kinematics(q, kinematic_chain):
-    """Calculate world-to-gripper2_link transform for joint angles q."""
+def forward_kinematics(q, kinematic_chain, frame="gripper2_link"):
+    """Calculate world-to-<frame> transform for joint angles q."""
     T = np.eye(4)
     angle_index = 0
+
+    if frame == "world":
+        return T
 
     for joint in kinematic_chain:
         origin = joint.find("origin")
@@ -124,37 +151,38 @@ def forward_kinematics(q, kinematic_chain):
             if axis_element is not None:
                 axis = np.fromstring(axis_element.get("xyz", "1 0 0"), sep=" ")
 
-            if angle_index >= len(q):
-                raise ValueError("Not enough joint angles")
-
             T = T @ axis_rotation(axis, q[angle_index])
             angle_index += 1
 
         elif joint_type != "fixed":
             raise NotImplementedError(f"Unsupported joint type: {joint_type}")
 
-    if angle_index != len(q):
-        raise ValueError(f"Expected {angle_index} joint angles, got {len(q)}")
+        # Stop once we reach the requested child link
+        child_link = joint.find("child").get("link")
 
-    return T
+        if child_link == frame:
+            return T
+
+    raise ValueError(f"Frame '{frame}' not found in kinematic chain")
 
 
-def inverse_kinematics_position(p_desired):
-    J = jacobian()
-    p_curr = self.p_0_i("gripper2_joint")
-    p_err = p_desired - p_curr
-    J_v = J[:3, :6]
-    delta_q = np.linalg.pinv(J_v) @ p_err
-    alpha = 0.1
-    q_curr = np.radians(np.array(self.curr_angles[:6], dtype=float))
-    q_new = q_curr + alpha * delta_q
+def inverse_kinematics_position(q_curr,p_desired,kinematic_chain):
+    J = jacobian(q_curr, kinematic_chain)
+    print("NEW JACOBIAN: ",J)
+    # p_curr = forward_kinematics(q_curr, kinematic_chain)[:3, 3]
+    # p_err = p_desired - p_curr
+    # J_v = J[:3, :6]
+    # delta_q = np.linalg.pinv(J_v) @ p_err
+    # alpha = 0.1
+    # q_curr = np.radians(np.array(self.curr_angles[:6], dtype=float))
+    # q_new = q_curr + alpha * delta_q
 
-    # Test forward kinematics at the current configuration
-    T = forward_kinematics(q_curr)
-    p_fk = T[:3, 3]
+    # # Test forward kinematics at the current configuration
+    # T = forward_kinematics(q_curr)
+    # p_fk = T[:3, 3]
 
-    print("TF position:", p_curr)
-    print("FK position:", p_fk)
-    print("Difference:", np.linalg.norm(p_curr - p_fk))
+    # print("TF position:", p_curr)
+    # print("FK position:", p_fk)
+    # print("Difference:", np.linalg.norm(p_curr - p_fk))
 
-    return q_new
+    # return q_new
