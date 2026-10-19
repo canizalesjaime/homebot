@@ -8,16 +8,16 @@
 # pulses below are estimated, and in general should be calibrated
 
 import time
-# import board
-# import busio
-# from adafruit_pca9685 import PCA9685
+import board
+import busio
+from adafruit_pca9685 import PCA9685
 
 
 class Arm():
     def __init__(self,arm="base"):
-        #self.i2c = busio.I2C(board.SCL, board.SDA)
-        #self.pca = PCA9685(self.i2c)
-        #self.pca.frequency = 50
+        self.i2c = busio.I2C(board.SCL, board.SDA)
+        self.pca = PCA9685(self.i2c)
+        self.pca.frequency = 50
         self.SERVO_ANGLES={} #{"joint name:[pca channel, current angle]"}
 
         if arm=="base":
@@ -50,7 +50,7 @@ class Arm():
         #pulse = MIN_PULSE + (angle / 180.0) * (MAX_PULSE - MIN_PULSE)
         pulse = MIN_PULSE + ((angle - min_angle) / (max_angle - min_angle)) * (MAX_PULSE - MIN_PULSE)
         duty = int(pulse)<<4
-        #self.pca.channels[channel].duty_cycle = duty
+        self.pca.channels[channel].duty_cycle = duty
         self.SERVO_ANGLES[joint][1]=angle
 
         

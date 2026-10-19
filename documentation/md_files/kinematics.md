@@ -118,4 +118,8 @@ Given the joint values (input)(angles or displacements), where is the end effect
 ${}^{0}T_{n}={}^{0}T_{1}\,{}^{1}T_{2}\,{}^{2}T_{3} \cdots {}^{n-1}T_{n}$
 
 ## Algorithm
-1. 
+1. Given the current position($p_c$) and the desired position($p_d$), we must find the angles that will place the end effector(tool_link) at the desired point.
+2. We solve this problem using **numerical inverse kinematics**, which is a general and iterative solution. 
+3. The formula: $q_{k+1}=q_k + J^{\dagger}(q_k)[p_d-p_c]$, where $J^{\dagger}$ is the pseudoinverse for the jacobian, and $q_k$ is the set of joint angles. The halting criteria is when $|p_d-p_c| < threshold$
+4. Note: each iteration, requires you to solve for the forward kinematics of $q_k$ to obtain 
+   $J^{\dagger}$

@@ -15,7 +15,7 @@ def load_kinematic_chain(urdf_path):
         joints_by_child[child] = joint
 
     chain = []
-    link = "gripper2_link"
+    link = "tool_link"
 
     while link != "world":
         if link not in joints_by_child:
@@ -122,7 +122,7 @@ def axis_rotation(axis, angle):
         return T
 
 
-def forward_kinematics(q, kinematic_chain, frame="gripper2_link"):
+def forward_kinematics(q, kinematic_chain, frame="tool_link"):
     """Calculate world-to-<frame> transform for joint angles q."""
     T = np.eye(4)
     angle_index = 0
@@ -166,23 +166,20 @@ def forward_kinematics(q, kinematic_chain, frame="gripper2_link"):
     raise ValueError(f"Frame '{frame}' not found in kinematic chain")
 
 
-def inverse_kinematics_position(q_curr,p_desired,kinematic_chain):
-    J = jacobian(q_curr, kinematic_chain)
-    print("NEW JACOBIAN: ",J)
-    # p_curr = forward_kinematics(q_curr, kinematic_chain)[:3, 3]
-    # p_err = p_desired - p_curr
-    # J_v = J[:3, :6]
-    # delta_q = np.linalg.pinv(J_v) @ p_err
-    # alpha = 0.1
-    # q_curr = np.radians(np.array(self.curr_angles[:6], dtype=float))
-    # q_new = q_curr + alpha * delta_q
+def inverse_kinematics_position(q_curr, p_desired, kinematic_chain, alpha=.1,tolerance=.001,max_iterations=1000):
+    q = np.array(q_curr, dtype=float)
 
-    # # Test forward kinematics at the current configuration
-    # T = forward_kinematics(q_curr)
-    # p_fk = T[:3, 3]
+    for i in range(max_iterations):
+        p_curr = forward_kinematics(q, kinematic_chain)[:3, 3]
+        p_err = p_desired - p_curr
+        if np.linalg.norm(p_err) < tolerance:
+            print(f"IK converged after {i} iterations")
+            return q
 
-    # print("TF position:", p_curr)
-    # print("FK position:", p_fk)
-    # print("Difference:", np.linalg.norm(p_curr - p_fk))
+        J = jacobian(q, kinematic_chain)
+        J_v = J[:3, :]
+        delta_q = np.linalg.pinv(J_v) @ p_err
+        q = q + alpha * delta_q
 
-    # return q_new
+    print("IK failed to converge")
+    return None

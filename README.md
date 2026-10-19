@@ -156,16 +156,14 @@ docker exec -it ros2-container bash
   --child-frame-id laser
 12. launch robot_description and ros2 launch rplidar_ros rplidar_c1_launch.py
 13. ros2 service call /calculate_ik robot_interfaces/srv/CalculateIK "{x: 0.1, y: 0.0, z: 0.2}"
-14. ros2 topic pub /servo_angles std_msgs/Int32MultiArray "data: [90, 90, 90, 90]" 
-15. ros2 action send_goal /move_arm robot_interfaces/action/MoveArm "{angles: [30, 30, 30, 30, 30, 30]}"
-
+14. ros2 action send_goal /move_arm robot_interfaces/action/MoveArm "{angles: [30, 30, 30, 30, 30, 30]}"
 
 
 # To Do (phase 1)
 1. one motor slower(left motor from homebots frame)and laggy and ticks seem weird, fix in code by analyzing ticks-differential-drive/odom in rviz(turn to action), then implement inverse kinematics(test with tennis navigation)
 2. network between computer, and homebot(ros_ip) for faster rviz. Look into networking and firewalls and other security features,modify /etc/hosts file(try kubuntu for better networking) ?
 3. slam for homebot, (bno055, motor encoders, lidar)(look up command on heracles on how to run lidar in ros2(in terminal and add here))
-4. ```ARM: ```**forward:** (done)test on actual arm. **inverse:** Given some ${}^0 T_{5-desired}$, solve for the arm angles.(test first solution, then iterative solution)
+4. test on forward and inverse kinematics on actual arm, make sure angles in real life match angles in rviz.
 5. fix dockerfile humble_pi on pi (image on dockerhub works fine (jazzy_pi))
 6. add camera to docker and rviz
 
@@ -177,7 +175,6 @@ docker exec -it ros2-container bash
 
 
 [CODE LINK](https://github.com/canizalesjaime/homebot)
-
 
 
 ## Credits

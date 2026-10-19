@@ -342,4 +342,13 @@
            velocity="5"/>
 
 </joint>
+
+<link name="tool_link"/>
+
+<joint name="tool_joint" type="fixed">
+    <parent link="gripper2_link"/>
+    <child link="tool_link"/>
+
+    <origin xyz="-0.05 0 0" rpy="0 0 0"/>
+</joint>
 </robot>
