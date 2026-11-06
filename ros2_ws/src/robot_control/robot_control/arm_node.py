@@ -36,8 +36,7 @@ class ArmNode(Node):
             goal_callback=self.goal_callback,
             cancel_callback=self.cancel_callback)
 
-        self.ik_service = self.create_service(CalculateIK,'calculate_ik',
-                                              self.ik_callback)
+        self.ik_service = self.create_service(CalculateIK,'calculate_ik',self.ik_callback)
 
 
     # Action server callbacks
@@ -55,9 +54,7 @@ class ArmNode(Node):
 
     def execute_move_callback(self, goal_handle):
         goal_angles = list(goal_handle.request.angles)
-
         self.get_logger().info(f"Moving arm to {goal_angles}")
-
         result = MoveArm.Result()
 
         try:
@@ -82,11 +79,9 @@ class ArmNode(Node):
         for i, joint in enumerate(curr_angles_deg):
             curr_angle = curr_angles_deg[joint][1]
             end_angle = goal_angles_deg[i]
-            total_steps += len(range(
-                curr_angle,
+            total_steps += len(range(curr_angle,
                 end_angle + 1 if curr_angle < end_angle else end_angle - 1,
-                step if curr_angle < end_angle else -step
-            ))
+                step if curr_angle < end_angle else -step))
 
         completed_steps = 0
 
@@ -107,9 +102,7 @@ class ArmNode(Node):
 
                 if goal_handle is not None:
                     feedback = MoveArm.Feedback()
-                    feedback.progress = float(
-                        completed_steps / total_steps * 100.0
-                    )
+                    feedback.progress = float(completed_steps/total_steps*100.0)
                     goal_handle.publish_feedback(feedback)
 
         self.curr_angles=[ang[1][1] for ang in self.arm.get_servo_angles().items()]
