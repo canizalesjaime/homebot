@@ -1,4 +1,5 @@
 import math
+import time
 
 import rclpy
 from rclpy.node import Node
@@ -51,46 +52,46 @@ class ArmTeleopNode(Node):
         self.move(angles_deg)
 
 
-        def move(self, angles_deg):
-            # Validate against actual servo limits before moving
-            if len(angles_deg) != 6:
-                self.get_logger().error("Expected 6 joint angles")
-                return
+    def move(self, angles_deg):
+        # Validate against actual servo limits before moving
+        if len(angles_deg) != 6:
+            self.get_logger().error("Expected 6 joint angles")
+            return
 
-            # Send the angles to the MoveArm action server
-            goal = MoveArm.Goal()
-            goal.angles = angles_deg
+        # Send the angles to the MoveArm action server
+        goal = MoveArm.Goal()
+        goal.angles = angles_deg
 
-            send_future = self.move_client.send_goal_async(goal,
-                feedback_callback=self.feedback_callback)
+        send_future = self.move_client.send_goal_async(goal,
+            feedback_callback=self.feedback_callback)
 
-            rclpy.spin_until_future_complete(self, send_future)
+        rclpy.spin_until_future_complete(self, send_future)
 
-            goal_handle = send_future.result()
+        goal_handle = send_future.result()
 
-            if goal_handle is None:
-                self.get_logger().error(f"Action goal failed: {send_future.exception()}")
-                return
+        if goal_handle is None:
+            self.get_logger().error(f"Action goal failed: {send_future.exception()}")
+            return
 
-            if not goal_handle.accepted:
-                self.get_logger().error("Movement goal rejected")
-                return
+        if not goal_handle.accepted:
+            self.get_logger().error("Movement goal rejected")
+            return
 
-            print("Movement goal accepted")
+        print("Movement goal accepted")
 
-            result_future = goal_handle.get_result_async()
-            rclpy.spin_until_future_complete(self, result_future)
+        result_future = goal_handle.get_result_async()
+        rclpy.spin_until_future_complete(self, result_future)
 
-            result_response = result_future.result()
+        result_response = result_future.result()
 
-            if result_response is None:
-                self.get_logger().error(f"Movement failed: {result_future.exception()}")
-                return
+        if result_response is None:
+            self.get_logger().error(f"Movement failed: {result_future.exception()}")
+            return
 
-            result = result_response.result
+        result = result_response.result
 
-            print("Success:", result.success)
-            print("Message:", result.message)
+        print("Success:", result.success)
+        print("Message:", result.message)
 
 
     def feedback_callback(self, feedback_msg):
@@ -105,8 +106,9 @@ def main(args=None):
     try:
         while rclpy.ok():
             #node.move_to_position()
-            node.move([10,90,90,90,90,90])
-            node.move([170,90,90,90,90,90])
+            node.move([90,90,90,90,90,10])
+            time.sleep(2)
+            node.move([90,90,90,90,90,170])
 
     except (KeyboardInterrupt, EOFError):
         pass

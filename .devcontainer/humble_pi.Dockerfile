@@ -36,15 +36,15 @@ RUN echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
 RUN echo "source /workspaces/homebot/ros2_ws/install/setup.bash" >> ~/.bashrc
 
 # # for pi 
-# RUN apt update && apt upgrade -y
-# RUN apt install -y \
+RUN apt update && apt upgrade -y
+RUN apt install -y \
 #  python3-lgpio \
-#  gpiod \
-#  libgpiod-dev \
-#  python3-libgpiod \
+    gpiod \
+    libgpiod-dev \
+    python3-libgpiod \
 #  ros-jazzy-cv-bridge \
 #  python3-opencv \
-#  python3-pip \
+    python3-pip
 #  python3-smbus \
 #  i2c-tools \
 # #  libcap-dev\ # camera stuff below
@@ -53,7 +53,7 @@ RUN echo "source /workspaces/homebot/ros2_ws/install/setup.bash" >> ~/.bashrc
 # #  python3-libcamera \
 # #  python3-pyqt6
 
-#RUN pip3 install mpu6050-raspberrypi adafruit-blinka adafruit-circuitpython-pca9685 adafruit-circuitpython-bno055 --break-system-packages
+RUN pip3 install adafruit-blinka adafruit-circuitpython-pca9685 adafruit-circuitpython-bno055 --break-system-packages
 #RUN pip3 install fastapi uvicorn ultralytics opencv-python --break-system-packages
 
 
