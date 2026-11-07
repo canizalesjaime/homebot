@@ -31,8 +31,8 @@ class Arm():
 
         else:
             self.SERVO_ANGLES = {"base":[7, 90],
-                                 "elbow":[4, 90],
                                  "shoulder":[5, 90],
+                                 "elbow":[4, 90],
                                  "wrist":[0, 90],
                                  "gripper1":[3, 90],
                                  "gripper2":[1, 90]}
@@ -81,7 +81,10 @@ class Arm():
 
 def main():
     try:
-        node = Arm()
+        node = Arm("big")
+        while(True):
+            node.move_smooth("elbow",0)
+            node.move_smooth("elbow",180)
 
     finally:
         node.clean_up()

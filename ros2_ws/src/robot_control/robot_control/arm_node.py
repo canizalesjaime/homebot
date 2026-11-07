@@ -96,7 +96,7 @@ class ArmNode(Node):
             for angle in rng:
                 self.arm.set_servo_angle(joint, angle)
                 self.curr_angles[i]=angle
-                #time.sleep(0.02)
+                time.sleep(0.02)
 
                 completed_steps += 1
 

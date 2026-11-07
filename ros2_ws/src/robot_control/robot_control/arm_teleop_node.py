@@ -104,10 +104,37 @@ def main(args=None):
     try:
         while rclpy.ok():
             #node.move_to_position()
-            node.move([0,90,90,90,90,90])
-            time.sleep(3)
-            node.move([0,90,90,90,90,90])
 
+            #BASE
+            # node.move([10,0,90,90,90,90])
+            # time.sleep(2)
+            # node.move([170,0,90,90,90,90])
+
+            #SHOULDER
+            # node.move([90,0,90,90,90,90])
+            # time.sleep(2)
+            # node.move([90,120,90,90,90,90])
+
+            #ELBOW
+            # node.move([90,90,10,90,90,90])
+            # time.sleep(2)
+            # node.move([90,90,170,90,90,90])
+
+            #WRIST
+            # node.move([90,90,90,10,90,90])
+            # time.sleep(2)
+            # node.move([90,90,90,170,90,90])
+
+            #GRIPPER1
+            # node.move([90,90,90,90,10,90])
+            # time.sleep(2)
+            # node.move([90,90,90,90,170,90])
+
+            #GRIPPER2 10 IS OPEN 
+            node.move([90,90,90,90,90,10])
+            time.sleep(2)
+            node.move([90,90,90,90,90,180])
+        
     except (KeyboardInterrupt, EOFError):
         pass
     finally:
