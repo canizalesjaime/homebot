@@ -53,12 +53,10 @@ class ArmTeleopNode(Node):
 
 
     def move(self, angles_deg):
-        # Validate against actual servo limits before moving
         if len(angles_deg) != 6:
             self.get_logger().error("Expected 6 joint angles")
             return
 
-        # Send the angles to the MoveArm action server
         goal = MoveArm.Goal()
         goal.angles = angles_deg
 
@@ -106,9 +104,9 @@ def main(args=None):
     try:
         while rclpy.ok():
             #node.move_to_position()
-            node.move([90,90,90,90,90,10])
-            time.sleep(2)
-            node.move([90,90,90,90,90,170])
+            node.move([0,90,90,90,90,90])
+            time.sleep(3)
+            node.move([0,90,90,90,90,90])
 
     except (KeyboardInterrupt, EOFError):
         pass
