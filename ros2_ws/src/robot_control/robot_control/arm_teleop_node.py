@@ -106,12 +106,12 @@ def main(args=None):
             #node.move_to_position()
 
             #BASE
-            # node.move([10,0,90,90,90,90])
-            # time.sleep(2)
-            # node.move([170,0,90,90,90,90])
+            node.move([10,90,90,90,90,90])
+            time.sleep(2)
+            #node.move([170,90,90,90,90,90])
 
             #SHOULDER
-            # node.move([90,0,90,90,90,90])
+            # node.move([90,10,90,90,90,90])
             # time.sleep(2)
             # node.move([90,120,90,90,90,90])
 
@@ -131,9 +131,9 @@ def main(args=None):
             # node.move([90,90,90,90,170,90])
 
             #GRIPPER2 10 IS OPEN 
-            node.move([90,90,90,90,90,10])
-            time.sleep(2)
-            node.move([90,90,90,90,90,180])
+            # node.move([90,90,90,90,90,10])
+            # time.sleep(2)
+            # node.move([90,90,90,90,90,170])
         
     except (KeyboardInterrupt, EOFError):
         pass
