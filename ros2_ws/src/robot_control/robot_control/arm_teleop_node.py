@@ -104,14 +104,16 @@ def main(args=None):
     try:
         while rclpy.ok():
             #node.move_to_position()
+            ang=int(input("Enter angle:"))
+            node.move([90,90,160,10,ang,10])
 
             #BASE
-            node.move([10,90,90,90,90,90])
-            time.sleep(2)
+            # node.move([10,90,90,90,90,90])
+            # time.sleep(2)
             #node.move([170,90,90,90,90,90])
 
             #SHOULDER
-            # node.move([90,10,90,90,90,90])
+            #node.move([90,10,90,90,90,90])
             # time.sleep(2)
             # node.move([90,120,90,90,90,90])
 

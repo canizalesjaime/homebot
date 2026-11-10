@@ -28,7 +28,7 @@ class ArmNode(Node):
                        "gripper2_joint":[1,0,0]}
 
         #central_axis, shoulder, elbow, wrist, gripper1, gripper2(10 is open)
-        self.offset =  [-2,.3,2.2,2.8,1,0]#offset at 10 degrees for each joint
+        self.offset =  [-1,.3,2,1.34,1,0]#offset at 10 degrees for each joint
         self.arm = Arm("big")
         self.curr_angles= [ang[1][1] for ang in self.arm.get_servo_angles().items()]
         self.timer = self.create_timer(0.05,self.publish_joint_states) #20hz
@@ -115,7 +115,12 @@ class ArmNode(Node):
         arm_msg = JointState()
         arm_msg.header.stamp = self.get_clock().now().to_msg()
         arm_msg.name = list(self.joints)
-        arm_msg.position = [math.radians(i-10)+self.offset[i] for i in self.curr_angles]
+        arm_msg.position = [0,0,0,0,0,0]
+        for i, ang in enumerate(self.curr_angles):
+            if i==2 or i==3 or i==4:
+                arm_msg.position[i]=-math.radians(ang-10)+self.offset[i]
+            else:
+                arm_msg.position[i]=math.radians(ang-10)+self.offset[i]    
         self.joint_pub.publish(arm_msg)  
 
 

@@ -83,9 +83,9 @@ def main():
     try:
         node = Arm("big")
         while(True):
-            node.move_smooth("elbow",0)
-            node.move_smooth("elbow",180)
-
+            ang=170
+            node.set_angles_api([ang,ang,ang,ang,ang,ang])
+    
     finally:
         node.clean_up()
         node.pca.deinit()
