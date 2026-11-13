@@ -109,19 +109,35 @@ class ArmNode(Node):
                     goal_handle.publish_feedback(feedback)
 
         self.curr_angles=[ang[1][1] for ang in self.arm.get_servo_angles().items()]
+        print("YOOOOOOOOOOOOOOOOO",self.curr_angles)
         
     
+    def convert_real2viz_angles(self):
+        viz_angs=[0,0,0,0,0,0]
+        for i, ang in enumerate(self.curr_angles):
+            if i==2 or i==3 or i==4:
+                viz_angs[i]=-math.radians(ang-10)+self.offset[i]
+            else:
+                viz_angs[i]=math.radians(ang-10)+self.offset[i]
+        return viz_angs
+    
+
     def publish_joint_states(self):       
         arm_msg = JointState()
         arm_msg.header.stamp = self.get_clock().now().to_msg()
         arm_msg.name = list(self.joints)
-        arm_msg.position = [0,0,0,0,0,0]
-        for i, ang in enumerate(self.curr_angles):
-            if i==2 or i==3 or i==4:
-                arm_msg.position[i]=-math.radians(ang-10)+self.offset[i]
-            else:
-                arm_msg.position[i]=math.radians(ang-10)+self.offset[i]    
+        arm_msg.position = self.convert_real2viz_angles()        
         self.joint_pub.publish(arm_msg)  
+
+
+    def convert_viz2real_angles(self, viz_angles):
+        real_angs=[0,0,0,0,0,0]
+        for i, ang in enumerate(viz_angles):
+            if i==2 or i==3 or i==4:
+                real_angs[i]=math.radians(10)-(ang-self.offset[i])
+            else:
+                real_angs[i]=math.radians(10)+(ang-self.offset[i])
+        return real_angs
 
 
     def ik_callback(self, request, response):
@@ -133,15 +149,20 @@ class ArmNode(Node):
 
         try:
             q_curr = np.radians(np.array(self.curr_angles, dtype=float))
-            solution = inverse_kinematics_position(q_curr,p_desired,self.kinematic_chain)
+            #solution_viz in radians
+            solution_viz = inverse_kinematics_position(q_curr,p_desired,self.kinematic_chain)
+            solution_real = self.convert_viz2real_angles(solution_viz)
+            # print(solution_real)
+            # if any(angle < 10 or angle > 170 for angle in solution_real):
+            #     solution_real=None
 
-            if solution is None:
+            if solution_real is None:
                 response.success = False
                 response.joint_angles = []
                 response.message = "IK failed to find a solution"
             else:
                 response.success = True
-                response.joint_angles = [float(q) for q in solution]
+                response.joint_angles = [float(q) for q in solution_real]
                 response.message = "IK solution calculated"
 
         except Exception as e:

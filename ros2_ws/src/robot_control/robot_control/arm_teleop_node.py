@@ -1,5 +1,6 @@
 import math
 import time
+import sys
 
 import rclpy
 from rclpy.node import Node
@@ -24,11 +25,7 @@ class ArmTeleopNode(Node):
             self.get_logger().info('Waiting for MoveArm action server...')
 
 
-    def move_to_position(self):
-        x = float(input("Enter x (meters): "))
-        y = float(input("Enter y (meters): "))
-        z = float(input("Enter z (meters): "))
-
+    def move_to_position(self,x,y,z):
         request = CalculateIK.Request()
         request.x = x
         request.y = y
@@ -102,41 +99,37 @@ def main(args=None):
     node = ArmTeleopNode()
 
     try:
-        while rclpy.ok():
-            #node.move_to_position()
-            ang=int(input("Enter angle:"))
-            node.move([90,90,160,10,ang,10])
+        args=sys.argv[1:]
+        if args==None:
+            mode=input("Enter FK or IK: ")
+            if mode == "FK":
+                while rclpy.ok():
+                    angs_str=input("Enter angles separated by space in order: (base shoulder elbow wrist gripper1 gripper 2)")
+                    angs_deg=angs_str.strip().split()
+                    if len(angs_deg)==6:
+                        node.move(angs_deg)
+                    else:
+                        print("incorrect # of angles")
 
-            #BASE
-            # node.move([10,90,90,90,90,90])
-            # time.sleep(2)
-            #node.move([170,90,90,90,90,90])
-
-            #SHOULDER
-            #node.move([90,10,90,90,90,90])
-            # time.sleep(2)
-            # node.move([90,120,90,90,90,90])
-
-            #ELBOW
-            # node.move([90,90,10,90,90,90])
-            # time.sleep(2)
-            # node.move([90,90,170,90,90,90])
-
-            #WRIST
-            # node.move([90,90,90,10,90,90])
-            # time.sleep(2)
-            # node.move([90,90,90,170,90,90])
-
-            #GRIPPER1
-            # node.move([90,90,90,90,10,90])
-            # time.sleep(2)
-            # node.move([90,90,90,90,170,90])
-
-            #GRIPPER2 10 IS OPEN 
-            # node.move([90,90,90,90,90,10])
-            # time.sleep(2)
-            # node.move([90,90,90,90,90,170])
+            elif mode == "IK":
+                while rclpy.ok():
+                    x = float(input("Enter x (meters): "))
+                    y = float(input("Enter y (meters): "))
+                    z = float(input("Enter z (meters): "))
+                    node.move_to_position(x, y, z)
+            else:
+                print("incorrect mode")
+            
+        elif args[0]=="IK" and len(args)==4:
+            node.move_to_position(float(args[1]), float(args[2]), float(args[3]))
         
+        elif args[0] == "FK" and len(args)==7:
+            node.move([int(args[1]), int(args[2]), int(args[3]),
+                      int(args[4]), int(args[5]), int(args[6])])
+
+        else:
+            print("incorrect command line arguments")
+            
     except (KeyboardInterrupt, EOFError):
         pass
     finally:
