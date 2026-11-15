@@ -105,7 +105,7 @@ def main(args=None):
             if mode == "FK":
                 while rclpy.ok():
                     angs_str=input("Enter angles separated by space in order: (base shoulder elbow wrist gripper1 gripper 2)")
-                    angs_deg=angs_str.strip().split()
+                    angs_deg = [int(a) for a in angs_str.strip().split()]
                     if len(angs_deg)==6:
                         node.move(angs_deg)
                     else:

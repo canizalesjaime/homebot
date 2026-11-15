@@ -14,6 +14,9 @@ from arm import Arm
 from robot_interfaces.action import MoveArm
 from robot_interfaces.srv import CalculateIK
 
+from cali import convert_viz2real_angles, convert_real2viz_angles
+
+
 class ArmNode(Node):
     def __init__(self):
         super().__init__('arm_node')
@@ -27,8 +30,7 @@ class ArmNode(Node):
                        "gripper1_joint":[0,0,1],
                        "gripper2_joint":[1,0,0]}
 
-        #central_axis, shoulder, elbow, wrist, gripper1, gripper2(10 is open)
-        self.offset =  [-1,.3,2,1.34,1,0]#offset at 10 degrees for each joint
+        
         self.arm = Arm("big")
         self.curr_angles= [ang[1][1] for ang in self.arm.get_servo_angles().items()]
         self.timer = self.create_timer(0.05,self.publish_joint_states) #20hz
@@ -109,35 +111,14 @@ class ArmNode(Node):
                     goal_handle.publish_feedback(feedback)
 
         self.curr_angles=[ang[1][1] for ang in self.arm.get_servo_angles().items()]
-        print("YOOOOOOOOOOOOOOOOO",self.curr_angles)
-        
-    
-    def convert_real2viz_angles(self):
-        viz_angs=[0,0,0,0,0,0]
-        for i, ang in enumerate(self.curr_angles):
-            if i==2 or i==3 or i==4:
-                viz_angs[i]=-math.radians(ang-10)+self.offset[i]
-            else:
-                viz_angs[i]=math.radians(ang-10)+self.offset[i]
-        return viz_angs
     
 
     def publish_joint_states(self):       
         arm_msg = JointState()
         arm_msg.header.stamp = self.get_clock().now().to_msg()
         arm_msg.name = list(self.joints)
-        arm_msg.position = self.convert_real2viz_angles()        
+        arm_msg.position = convert_real2viz_angles(self.curr_angles)        
         self.joint_pub.publish(arm_msg)  
-
-
-    def convert_viz2real_angles(self, viz_angles):
-        real_angs=[0,0,0,0,0,0]
-        for i, ang in enumerate(viz_angles):
-            if i==2 or i==3 or i==4:
-                real_angs[i]=math.radians(10)-(ang-self.offset[i])
-            else:
-                real_angs[i]=math.radians(10)+(ang-self.offset[i])
-        return real_angs
 
 
     def ik_callback(self, request, response):
@@ -148,10 +129,11 @@ class ArmNode(Node):
         ], dtype=float)
 
         try:
-            q_curr = np.radians(np.array(self.curr_angles, dtype=float))
+            q_curr=convert_real2viz_angles(self.curr_angles)
+            #q_curr = np.radians(np.array(q_curr, dtype=float))
             #solution_viz in radians
             solution_viz = inverse_kinematics_position(q_curr,p_desired,self.kinematic_chain)
-            solution_real = self.convert_viz2real_angles(solution_viz)
+            solution_real = convert_viz2real_angles(solution_viz)
             # print(solution_real)
             # if any(angle < 10 or angle > 170 for angle in solution_real):
             #     solution_real=None
