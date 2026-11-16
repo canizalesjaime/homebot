@@ -14,7 +14,7 @@ from arm import Arm
 from robot_interfaces.action import MoveArm
 from robot_interfaces.srv import CalculateIK
 
-from cali import convert_viz2real_angles, convert_real2viz_angles
+from robot_control.cali import convert_viz2real_angles, convert_real2viz_angles
 
 
 class ArmNode(Node):
@@ -134,9 +134,9 @@ class ArmNode(Node):
             #solution_viz in radians
             solution_viz = inverse_kinematics_position(q_curr,p_desired,self.kinematic_chain)
             solution_real = convert_viz2real_angles(solution_viz)
-            # print(solution_real)
-            # if any(angle < 10 or angle > 170 for angle in solution_real):
-            #     solution_real=None
+            print(solution_real)
+            if any(angle < 10 or angle > 170 for angle in solution_real):
+                solution_real=None
 
             if solution_real is None:
                 response.success = False
