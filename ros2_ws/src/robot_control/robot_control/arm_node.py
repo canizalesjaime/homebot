@@ -135,8 +135,8 @@ class ArmNode(Node):
             solution_viz = inverse_kinematics_position(q_curr,p_desired,self.kinematic_chain)
             solution_real = convert_viz2real_angles(solution_viz)
             print(solution_real)
-            if any(angle < 10 or angle > 170 for angle in solution_real):
-                solution_real=None
+            # if any(angle < 0 or angle > 180 for angle in solution_real):
+            #     solution_real=None
 
             if solution_real is None:
                 response.success = False
