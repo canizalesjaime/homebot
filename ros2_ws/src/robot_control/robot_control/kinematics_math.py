@@ -1,6 +1,7 @@
 import numpy as np
 import xacro
 import xml.etree.ElementTree as ET
+from scipy.optimize import least_squares
 
 def load_kinematic_chain(urdf_path):
     """Load the ordered world-to-end-effector joint chain from urdf file."""
@@ -26,6 +27,25 @@ def load_kinematic_chain(urdf_path):
         link = joint.find("parent").get("link")
 
     return list(reversed(chain))
+
+
+def get_joint_limits(kinematic_chain):
+    lower, upper = [], []
+
+    for joint in kinematic_chain:
+        if joint.get("type") != "revolute":
+            continue
+
+        limit = joint.find("limit")
+
+        if limit is None:
+            raise ValueError(f"Missing limits for {joint.get('name')}")
+
+        lower.append(float(limit.get("lower")))
+        upper.append(float(limit.get("upper")))
+
+    return np.array(lower), np.array(upper)
+###############################################################################
 
 
 def jacobian(q, kinematic_chain):
@@ -166,20 +186,54 @@ def forward_kinematics(q, kinematic_chain, frame="tool_link"):
     raise ValueError(f"Frame '{frame}' not found in kinematic chain")
 
 
-def inverse_kinematics_position(q_curr, p_desired, kinematic_chain, alpha=.1,tolerance=.001,max_iterations=1000):
-    q = np.array(q_curr, dtype=float)
+# def inverse_kinematics_position(q_curr, p_desired, kinematic_chain, alpha, tolerance=.001, max_iterations=1000):
+#     q = np.array(q_curr, dtype=float)
 
-    for i in range(max_iterations):
-        p_curr = forward_kinematics(q, kinematic_chain)[:3, 3]
-        p_err = p_desired - p_curr
-        if np.linalg.norm(p_err) < tolerance:
-            print(f"IK converged after {i} iterations")
-            return q
+#     for i in range(max_iterations):
+#         p_curr = forward_kinematics(q, kinematic_chain)[:3, 3]
+#         p_err = p_desired - p_curr
+#         if np.linalg.norm(p_err) < tolerance:
+#             print(f"IK converged after {i} iterations")
+#             return q
 
+#         J = jacobian(q, kinematic_chain)
+#         J_v = J[:3, :]
+#         delta_q = np.linalg.pinv(J_v) @ p_err
+#         q = q + alpha * delta_q
+
+#     print("IK failed to converge")
+#     return None
+
+
+def inverse_kinematics_position(q_curr,p_desired,kinematic_chain,lower_limits,upper_limits,tolerance=0.001,max_iterations=1000):
+    q_curr = np.asarray(q_curr, dtype=float)
+    p_desired = np.asarray(p_desired, dtype=float)
+    lower = np.asarray(lower_limits, dtype=float)
+    upper = np.asarray(upper_limits, dtype=float)
+
+    if not (q_curr.shape == lower.shape == upper.shape and np.all(lower < upper)):
+        raise ValueError("Invalid IK joint bounds")
+
+    # Initial guess must be inside the joint limits.
+    q0 = np.clip(q_curr, lower, upper)
+
+    def residual(q):
+        T = forward_kinematics(q, kinematic_chain)
+        p_curr = T[:3, 3]
+        return p_curr - p_desired
+
+    def jac(q):
         J = jacobian(q, kinematic_chain)
-        J_v = J[:3, :]
-        delta_q = np.linalg.pinv(J_v) @ p_err
-        q = q + alpha * delta_q
+        return J[:3, :]
 
-    print("IK failed to converge")
+    result = least_squares(residual,x0=q0,jac=jac,bounds=(lower, upper),
+                           method="trf",max_nfev=max_iterations,ftol=1e-10,
+                           xtol=1e-10,gtol=1e-10)
+
+    error = np.linalg.norm(residual(result.x))
+    print(f"IK final position error: {error * 1000:.3f} mm")
+
+    if error < tolerance:
+        return result.x
+
     return None

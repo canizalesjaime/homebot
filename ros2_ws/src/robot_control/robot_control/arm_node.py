@@ -9,7 +9,7 @@ from rclpy.action import ActionServer, CancelResponse, GoalResponse
 
 
 import robot_control.paths
-from robot_control.kinematics_math import load_kinematic_chain,inverse_kinematics_position
+from robot_control.kinematics_math import load_kinematic_chain,inverse_kinematics_position, get_joint_limits
 from arm import Arm 
 from robot_interfaces.action import MoveArm
 from robot_interfaces.srv import CalculateIK
@@ -42,6 +42,21 @@ class ArmNode(Node):
             cancel_callback=self.cancel_callback)
 
         self.ik_service = self.create_service(CalculateIK,'calculate_ik',self.ik_callback)
+
+        urdf_lower, urdf_upper = get_joint_limits(self.kinematic_chain)
+
+        servo_lower = np.array(convert_real2viz_angles([10] * 6))
+
+        servo_upper = np.array(convert_real2viz_angles([170] * 6))
+
+        physical_lower = np.minimum(servo_lower, servo_upper)
+        physical_upper = np.maximum(servo_lower, servo_upper)
+
+        self.lower_limits = np.maximum(urdf_lower, physical_lower)
+        self.upper_limits = np.minimum(urdf_upper, physical_upper)
+
+        if np.any(self.lower_limits >= self.upper_limits):
+            raise ValueError("URDF and physical servo limits are incompatible")
 
 
     # Action server callbacks
@@ -122,30 +137,45 @@ class ArmNode(Node):
 
 
     def ik_callback(self, request, response):
-        p_desired = np.array([
-            request.x,
-            request.y,
-            request.z
-        ], dtype=float)
+        p_desired = np.array([request.x,request.y,request.z], dtype=float)
 
         try:
-            q_curr=convert_real2viz_angles(self.curr_angles)
-            #q_curr = np.radians(np.array(q_curr, dtype=float))
-            #solution_viz in radians
-            solution_viz = inverse_kinematics_position(q_curr,p_desired,self.kinematic_chain)
-            solution_real = convert_viz2real_angles(solution_viz)
-            print(solution_real)
-            # if any(angle < 0 or angle > 180 for angle in solution_real):
-            #     solution_real=None
+            q_curr = convert_real2viz_angles(self.curr_angles)
 
-            if solution_real is None:
+            # Calculate IK with joint limits.,Returns URDF joint angles in radians, or None.
+            solution_viz = inverse_kinematics_position(q_curr,p_desired,self.kinematic_chain,self.lower_limits,self.upper_limits)
+
+            if solution_viz is None:
                 response.success = False
                 response.joint_angles = []
-                response.message = "IK failed to find a solution"
-            else:
-                response.success = True
-                response.joint_angles = [float(q) for q in solution_real]
-                response.message = "IK solution calculated"
+                response.message = "No valid IK solution found"
+                return response
+
+            # Convert URDF joint angles to physical servo angles.
+            # Result is still in radians.
+            solution_real = convert_viz2real_angles(solution_viz)
+
+            # Final safety check using physical servo limits.
+            lower = math.radians(10)
+            upper = math.radians(170)
+            eps = 1e-6
+
+            if any(
+                not math.isfinite(angle)
+                or angle < lower - eps
+                or angle > upper + eps
+                for angle in solution_real
+            ):
+                response.success = False
+                response.joint_angles = []
+                response.message = "IK solution violates servo limits"
+                return response
+
+            print("IK solution (servo radians):", solution_real)
+
+            response.success = True
+            response.joint_angles = [float(q) for q in solution_real]
+            response.message = "IK solution calculated"
 
         except Exception as e:
             response.success = False
