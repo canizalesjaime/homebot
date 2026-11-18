@@ -36,8 +36,7 @@ RUN echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
 RUN echo "source /workspaces/homebot/ros2_ws/install/setup.bash" >> ~/.bashrc
 
 # # for pi 
-RUN apt update && apt upgrade -y
-RUN apt install -y \
+RUN apt update && apt upgrade -y && apt install -y \
 #  python3-lgpio \
     gpiod \
     libgpiod-dev \
