@@ -44,7 +44,8 @@ RUN apt install -y \
     python3-libgpiod \
 #  ros-jazzy-cv-bridge \
 #  python3-opencv \
-    python3-pip
+    python3-pip \
+    python3-scipy
 #  python3-smbus \
 #  i2c-tools \
 # #  libcap-dev\ # camera stuff below
