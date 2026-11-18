@@ -54,6 +54,10 @@ class ArmTeleopNode(Node):
             self.get_logger().error("Expected 6 joint angles")
             return
 
+        if any(not math.isfinite(angle) or angle < 10 or angle > 170 for angle in angles_deg):
+            self.get_logger().error("Servo angles must be between 10 and 170 degrees")
+            return
+
         goal = MoveArm.Goal()
         goal.angles = angles_deg
 
@@ -100,7 +104,7 @@ def main(args=None):
 
     try:
         args=sys.argv[1:]
-        if args==None:
+        if not args:
             mode=input("Enter FK or IK: ")
             if mode == "FK":
                 while rclpy.ok():
