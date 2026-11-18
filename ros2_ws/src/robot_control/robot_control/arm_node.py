@@ -29,9 +29,12 @@ class ArmNode(Node):
                        "wrist_joint":[1,0,0],
                        "gripper1_joint":[0,0,1],
                        "gripper2_joint":[1,0,0]}
-
         
-        self.arm = Arm("big")
+        self.declare_parameter("simulate", True)
+        self.simulate = self.get_parameter("simulate").value
+        self.arm = Arm("big", simulate=self.simulate)
+        self.get_logger().info(f"Arm mode: {'SIMULATION' if self.simulate else 'HARDWARE'}")
+
         self.curr_angles= [ang[1][1] for ang in self.arm.get_servo_angles().items()]
         self.timer = self.create_timer(0.05,self.publish_joint_states) #20hz
         self.kinematic_chain=load_kinematic_chain("/workspaces/homebot/ros2_ws/src/arm_description/urdf/arm.urdf.xacro")

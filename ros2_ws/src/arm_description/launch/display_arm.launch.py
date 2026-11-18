@@ -1,4 +1,6 @@
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch.substitutions import Command, PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
@@ -6,6 +8,11 @@ import os
 
 def generate_launch_description():
     pkg_name = 'arm_description'
+    simulate_arg = DeclareLaunchArgument(
+    "simulate",
+    default_value="true",
+    description="Run arm without physical PCA9685 hardware"
+)
 
     urdf_path = PathJoinSubstitution([
         FindPackageShare(pkg_name),
@@ -20,6 +27,7 @@ def generate_launch_description():
     ])
 
     return LaunchDescription([
+        simulate_arg, 
         Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
@@ -39,6 +47,7 @@ def generate_launch_description():
         Node(
             package='robot_control',
             executable='arm',
+            parameters=[{"simulate": LaunchConfiguration("simulate")}],
             output='screen',
         ),
         # Node(

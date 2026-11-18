@@ -1,65 +1,72 @@
-# PWM Calibration 
+
+# PWM Calibration
 # Wide pulse range for near-180° travel
 # Adjust slightly per servo if needed
 # note: since 50HZ, one cycle last 20 ms
 # this is # of ticks out of 4096 to represent high
-# 4096 comes from the PCA9685’s 12-bit PWM resolution, 
-# and 65535 comes from CircuitPython’s 16-bit duty-cycle interface.
+# 4096 comes from the PCA9685's 12-bit PWM resolution,
+# and 65535 comes from CircuitPython's 16-bit duty-cycle interface.
 # pulses below are estimated, and in general should be calibrated
 
 import time
-import board
-import busio
-from adafruit_pca9685 import PCA9685
 
 
 class Arm():
-    def __init__(self,arm="base"):
-        self.i2c = busio.I2C(board.SCL, board.SDA)
-        self.pca = PCA9685(self.i2c)
-        self.pca.frequency = 50
-        self.SERVO_ANGLES={} #{"joint name:[pca channel, current angle]"}
+    def __init__(self, arm="base", simulate=False): 
+        self.simulate = simulate 
+        self.pca = None 
 
-        if arm=="base":
-            self.SERVO_ANGLES={"base":[0,90]}
-    
-        elif arm=="small":
-            self.SERVO_ANGLES = {"base":[0, 90], # MG90S below
+        if not self.simulate:
+            import board
+            import busio
+            from adafruit_pca9685 import PCA9685
+
+            self.i2c = busio.I2C(board.SCL, board.SDA)
+            self.pca = PCA9685(self.i2c)
+            self.pca.frequency = 50
+
+        self.SERVO_ANGLES = {}  # {"joint name":[pca channel, current angle]}
+
+        if arm == "base":
+            self.SERVO_ANGLES = {"base": [0, 90]}
+
+        elif arm == "small":
+            self.SERVO_ANGLES = {"base": [0, 90],  # MG90S below
                                  "elbow": [1, 90],
                                  "shoulder": [3, 90],
-                                 "gripper": [4,90] }
+                                 "gripper": [4, 90]}
 
         else:
-            self.SERVO_ANGLES = {"base":[7, 90],
-                                 "shoulder":[5, 90],
-                                 "elbow":[4, 90],
-                                 "wrist":[0, 90],
-                                 "gripper1":[3, 90],
-                                 "gripper2":[1, 90]}
-                                 
-        self.set_angles_api([90,90,90,90,90,90])
-            
+            self.SERVO_ANGLES = {"base": [7, 90],
+                                 "shoulder": [5, 90],
+                                 "elbow": [4, 90],
+                                 "wrist": [0, 90],
+                                 "gripper1": [3, 90],
+                                 "gripper2": [1, 90]}
 
-    def set_servo_angle(self,joint, angle):
+        self.set_angles_api([90, 90, 90, 90, 90, 90])
+
+    def set_servo_angle(self, joint, angle):
         channel = self.SERVO_ANGLES[joint][0]
         MIN_PULSE = 150   # ~0.75 ms, 0 degrees
         MAX_PULSE = 550   # ~2.7 ms, 180 degrees
-        min_angle, max_angle = (10,170)
+        min_angle, max_angle = (10, 170)
         angle = max(min(angle, max_angle), min_angle)
 
-        #pulse = MIN_PULSE + (angle / 180.0) * (MAX_PULSE - MIN_PULSE)
+        # pulse = MIN_PULSE + (angle / 180.0) * (MAX_PULSE - MIN_PULSE)
         pulse = MIN_PULSE + ((angle - min_angle) / (max_angle - min_angle)) * (MAX_PULSE - MIN_PULSE)
-        duty = int(pulse)<<4
-        self.pca.channels[channel].duty_cycle = duty
-        self.SERVO_ANGLES[joint][1]=angle
+        duty = int(pulse) << 4
 
-        
+        if not self.simulate: 
+            self.pca.channels[channel].duty_cycle = duty
+
+        self.SERVO_ANGLES[joint][1] = angle
+
     def get_servo_angles(self):
         return self.SERVO_ANGLES
 
-
-    def move_smooth(self,joint, end_angle, step=2, delay=0.02):
-        curr_angle=self.SERVO_ANGLES[joint][1]
+    def move_smooth(self, joint, end_angle, step=2, delay=0.02):
+        curr_angle = self.SERVO_ANGLES[joint][1]
         if curr_angle < end_angle:
             rng = range(curr_angle, end_angle + 1, step)
         else:
@@ -67,29 +74,29 @@ class Arm():
 
         for angle in rng:
             self.set_servo_angle(joint, angle)
-            time.sleep(delay)
-            
-    
+            if not self.simulate:  
+                time.sleep(delay)
+
     def clean_up(self):
         for joint in self.SERVO_ANGLES:
-            self.move_smooth(joint,90)  
-
+            self.move_smooth(joint, 90)
 
     def set_angles_api(self, angles):
-        for i,joint in enumerate(self.SERVO_ANGLES):
-            self.move_smooth(joint,angles[i])
+        for i, joint in enumerate(self.SERVO_ANGLES):
+            self.move_smooth(joint, angles[i])
+
 
 def main():
+    node = Arm("big", simulate=True)  
     try:
-        node = Arm("big")
-        while(True):
-            ang=170
-            node.set_angles_api([ang,ang,ang,ang,ang,ang])
-    
+        while True:
+            ang = 170
+            node.set_angles_api([ang, ang, ang, ang, ang, ang])
     finally:
         node.clean_up()
-        node.pca.deinit()
-        
+        if node.pca is not None: 
+            node.pca.deinit()
+
 
 if __name__ == '__main__':
     main()
